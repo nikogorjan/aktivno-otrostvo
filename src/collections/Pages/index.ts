@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 import { adminOnly } from '@/access/adminOnly'
 import { adminOrPublishedStatus } from '@/access/adminOrPublishedStatus'
+import { AboutUsSection } from '@/blocks/AboutUs/config'
 import { Archive } from '@/blocks/ArchiveBlock/config'
 import { Banner } from '@/blocks/Banner/config'
 import { CallToAction } from '@/blocks/CallToAction/config'
@@ -9,6 +10,7 @@ import { Carousel } from '@/blocks/Carousel/config'
 import { Content } from '@/blocks/Content/config'
 import { FormBlock } from '@/blocks/Form/config'
 import { MediaBlock } from '@/blocks/MediaBlock/config'
+import { TabsSection } from '@/blocks/Tabs/config'
 import { ThreeItemGrid } from '@/blocks/ThreeItemGrid/config'
 import { hero } from '@/fields/hero'
 import { generatePreviewPath } from '@/utilities/generatePreviewPath'
@@ -97,6 +99,8 @@ export const Pages: CollectionConfig = {
                 ThreeItemGrid,
                 Banner,
                 FormBlock,
+                AboutUsSection,
+                TabsSection,
               ],
               required: true,
             },

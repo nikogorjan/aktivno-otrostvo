@@ -71,14 +71,17 @@
 
   --kournikova: hsl(42 100% 72.5%);
 
-  --info-roza: hsl(358, 84%, 93%); /* #fde5e5 */
-  --info-rumena: hsl(41, 100%, 89%); /* #fff2d6 */
-  --info-modra: hsl(222, 100%, 93%); /* #e3ecff */
+  --info-roza: hsl(358, 84%, 93%);
+  --info-rumena: hsl(41, 100%, 89%);
+  --info-modra: hsl(222, 100%, 93%);
+  --info-vijolicna: hsl(270, 85%, 92%);
+
   --neutral-dark: hsl(220 6% 14%);
 
   --info-roza-dark: hsl(358, 47%, 29%);
   --info-rumena-dark: hsl(42, 46%, 27%);
   --info-modra-dark: hsl(221, 23%, 24%);
+  --info-vijolicna-dark: hsl(270, 100%, 36%);
 }
 
 [data-theme='dark'] {
@@ -145,10 +148,12 @@
   --color-roza: var(--info-roza);
   --color-rumena: var(--info-rumena);
   --color-modra: var(--info-modra);
+  --color-vijolicna: var(--info-vijolicna);
 
   --color-roza-dark: var(--info-roza-dark);
   --color-rumena-dark: var(--info-rumena-dark);
   --color-modra-dark: var(--info-modra-dark);
+  --color-vijolicna-dark: var(--info-vijolicna-dark);
 
   --color-neutral-dark: var(--neutral-dark);
 }

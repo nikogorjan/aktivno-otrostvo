@@ -10,6 +10,8 @@ import { toKebabCase } from '@/utilities/toKebabCase'
 import React, { Fragment } from 'react'
 
 import type { Page } from '../payload-types'
+import { AboutUsSectionBlock } from './AboutUs/Component'
+import { TabsSectionBlock } from './Tabs/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -20,6 +22,8 @@ const blockComponents = {
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
   threeItemGrid: ThreeItemGridBlock,
+  aboutUsSection: AboutUsSectionBlock,
+  tabsSection: TabsSectionBlock,
 }
 
 export const RenderBlocks: React.FC<{

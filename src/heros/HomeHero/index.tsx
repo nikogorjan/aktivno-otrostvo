@@ -53,7 +53,7 @@ export const HomeHero: React.FC<HomeHeroProps> = (props) => {
   const stars = Math.max(0, Math.min(5, left?.stars ?? 0))
 
   return (
-    <section className="relative py-10 md:py-16 lg:py-20">
+    <section className="relative py-10 md:py-16 lg:py-20 bg-card/30">
       <div className="container grid grid-cols-1 lg:grid-cols-[2fr_3fr] gap-10 items-start">
         {/* LEFT */}
         <div className="max-w-[46rem] h-full flex flex-col justify-between md:py-12">
@@ -81,7 +81,7 @@ export const HomeHero: React.FC<HomeHeroProps> = (props) => {
                 <p className="text-lg text-muted-foreground">{left.description}</p>
               )}
 
-              <div className="absolute -bottom-5 right-0 w-20 h-20 pointer-events-none rotate-140">
+              <div className="absolute -top-10 -right-2 w-20 h-20 pointer-events-none rotate-20">
                 <Lottie lottieRef={lottieRef} animationData={leafAnimation} loop autoplay />
               </div>
             </div>

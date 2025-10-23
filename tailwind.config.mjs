@@ -88,9 +88,11 @@ export default {
         'info-roza': 'hsl(var(--info-roza))',
         'info-rumena': 'hsl(var(--info-rumena))',
         'info-modra': 'hsl(var(--info-modra))',
+        'info-vijolicna': 'hsl(var(--info-vijolicna))',
         'info-roza-dark': 'hsl(var(--info-roza-dark))',
         'info-rumena-dark': 'hsl(var(--info-rumena-dark))',
         'info-modra-dark': 'hsl(var(--info-modra-dark))',
+        'info-vijolicna-dark': 'hsl(var(--info-vijolicna-dark))',
         'neutral-dark': 'hsl(var(--neutral-dark))',
       },
       typography: ({ theme }) => ({
