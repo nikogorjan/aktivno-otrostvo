@@ -433,7 +433,7 @@ export interface Page {
   title: string;
   publishedOn?: string | null;
   hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
+    type: 'none' | 'homeHero' | 'highImpact' | 'mediumImpact' | 'lowImpact';
     richText?: {
       root: {
         type: string;
@@ -469,6 +469,89 @@ export interface Page {
         }[]
       | null;
     media?: (string | null) | Media;
+    left?: {
+      tagline?: string | null;
+      stars?: number | null;
+      title: {
+        root: {
+          type: string;
+          children: {
+            type: any;
+            version: number;
+            [k: string]: unknown;
+          }[];
+          direction: ('ltr' | 'rtl') | null;
+          format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+          indent: number;
+          version: number;
+        };
+        [k: string]: unknown;
+      };
+      description?: {
+        root: {
+          type: string;
+          children: {
+            type: any;
+            version: number;
+            [k: string]: unknown;
+          }[];
+          direction: ('ltr' | 'rtl') | null;
+          format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+          indent: number;
+          version: number;
+        };
+        [k: string]: unknown;
+      } | null;
+      /**
+       * Primary CTA
+       */
+      links?:
+        | {
+            link: {
+              type?: ('reference' | 'custom') | null;
+              newTab?: boolean | null;
+              reference?: {
+                relationTo: 'pages';
+                value: string | Page;
+              } | null;
+              url?: string | null;
+              label: string;
+              /**
+               * Choose how the link should be rendered.
+               */
+              appearance?: ('default' | 'outline') | null;
+            };
+            id?: string | null;
+          }[]
+        | null;
+    };
+    right?: {
+      columns?:
+        | {
+            cards?:
+              | (
+                  | {
+                      media: string | Media;
+                      badge?: string | null;
+                      badgeIcon?: (string | null) | Media;
+                      id?: string | null;
+                      blockName?: string | null;
+                      blockType: 'imageCard';
+                    }
+                  | {
+                      icon?: (string | null) | Media;
+                      heading: string;
+                      body?: string | null;
+                      id?: string | null;
+                      blockName?: string | null;
+                      blockType: 'infoCard';
+                    }
+                )[]
+              | null;
+            id?: string | null;
+          }[]
+        | null;
+    };
   };
   layout: (
     | CallToActionBlock
@@ -1190,6 +1273,60 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
             };
         media?: T;
+        left?:
+          | T
+          | {
+              tagline?: T;
+              stars?: T;
+              title?: T;
+              description?: T;
+              links?:
+                | T
+                | {
+                    link?:
+                      | T
+                      | {
+                          type?: T;
+                          newTab?: T;
+                          reference?: T;
+                          url?: T;
+                          label?: T;
+                          appearance?: T;
+                        };
+                    id?: T;
+                  };
+            };
+        right?:
+          | T
+          | {
+              columns?:
+                | T
+                | {
+                    cards?:
+                      | T
+                      | {
+                          imageCard?:
+                            | T
+                            | {
+                                media?: T;
+                                badge?: T;
+                                badgeIcon?: T;
+                                id?: T;
+                                blockName?: T;
+                              };
+                          infoCard?:
+                            | T
+                            | {
+                                icon?: T;
+                                heading?: T;
+                                body?: T;
+                                id?: T;
+                                blockName?: T;
+                              };
+                        };
+                    id?: T;
+                  };
+            };
       };
   layout?:
     | T
