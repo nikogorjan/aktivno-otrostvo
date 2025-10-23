@@ -32,22 +32,24 @@ const INFO_CARD_STYLES: Record<string, string> = {
   rumena: 'bg-rumena text-rumena-dark',
   modra: 'bg-modra text-modra-dark',
 }
-export const HomeHero: React.FC<HomeHeroProps> = (props) => {
-  if (!isHomeHero(props)) return null
 
-  const { left, right } = props
+export const HomeHero: React.FC<HomeHeroProps> = (props) => {
+  // ✅ Hooks must be called unconditionally and before any early returns
   const { setHeaderTheme } = useHeaderTheme()
+  const lottieRef = React.useRef<LottieRefCurrentProps>(null)
 
   useEffect(() => {
     setHeaderTheme('light')
   }, [setHeaderTheme])
 
-  const lottieRef = React.useRef<LottieRefCurrentProps>(null)
-
   React.useEffect(() => {
     lottieRef.current?.setSpeed(0.3)
   }, [])
 
+  // Guard AFTER hooks have been called
+  if (!isHomeHero(props)) return null
+
+  const { left, right } = props
   const stars = Math.max(0, Math.min(5, left?.stars ?? 0))
 
   return (
@@ -80,7 +82,7 @@ export const HomeHero: React.FC<HomeHeroProps> = (props) => {
               )}
 
               <div className="absolute -bottom-5 right-0 w-20 h-20 pointer-events-none rotate-140">
-                <Lottie lottieRef={lottieRef} animationData={leafAnimation} loop autoplay />{' '}
+                <Lottie lottieRef={lottieRef} animationData={leafAnimation} loop autoplay />
               </div>
             </div>
 
@@ -101,7 +103,6 @@ export const HomeHero: React.FC<HomeHeroProps> = (props) => {
           {(right?.columns ?? []).map((col: Column, colIdx: number) => (
             <div key={colIdx} className="flex flex-col gap-4 h-full min-h-0">
               {(col.cards ?? []).map((card: Card, cardIdx: number) => {
-                // Only create Link if href exists (string)
                 const href = 'href' in card && card.href ? card.href : undefined
                 const isLinked = !!href
 
@@ -116,7 +117,7 @@ export const HomeHero: React.FC<HomeHeroProps> = (props) => {
                         <Media resource={card.media} fill imgClassName="object-cover" priority />
                       )}
                       {(card.badge || card.badgeIcon) && (
-                        <div className="absolute bottom-4 left-0 flex items-center gap-2 rounded-r-full bg-white pr-1 pl-3 py-1 translate-y-[-18px]    ">
+                        <div className="absolute bottom-4 left-0 flex items-center gap-2 rounded-r-full bg-white pr-1 pl-3 py-1 translate-y-[-18px]">
                           {card.badge && <span className="text-sm font-medium">{card.badge}</span>}
                           {card.badgeIcon && typeof card.badgeIcon === 'object' && (
                             <div className="relative h-8 w-8 overflow-hidden rounded-full bg-neutral-dark p-1">
@@ -161,7 +162,6 @@ export const HomeHero: React.FC<HomeHeroProps> = (props) => {
                           <div>
                             <h3 className="text-lg font-semibold">{card.heading}</h3>
                             {card.body && (
-                              // make body inherit the dark text but slightly softer
                               <p className="text-sm leading-relaxed opacity-80">{card.body}</p>
                             )}
                           </div>
