@@ -472,36 +472,8 @@ export interface Page {
     left?: {
       tagline?: string | null;
       stars?: number | null;
-      title: {
-        root: {
-          type: string;
-          children: {
-            type: any;
-            version: number;
-            [k: string]: unknown;
-          }[];
-          direction: ('ltr' | 'rtl') | null;
-          format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-          indent: number;
-          version: number;
-        };
-        [k: string]: unknown;
-      };
-      description?: {
-        root: {
-          type: string;
-          children: {
-            type: any;
-            version: number;
-            [k: string]: unknown;
-          }[];
-          direction: ('ltr' | 'rtl') | null;
-          format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-          indent: number;
-          version: number;
-        };
-        [k: string]: unknown;
-      } | null;
+      title: string;
+      description?: string | null;
       /**
        * Primary CTA
        */
@@ -534,6 +506,10 @@ export interface Page {
                       media: string | Media;
                       badge?: string | null;
                       badgeIcon?: (string | null) | Media;
+                      /**
+                       * Enter URL to make entire card clickable
+                       */
+                      href?: string | null;
                       id?: string | null;
                       blockName?: string | null;
                       blockType: 'imageCard';
@@ -542,6 +518,11 @@ export interface Page {
                       icon?: (string | null) | Media;
                       heading: string;
                       body?: string | null;
+                      color?: ('roza' | 'rumena' | 'modra') | null;
+                      /**
+                       * Enter URL to make entire card clickable
+                       */
+                      href?: string | null;
                       id?: string | null;
                       blockName?: string | null;
                       blockType: 'infoCard';
@@ -1311,6 +1292,7 @@ export interface PagesSelect<T extends boolean = true> {
                                 media?: T;
                                 badge?: T;
                                 badgeIcon?: T;
+                                href?: T;
                                 id?: T;
                                 blockName?: T;
                               };
@@ -1320,6 +1302,8 @@ export interface PagesSelect<T extends boolean = true> {
                                 icon?: T;
                                 heading?: T;
                                 body?: T;
+                                color?: T;
+                                href?: T;
                                 id?: T;
                                 blockName?: T;
                               };

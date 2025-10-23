@@ -83,15 +83,13 @@ export const hero: Field = {
         { name: 'stars', type: 'number', min: 0, max: 5, defaultValue: 5, label: 'Stars (0–5)' },
         {
           name: 'title',
-          type: 'richText',
-          editor: rich(),
+          type: 'text',
           required: true,
           label: 'Title',
         },
         {
           name: 'description',
-          type: 'richText',
-          editor: rich(),
+          type: 'text',
           label: 'Description',
         },
         linkGroup({
@@ -133,6 +131,14 @@ export const hero: Field = {
                     },
                     { name: 'badge', type: 'text', label: 'Badge text (overlay)' },
                     { name: 'badgeIcon', type: 'upload', relationTo: 'media', label: 'Badge icon' },
+                    {
+                      name: 'href',
+                      type: 'text',
+                      label: 'Link URL (optional)',
+                      admin: {
+                        description: 'Enter URL to make entire card clickable',
+                      },
+                    },
                   ],
                 },
                 {
@@ -142,6 +148,26 @@ export const hero: Field = {
                     { name: 'icon', type: 'upload', relationTo: 'media', label: 'Icon' },
                     { name: 'heading', type: 'text', required: true, label: 'Heading' },
                     { name: 'body', type: 'textarea', label: 'Description' },
+                    // NEW: Color select
+                    {
+                      name: 'color',
+                      type: 'select',
+                      defaultValue: 'roza',
+                      label: 'Background Color',
+                      options: [
+                        { label: 'Roza (Pink)', value: 'roza' },
+                        { label: 'Rumena (Yellow)', value: 'rumena' },
+                        { label: 'Modra (Blue)', value: 'modra' },
+                      ],
+                    },
+                    {
+                      name: 'href',
+                      type: 'text',
+                      label: 'Link URL (optional)',
+                      admin: {
+                        description: 'Enter URL to make entire card clickable',
+                      },
+                    },
                   ],
                 },
               ],
