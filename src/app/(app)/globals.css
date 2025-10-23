@@ -30,7 +30,7 @@
 
 @utility container {
   margin-inline: auto;
-  padding-inline: 2rem;
+  padding-inline: 1.5rem;
   max-width: 76.125rem;
 }
 
@@ -71,9 +71,9 @@
 
   --kournikova: hsl(42 100% 72.5%);
 
-  --info-roza: hsl(350 58% 96%); /* #fde5e5 */
-  --info-rumena: hsl(44 100% 93%); /* #fff2d6 */
-  --info-modra: hsl(219 100% 95%); /* #e3ecff */
+  --info-roza: hsl(358, 84%, 93%); /* #fde5e5 */
+  --info-rumena: hsl(41, 100%, 89%); /* #fff2d6 */
+  --info-modra: hsl(222, 100%, 93%); /* #e3ecff */
   --neutral-dark: hsl(220 6% 14%);
 
   --info-roza-dark: hsl(358, 47%, 29%);

@@ -1,9 +1,11 @@
 'use client'
 
+import leafAnimation from '@/../public/lottie/green-leaf.json'
 import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
 import type { Page } from '@/payload-types'
 import { useHeaderTheme } from '@/providers/HeaderTheme'
+import Lottie, { LottieRefCurrentProps } from 'lottie-react'
 import { Star } from 'lucide-react'
 import Link from 'next/link'
 import React, { useEffect } from 'react'
@@ -40,33 +42,47 @@ export const HomeHero: React.FC<HomeHeroProps> = (props) => {
     setHeaderTheme('light')
   }, [setHeaderTheme])
 
+  const lottieRef = React.useRef<LottieRefCurrentProps>(null)
+
+  React.useEffect(() => {
+    lottieRef.current?.setSpeed(0.3)
+  }, [])
+
   const stars = Math.max(0, Math.min(5, left?.stars ?? 0))
 
   return (
-    <section className="relative py-12 md:py-16 lg:py-20">
+    <section className="relative py-10 md:py-16 lg:py-20">
       <div className="container grid grid-cols-1 lg:grid-cols-[2fr_3fr] gap-10 items-start">
         {/* LEFT */}
-        <div className="max-w-[46rem] h-full flex flex-col justify-between py-12">
+        <div className="max-w-[46rem] h-full flex flex-col justify-between md:py-12">
           <div>
             {(left?.tagline || stars > 0) && (
-              <div className="mb-4 flex items-center gap-3">
+              <div className="mb-6 inline-flex items-center gap-3 rounded-full bg-card border-border border px-2.5 py-1">
                 {stars > 0 && (
                   <div className="flex text-kournikova">
                     {Array.from({ length: stars }).map((_, i) => (
-                      <Star key={i} className="w-5 h-5 fill-current" />
+                      <Star key={i} className="w-3 h-3 fill-current" />
                     ))}
                   </div>
                 )}
-                {left?.tagline && <span className="text-sm text-foreground">{left.tagline}</span>}
+                {left?.tagline && (
+                  <span className="text-sm text-foreground font-medium">{left.tagline}</span>
+                )}
               </div>
             )}
 
             {left?.title && <h1 className="mb-6 text-5xl md:text-6xl font-medium">{left.title}</h1>}
           </div>
           <div>
-            {left?.description && (
-              <p className="mb-6 text-lg text-muted-foreground">{left.description}</p>
-            )}
+            <div className="relative mb-6">
+              {left?.description && (
+                <p className="text-lg text-muted-foreground">{left.description}</p>
+              )}
+
+              <div className="absolute -bottom-5 right-0 w-20 h-20 pointer-events-none rotate-140">
+                <Lottie lottieRef={lottieRef} animationData={leafAnimation} loop autoplay />{' '}
+              </div>
+            </div>
 
             {Array.isArray(left?.links) && left.links.length > 0 && (
               <ul className="flex gap-3">
@@ -81,9 +97,9 @@ export const HomeHero: React.FC<HomeHeroProps> = (props) => {
         </div>
 
         {/* RIGHT GRID */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6 items-stretch">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-stretch">
           {(right?.columns ?? []).map((col: Column, colIdx: number) => (
-            <div key={colIdx} className="flex flex-col gap-4 lg:gap-6 h-full min-h-0">
+            <div key={colIdx} className="flex flex-col gap-4 h-full min-h-0">
               {(col.cards ?? []).map((card: Card, cardIdx: number) => {
                 // Only create Link if href exists (string)
                 const href = 'href' in card && card.href ? card.href : undefined
@@ -92,7 +108,7 @@ export const HomeHero: React.FC<HomeHeroProps> = (props) => {
                 if (card.blockType === 'imageCard') {
                   const Img = (
                     <div
-                      className={`relative overflow-hidden rounded-2xl aspect-[215/354]
+                      className={`relative overflow-hidden rounded-lg aspect-[215/354]
                           ${isLinked ? 'cursor-pointer  transition-transform duration-200' : ''}
                         `}
                     >
@@ -129,7 +145,7 @@ export const HomeHero: React.FC<HomeHeroProps> = (props) => {
                     <div
                       key={cardIdx}
                       className={`
-                        rounded-2xl p-5 md:p-6 flex flex-col gap-2 transition-all duration-200 min-h-0
+                        rounded-lg p-5 md:p-6 flex flex-col gap-2 transition-all duration-200 min-h-0
                         ${styleClasses}
                         ${isLinked ? 'cursor-pointer' : ''}
                         flex-1
