@@ -2,6 +2,7 @@ import type { Page, Product } from '@/payload-types'
 
 import { Button, type ButtonProps } from '@/components/ui/button'
 import { cn } from '@/utilities/cn'
+import { ArrowUpRight } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 
@@ -35,9 +36,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
 
   const href =
     type === 'reference' && typeof reference?.value === 'object' && reference.value.slug
-      ? `${reference?.relationTo !== 'pages' ? `/${reference?.relationTo}` : ''}/${
-          reference.value.slug
-        }`
+      ? `${reference?.relationTo !== 'pages' ? `/${reference?.relationTo}` : ''}/${reference.value.slug}`
       : url
 
   if (!href) return null
@@ -45,21 +44,24 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
   const size = appearance === 'link' ? 'clear' : sizeFromProps
   const newTabProps = newTab ? { rel: 'noopener noreferrer', target: '_blank' } : {}
 
-  /* Ensure we don't break any styles set by richText */
   if (appearance === 'inline') {
     return (
       <Link className={cn(className)} href={href} {...newTabProps}>
-        {label && label}
-        {children && children}
+        {label ?? children}
       </Link>
     )
   }
 
   return (
     <Button asChild className={className} size={size} variant={appearance}>
-      <Link className={cn(className)} href={href} {...newTabProps}>
-        {label && label}
-        {children && children}
+      <Link className={cn('pl-4 pr-1.5', className)} href={href} {...newTabProps}>
+        {label ?? children}
+
+        {appearance === 'default' && (
+          <span className="ml-2 inline-flex items-center justify-center rounded-full bg-white text-neutral-dark size-9">
+            <ArrowUpRight className="size-6" />
+          </span>
+        )}
       </Link>
     </Button>
   )

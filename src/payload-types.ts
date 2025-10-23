@@ -433,7 +433,7 @@ export interface Page {
   title: string;
   publishedOn?: string | null;
   hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
+    type: 'none' | 'homeHero' | 'highImpact' | 'mediumImpact' | 'lowImpact';
     richText?: {
       root: {
         type: string;
@@ -469,6 +469,70 @@ export interface Page {
         }[]
       | null;
     media?: (string | null) | Media;
+    left?: {
+      tagline?: string | null;
+      stars?: number | null;
+      title: string;
+      description?: string | null;
+      /**
+       * Primary CTA
+       */
+      links?:
+        | {
+            link: {
+              type?: ('reference' | 'custom') | null;
+              newTab?: boolean | null;
+              reference?: {
+                relationTo: 'pages';
+                value: string | Page;
+              } | null;
+              url?: string | null;
+              label: string;
+              /**
+               * Choose how the link should be rendered.
+               */
+              appearance?: ('default' | 'outline') | null;
+            };
+            id?: string | null;
+          }[]
+        | null;
+    };
+    right?: {
+      columns?:
+        | {
+            cards?:
+              | (
+                  | {
+                      media: string | Media;
+                      badge?: string | null;
+                      badgeIcon?: (string | null) | Media;
+                      /**
+                       * Enter URL to make entire card clickable
+                       */
+                      href?: string | null;
+                      id?: string | null;
+                      blockName?: string | null;
+                      blockType: 'imageCard';
+                    }
+                  | {
+                      icon?: (string | null) | Media;
+                      heading: string;
+                      body?: string | null;
+                      color?: ('roza' | 'rumena' | 'modra') | null;
+                      /**
+                       * Enter URL to make entire card clickable
+                       */
+                      href?: string | null;
+                      id?: string | null;
+                      blockName?: string | null;
+                      blockType: 'infoCard';
+                    }
+                )[]
+              | null;
+            id?: string | null;
+          }[]
+        | null;
+    };
   };
   layout: (
     | CallToActionBlock
@@ -1190,6 +1254,63 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
             };
         media?: T;
+        left?:
+          | T
+          | {
+              tagline?: T;
+              stars?: T;
+              title?: T;
+              description?: T;
+              links?:
+                | T
+                | {
+                    link?:
+                      | T
+                      | {
+                          type?: T;
+                          newTab?: T;
+                          reference?: T;
+                          url?: T;
+                          label?: T;
+                          appearance?: T;
+                        };
+                    id?: T;
+                  };
+            };
+        right?:
+          | T
+          | {
+              columns?:
+                | T
+                | {
+                    cards?:
+                      | T
+                      | {
+                          imageCard?:
+                            | T
+                            | {
+                                media?: T;
+                                badge?: T;
+                                badgeIcon?: T;
+                                href?: T;
+                                id?: T;
+                                blockName?: T;
+                              };
+                          infoCard?:
+                            | T
+                            | {
+                                icon?: T;
+                                heading?: T;
+                                body?: T;
+                                color?: T;
+                                href?: T;
+                                id?: T;
+                                blockName?: T;
+                              };
+                        };
+                    id?: T;
+                  };
+            };
       };
   layout?:
     | T
