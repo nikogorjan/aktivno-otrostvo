@@ -28,9 +28,9 @@ type Column = ArrayElement<Columns>
 type Card = ArrayElement<NonNullable<Column['cards']>>
 
 const INFO_CARD_STYLES: Record<string, string> = {
-  roza: 'bg-roza text-roza-dark',
-  rumena: 'bg-rumena text-rumena-dark',
-  modra: 'bg-modra text-modra-dark',
+  roza: 'bg-roza text-roza-dark border border-roza-border',
+  rumena: 'bg-rumena text-rumena-dark border border-rumena-border',
+  modra: 'bg-modra text-modra-dark border border-modra-border',
 }
 
 export const HomeHero: React.FC<HomeHeroProps> = (props) => {
@@ -118,7 +118,11 @@ export const HomeHero: React.FC<HomeHeroProps> = (props) => {
                       )}
                       {(card.badge || card.badgeIcon) && (
                         <div className="absolute bottom-4 left-0 flex items-center gap-2 rounded-r-full bg-white pr-1 pl-3 py-1 translate-y-[-18px]">
-                          {card.badge && <span className="text-sm font-medium">{card.badge}</span>}
+                          {card.badge && (
+                            <span className="text-sm font-medium text-foreground">
+                              {card.badge}
+                            </span>
+                          )}
                           {card.badgeIcon && typeof card.badgeIcon === 'object' && (
                             <div className="relative h-8 w-8 overflow-hidden rounded-full bg-neutral-dark p-1">
                               <Media resource={card.badgeIcon} imgClassName="object-contain" />

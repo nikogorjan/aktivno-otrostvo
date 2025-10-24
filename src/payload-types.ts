@@ -545,6 +545,9 @@ export interface Page {
     | FormBlock
     | AboutUsSectionBlock
     | TabsSectionBlock
+    | FaqSectionBlock
+    | TestimonialsBlock
+    | CtaEmailBlock
   )[];
   meta?: {
     title?: string | null;
@@ -1032,6 +1035,88 @@ export interface TabsSectionBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FaqSectionBlock".
+ */
+export interface FaqSectionBlock {
+  heading: string;
+  intro?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  items: {
+    question: string;
+    answer: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'faqSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialsBlock".
+ */
+export interface TestimonialsBlock {
+  heading: string;
+  description?: string | null;
+  items: {
+    numberOfStars: number;
+    quote: string;
+    avatar: string | Media;
+    name: string;
+    subtitle?: string | null;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'testimonials';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CtaEmailBlock".
+ */
+export interface CtaEmailBlock {
+  image: string | Media;
+  heading: string;
+  description?: string | null;
+  inputPlaceholder?: string | null;
+  buttonLabel?: string | null;
+  legalNote?: string | null;
+  showDecoration?: boolean | null;
+  action?: string | null;
+  successRedirect?: string | null;
+  honeypotName?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ctaEmail';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "variants".
  */
 export interface Variant {
@@ -1423,6 +1508,9 @@ export interface PagesSelect<T extends boolean = true> {
         formBlock?: T | FormBlockSelect<T>;
         aboutUsSection?: T | AboutUsSectionBlockSelect<T>;
         tabsSection?: T | TabsSectionBlockSelect<T>;
+        faqSection?: T | FaqSectionBlockSelect<T>;
+        testimonials?: T | TestimonialsBlockSelect<T>;
+        ctaEmail?: T | CtaEmailBlockSelect<T>;
       };
   meta?:
     | T
@@ -1599,6 +1687,61 @@ export interface TabsSectionBlockSelect<T extends boolean = true> {
         image?: T;
         id?: T;
       };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FaqSectionBlock_select".
+ */
+export interface FaqSectionBlockSelect<T extends boolean = true> {
+  heading?: T;
+  intro?: T;
+  items?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialsBlock_select".
+ */
+export interface TestimonialsBlockSelect<T extends boolean = true> {
+  heading?: T;
+  description?: T;
+  items?:
+    | T
+    | {
+        numberOfStars?: T;
+        quote?: T;
+        avatar?: T;
+        name?: T;
+        subtitle?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CtaEmailBlock_select".
+ */
+export interface CtaEmailBlockSelect<T extends boolean = true> {
+  image?: T;
+  heading?: T;
+  description?: T;
+  inputPlaceholder?: T;
+  buttonLabel?: T;
+  legalNote?: T;
+  showDecoration?: T;
+  action?: T;
+  successRedirect?: T;
+  honeypotName?: T;
   id?: T;
   blockName?: T;
 }

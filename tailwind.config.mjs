@@ -85,6 +85,8 @@ export default {
         error: 'hsl(var(--error))',
         warning: 'hsl(var(--warning))',
         kournikova: 'hsl(var(--kournikova))',
+        'kournikova-light': 'hsl(var(--info-kournikova-light))',
+        'kournikova-lightest': 'hsl(var(--info-kournikova-lightest))',
         'info-roza': 'hsl(var(--info-roza))',
         'info-rumena': 'hsl(var(--info-rumena))',
         'info-modra': 'hsl(var(--info-modra))',
@@ -93,6 +95,9 @@ export default {
         'info-rumena-dark': 'hsl(var(--info-rumena-dark))',
         'info-modra-dark': 'hsl(var(--info-modra-dark))',
         'info-vijolicna-dark': 'hsl(var(--info-vijolicna-dark))',
+        'info-roza-border': 'hsl(var(--info-roza-border))',
+        'info-modra-border': 'hsl(var(--info-modra-border))',
+        'info-rumena-border': 'hsl(var(--info-rumena-border))',
         'neutral-dark': 'hsl(var(--neutral-dark))',
       },
       typography: ({ theme }) => ({

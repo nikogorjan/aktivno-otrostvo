@@ -11,7 +11,10 @@ import React, { Fragment } from 'react'
 
 import type { Page } from '../payload-types'
 import { AboutUsSectionBlock } from './AboutUs/Component'
+import { CtaEmailBlock } from './CtaEmail/Component'
+import { FaqSectionBlock } from './Faq/Component'
 import { TabsSectionBlock } from './Tabs/Component'
+import { TestimonialsBlock } from './Testimonials/Components'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -24,6 +27,9 @@ const blockComponents = {
   threeItemGrid: ThreeItemGridBlock,
   aboutUsSection: AboutUsSectionBlock,
   tabsSection: TabsSectionBlock,
+  faqSection: FaqSectionBlock,
+  testimonials: TestimonialsBlock,
+  ctaEmail: CtaEmailBlock,
 }
 
 export const RenderBlocks: React.FC<{
