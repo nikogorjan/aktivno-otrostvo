@@ -18,11 +18,10 @@ export const TestimonialsBlock: React.FC<TestimonialsBlockProps & { className?: 
   const scrollerRef = React.useRef<HTMLDivElement>(null)
   const [index, setIndex] = React.useState(0)
   const count = items.length
-  if (!count) return null
 
   // --- helpers ---------------------------------------------------------------
 
-  // Pixel-perfect scroll using bounding rects (immune to padding/gaps)
+  // Set Lottie speed once
   React.useEffect(() => {
     lottieRef.current?.setSpeed(0.3)
   }, [])
@@ -36,8 +35,6 @@ export const TestimonialsBlock: React.FC<TestimonialsBlockProps & { className?: 
     const elRect = el.getBoundingClientRect()
     const childRect = child.getBoundingClientRect()
     const deltaLeft = childRect.left - elRect.left
-
-    // target scrollLeft so child’s left aligns with scroller’s left
     const target = el.scrollLeft + deltaLeft
 
     el.scrollTo({ left: target, behavior: 'smooth' })
@@ -47,7 +44,7 @@ export const TestimonialsBlock: React.FC<TestimonialsBlockProps & { className?: 
   const prev = () => scrollToIndex((index - 1 + count) % count)
   const next = () => scrollToIndex((index + 1) % count)
 
-  // Keep dots in sync by choosing the slide whose center is closest
+  // Keep dots in sync with the nearest centered slide
   React.useEffect(() => {
     const el = scrollerRef.current
     if (!el) return
@@ -58,7 +55,6 @@ export const TestimonialsBlock: React.FC<TestimonialsBlockProps & { className?: 
       rafId = requestAnimationFrame(() => {
         const elRect = el.getBoundingClientRect()
         const centerX = elRect.left + elRect.width / 2
-
         let nearest = 0
         let best = Infinity
 
@@ -84,13 +80,16 @@ export const TestimonialsBlock: React.FC<TestimonialsBlockProps & { className?: 
     }
   }, [])
 
+  // ✅ Only now is it safe to early-return; hooks above always run in the same order
+  if (!count) return null
+
   return (
     <section className={cn('py-16 md:py-24 lg:py-28', className)}>
       <div className="container">
         <div className="grid auto-cols-fr grid-cols-1 items-start gap-12 md:gap-16 lg:grid-cols-2 lg:gap-0">
           {/* Left: heading + description */}
           <div className="flex lg:justify-self-end">
-            <div className="w-full max-w-2xl lg:mb-24  lg:mr-20">
+            <div className="w-full max-w-2xl lg:mb-24 lg:mr-20">
               <div className="relative">
                 <div className="absolute -top-12 -right-4 w-20 h-20 pointer-events-none rotate-20">
                   <Lottie lottieRef={lottieRef} animationData={leafAnimation} loop autoplay />
@@ -104,24 +103,20 @@ export const TestimonialsBlock: React.FC<TestimonialsBlockProps & { className?: 
           </div>
 
           {/* Right: carousel */}
-          <div className="overflow-hidden  lg:px-0">
+          <div className="overflow-hidden lg:px-0">
             <div
               ref={scrollerRef}
               className={cn(
-                // scroller
                 'flex snap-x snap-mandatory overflow-x-auto scroll-smooth gap-0',
                 'ml-0 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden',
               )}
             >
-              {items.map((t: TestimonialsBlockProps['items'][number], i: number) => (
+              {items.map((t, i) => (
                 <article
                   key={i}
                   className={cn(
-                    // slide
                     'snap-start shrink-0 [scroll-snap-stop:always]',
-                    // widths across breakpoints (match the mock)
                     'basis-[95%] sm:basis-[80%] md:basis-[60%]',
-                    // right spacing between cards
                     'mr-6 md:mr-8',
                   )}
                 >
@@ -159,7 +154,7 @@ export const TestimonialsBlock: React.FC<TestimonialsBlockProps & { className?: 
 
               {/* Dots */}
               <div className="absolute right-[5%] md:right-8 lg:right-16 mt-5 flex items-center gap-2">
-                {items.map((_: TestimonialsBlockProps['items'][number], i: number) => (
+                {items.map((_, i) => (
                   <button
                     key={i}
                     aria-label={`Go to slide ${i + 1}`}
@@ -188,7 +183,7 @@ function TestimonialCard({
 }: {
   stars: number
   quote: string
-  avatar: any
+  avatar: TestimonialsBlockProps['items'][number]['avatar'] // ✅ no `any`
   name: string
   subtitle?: string
 }) {
