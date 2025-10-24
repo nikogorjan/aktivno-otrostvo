@@ -65,7 +65,7 @@ export const CtaEmailBlock: React.FC<CtaEmailBlockProps & { className?: string }
 
                 {/* EMAIL FORM */}
                 <form
-                  className="flex w-full max-w-md mb-2"
+                  className="flex flex-col sm:flex-row w-full max-w-md mb-2"
                   action={action || undefined}
                   method={action ? 'POST' : undefined}
                   onSubmit={onSubmit}
@@ -95,7 +95,7 @@ export const CtaEmailBlock: React.FC<CtaEmailBlockProps & { className?: string }
                   <button
                     type="submit"
                     className={cn(
-                      'ml-3 px-6 py-3 rounded-full font-medium transition flex items-center gap-1',
+                      'mt-2 sm:mt-0 sm:ml-3 px-6 py-3 rounded-full font-medium transition flex items-center gap-1',
                       'bg-kournikova-lightest text-foreground hover:brightness-105',
                     )}
                   >
