@@ -59,7 +59,7 @@ export const LoginForm: React.FC = () => {
         </FormItem>
 
         <FormItem>
-          <Label htmlFor="password">Password</Label>
+          <Label htmlFor="password">Geslo</Label>
           <Input
             id="password"
             type="password"
@@ -70,8 +70,7 @@ export const LoginForm: React.FC = () => {
 
         <div className="text-primary/70 mb-6 prose prose-a:hover:text-primary dark:prose-invert">
           <p>
-            Forgot your password?{' '}
-            <Link href={`/recover-password${allParams}`}>Click here to reset it</Link>
+            Pozabljeno geslo? <Link href={`/recover-password${allParams}`}>Ponastavi geslo</Link>
           </p>
         </div>
       </div>
@@ -79,11 +78,11 @@ export const LoginForm: React.FC = () => {
       <div className="flex gap-4 justify-between">
         <Button asChild variant="outline" size="lg">
           <Link href={`/create-account${allParams}`} className="grow max-w-[50%]">
-            Create an account
+            Registriraj
           </Link>
         </Button>
         <Button className="grow" disabled={isLoading} size="lg" type="submit" variant="default">
-          {isLoading ? 'Processing' : 'Continue'}
+          {isLoading ? 'Obdelava' : 'Nadaljuj'}
         </Button>
       </div>
     </form>

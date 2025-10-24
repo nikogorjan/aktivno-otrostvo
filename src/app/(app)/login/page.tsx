@@ -26,7 +26,6 @@ export default async function Login() {
 
         <h1 className="mb-4 text-[1.8rem]">Prijava</h1>
         <p className="mb-8">
-          {`This is where your customers will login to manage their account, review their order history, and more. To manage all users, `}
           <Link href="/admin/collections/users">Prijavi se v nadzorno ploščo</Link>.
         </p>
         <Suspense fallback={<div />}>
