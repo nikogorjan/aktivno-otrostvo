@@ -1,14 +1,16 @@
 import type { Metadata } from 'next'
 
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
-import React from 'react'
+import { Suspense } from 'react'
 
 import { ForgotPasswordForm } from '@/components/forms/ForgotPasswordForm'
 
 export default async function ForgotPasswordPage() {
   return (
     <div className="container py-16">
-      <ForgotPasswordForm />
+      <Suspense fallback={<div />}>
+        <ForgotPasswordForm />
+      </Suspense>
     </div>
   )
 }

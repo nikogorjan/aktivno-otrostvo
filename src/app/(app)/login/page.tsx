@@ -8,6 +8,7 @@ import configPromise from '@payload-config'
 import { headers as getHeaders } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { getPayload } from 'payload'
+import { Suspense } from 'react'
 
 export default async function Login() {
   const headers = await getHeaders()
@@ -28,7 +29,9 @@ export default async function Login() {
           {`This is where your customers will login to manage their account, review their order history, and more. To manage all users, `}
           <Link href="/admin/collections/users">Prijavi se v nadzorno ploščo</Link>.
         </p>
-        <LoginForm />
+        <Suspense fallback={<div />}>
+          <LoginForm />
+        </Suspense>
       </div>
     </div>
   )
