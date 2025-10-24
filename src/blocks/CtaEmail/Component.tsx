@@ -116,7 +116,7 @@ export const CtaEmailBlock: React.FC<CtaEmailBlockProps & { className?: string }
           {/* Decorative SVG behind all content */}
           {showDecoration && (
             <Image
-              src="/media/yellowball.svg"
+              src="https://bloom42-media.s3.eu-central-1.amazonaws.com/yellowball.svg"
               width={160}
               height={160}
               alt=""

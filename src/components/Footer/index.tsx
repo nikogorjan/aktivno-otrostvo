@@ -24,7 +24,7 @@ export async function Footer() {
           <div>
             <Link href="/" aria-label="Home" className="flex items-center py-3">
               <Image
-                src="/media/Logo.png"
+                src="https://bloom42-media.s3.eu-central-1.amazonaws.com/Logo.png"
                 alt="Aktivno Otroštvo logo"
                 width={160}
                 height={40}
