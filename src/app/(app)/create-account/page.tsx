@@ -16,12 +16,12 @@ export default async function CreateAccount() {
   const { user } = await payload.auth({ headers })
 
   if (user) {
-    redirect(`/account?warning=${encodeURIComponent('You are already logged in.')}`)
+    redirect(`/account?warning=${encodeURIComponent('Si že prijavljen.')}`)
   }
 
   return (
     <div className="container py-16">
-      <h1 className="text-xl mb-4">Create Account</h1>
+      <h1 className="text-xl mb-4">Ustvari račun</h1>
       <Suspense fallback={<div />}>
         <RenderParams />
         <CreateAccountForm />
@@ -31,9 +31,9 @@ export default async function CreateAccount() {
 }
 
 export const metadata: Metadata = {
-  description: 'Create an account or log in to your existing account.',
+  description: 'Ustvari ali se prijavi v obstoječi račun.',
   openGraph: mergeOpenGraph({
-    title: 'Account',
+    title: 'Moj račun',
     url: '/account',
   }),
   title: 'Account',

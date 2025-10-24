@@ -75,7 +75,7 @@ export const CreateAccountForm: React.FC = () => {
     <form className="max-w-lg py-4" onSubmit={handleSubmit(onSubmit)}>
       <div className="prose dark:prose-invert mb-6">
         <p>
-          <Link href="/admin/collections/users">login to the admin dashboard</Link>.
+          <Link href="/admin/collections/users">Prijavi se v portal.</Link>.
         </p>
       </div>
 
@@ -84,11 +84,11 @@ export const CreateAccountForm: React.FC = () => {
       <div className="flex flex-col gap-8 mb-8">
         <FormItem>
           <Label htmlFor="email" className="mb-2">
-            Email Address
+            Email
           </Label>
           <Input
             id="email"
-            {...register('email', { required: 'Email is required.' })}
+            {...register('email', { required: 'Email je obvezen.' })}
             type="email"
           />
           {errors.email && <FormError message={errors.email.message} />}
@@ -96,11 +96,11 @@ export const CreateAccountForm: React.FC = () => {
 
         <FormItem>
           <Label htmlFor="password" className="mb-2">
-            New password
+            Novo geslo
           </Label>
           <Input
             id="password"
-            {...register('password', { required: 'Password is required.' })}
+            {...register('password', { required: 'Geslo je obvezno.' })}
             type="password"
           />
           {errors.password && <FormError message={errors.password.message} />}
@@ -108,13 +108,13 @@ export const CreateAccountForm: React.FC = () => {
 
         <FormItem>
           <Label htmlFor="passwordConfirm" className="mb-2">
-            Confirm Password
+            Potrdi geslo
           </Label>
           <Input
             id="passwordConfirm"
             {...register('passwordConfirm', {
-              required: 'Please confirm your password.',
-              validate: (value) => value === password.current || 'The passwords do not match',
+              required: 'Ponovno vnesite geslo.',
+              validate: (value) => value === password.current || 'Geslo se ne ujema',
             })}
             type="password"
           />
@@ -122,13 +122,13 @@ export const CreateAccountForm: React.FC = () => {
         </FormItem>
       </div>
       <Button disabled={loading} type="submit" variant="default">
-        {loading ? 'Processing' : 'Create Account'}
+        {loading ? 'Obdelava' : 'Create Ustvari račun'}
       </Button>
 
       <div className="prose dark:prose-invert mt-8">
         <p>
-          {'Already have an account? '}
-          <Link href={`/login${allParams}`}>Login</Link>
+          {'Že imaš račun? '}
+          <Link href={`/login${allParams}`}>Prijava</Link>
         </p>
       </div>
     </form>
