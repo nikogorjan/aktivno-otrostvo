@@ -13,9 +13,9 @@ export const LogoutPage: React.FC = (props) => {
     const performLogout = async () => {
       try {
         await logout()
-        setSuccess('Logged out successfully.')
+        setSuccess('Odjava uspešna.')
       } catch (_) {
-        setError('You are already logged out.')
+        setError('Si že odjavljen.')
       }
     }
 
