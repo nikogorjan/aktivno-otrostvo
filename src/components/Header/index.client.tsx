@@ -1,63 +1,83 @@
 'use client'
-import { CMSLink } from '@/components/Link'
 import { Cart } from '@/components/Cart'
 import { OpenCartButton } from '@/components/Cart/OpenCart'
+import { CMSLink } from '@/components/Link'
 import Link from 'next/link'
-import React, { Suspense } from 'react'
+import { Suspense } from 'react'
 
-import { MobileMenu } from './MobileMenu'
 import type { Header } from 'src/payload-types'
+import { MobileMenu } from './MobileMenu'
 
-import { LogoIcon } from '@/components/icons/logo'
-import { usePathname } from 'next/navigation'
+import Logo from '@/../public/media/Logo.png'
 import { cn } from '@/utilities/cn'
+import { User2 } from 'lucide-react'
+import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 
-type Props = {
-  header: Header
-}
+type Props = { header: Header }
 
 export function HeaderClient({ header }: Props) {
   const menu = header.navItems || []
   const pathname = usePathname()
 
   return (
-    <div className="relative z-20 border-b">
-      <nav className="flex items-center md:items-end justify-between container pt-2">
-        <div className="block flex-none md:hidden">
-          <Suspense fallback={null}>
-            <MobileMenu menu={menu} />
-          </Suspense>
+    <div className="relative z-20 border-b bg-card">
+      <nav className="container flex items-center justify-between ">
+        {/* LEFT: Logo (mobile + desktop) */}
+        <div className="flex items-center">
+          <Link href="/" aria-label="Home" className="flex items-center py-3">
+            <Image src={Logo} alt="Aktivno Otroštvo logo" priority className="h-8 w-auto" />
+          </Link>
         </div>
-        <div className="flex w-full items-end justify-between">
-          <div className="flex w-full items-end gap-6 md:w-1/3">
-            <Link className="flex w-full items-center justify-center pt-4 pb-4 md:w-auto" href="/">
-              <LogoIcon className="w-6 h-auto" />
-            </Link>
-            {menu.length ? (
-              <ul className="hidden gap-4 text-sm md:flex md:items-center">
-                {menu.map((item) => (
-                  <li key={item.id}>
-                    <CMSLink
-                      {...item.link}
-                      size={'clear'}
-                      className={cn('relative navLink', {
-                        active:
-                          item.link.url && item.link.url !== '/'
-                            ? pathname.includes(item.link.url)
-                            : false,
-                      })}
-                      appearance="nav"
-                    />
-                  </li>
-                ))}
-              </ul>
-            ) : null}
-          </div>
 
-          <div className="flex justify-end md:w-1/3 gap-4">
+        {/* CENTER: Desktop nav */}
+        <div className="hidden md:flex md:flex-1 md:justify-center">
+          {menu.length ? (
+            <ul className="flex items-center gap-5 text-sm">
+              {menu.map((item) => (
+                <li key={item.id}>
+                  <CMSLink
+                    {...item.link}
+                    size="clear"
+                    className={cn('relative navLink', {
+                      active:
+                        item.link.url && item.link.url !== '/'
+                          ? pathname.includes(item.link.url)
+                          : false,
+                    })}
+                    appearance="nav"
+                  />
+                </li>
+              ))}
+            </ul>
+          ) : null}
+        </div>
+
+        {/* RIGHT: Icons (account + cart) and hamburger on mobile */}
+        <div className="flex items-center gap-1 md:gap-2">
+          {/* Account icon */}
+          <Link
+            href="/login"
+            aria-label="Login"
+            className={cn(
+              'relative grid h-11 w-11 place-items-center rounded-md  transition-colors',
+              ' hover:text-primary/50 hover:bg-neutral-100 text-primary/100',
+              ' dark:bg-black dark:text-white dark:hover:bg-neutral-900',
+            )}
+          >
+            <User2 className="h-5 w-5 transition-colors duration-200 group-hover:text-primary" />
+          </Link>
+
+          {/* Cart icon (Suspense to match your existing Cart behavior) */}
+          <div className="relative">
             <Suspense fallback={<OpenCartButton />}>
               <Cart />
             </Suspense>
+          </div>
+
+          {/* Mobile hamburger (to the RIGHT of icons) */}
+          <div className="block md:hidden">
+            <MobileMenu menu={menu} />
           </div>
         </div>
       </nav>
