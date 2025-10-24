@@ -8,7 +8,6 @@ import { Suspense } from 'react'
 import type { Header } from 'src/payload-types'
 import { MobileMenu } from './MobileMenu'
 
-import Logo from '@/../public/media/Logo.png'
 import { cn } from '@/utilities/cn'
 import { User2 } from 'lucide-react'
 import Image from 'next/image'
@@ -26,7 +25,14 @@ export function HeaderClient({ header }: Props) {
         {/* LEFT: Logo (mobile + desktop) */}
         <div className="flex items-center">
           <Link href="/" aria-label="Home" className="flex items-center py-3">
-            <Image src={Logo} alt="Aktivno Otroštvo logo" priority className="h-8 w-auto" />
+            <Image
+              src="/media/Logo.png"
+              alt="Aktivno Otroštvo logo"
+              width={160}
+              height={40}
+              priority
+              className="h-8 w-auto"
+            />
           </Link>
         </div>
 

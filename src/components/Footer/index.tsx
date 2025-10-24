@@ -1,6 +1,5 @@
 import type { Footer } from '@/payload-types'
 
-import Logo from '@/../public/media/Logo.png'
 import { FooterMenu } from '@/components/Footer/menu'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 import Image from 'next/image'
@@ -24,7 +23,14 @@ export async function Footer() {
         <div className="flex w-full flex-col gap-6 border-t border-neutral-200 py-12 text-sm md:flex-row md:gap-12 dark:border-neutral-700">
           <div>
             <Link href="/" aria-label="Home" className="flex items-center py-3">
-              <Image src={Logo} alt="Aktivno Otroštvo logo" priority className="h-8 w-auto" />
+              <Image
+                src="/media/Logo.png"
+                alt="Aktivno Otroštvo logo"
+                width={160}
+                height={40}
+                priority
+                className="h-8 w-auto"
+              />{' '}
             </Link>
           </div>
           <Suspense

@@ -8,7 +8,6 @@ import Image from 'next/image'
 import * as React from 'react'
 
 // import decorative svg
-import YellowBall from '@/../public/media/yellowball.svg'
 
 export const CtaEmailBlock: React.FC<CtaEmailBlockProps & { className?: string }> = (props) => {
   const {
@@ -117,9 +116,11 @@ export const CtaEmailBlock: React.FC<CtaEmailBlockProps & { className?: string }
           {/* Decorative SVG behind all content */}
           {showDecoration && (
             <Image
-              src={YellowBall}
+              src="/media/yellowball.svg"
+              width={160}
+              height={160}
               alt=""
-              className="pointer-events-none select-none absolute -bottom-10 -right-12 w-40 h-40 opacity-90 z-0"
+              className="pointer-events-none select-none absolute -bottom-10 -right-12 sm:right-12 w-40 h-40 opacity-90 z-0"
             />
           )}
         </div>
