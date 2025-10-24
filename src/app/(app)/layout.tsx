@@ -7,7 +7,7 @@ import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { GeistMono } from 'geist/font/mono' // keep if you still want this mono
 import { Figtree as FigtreeGoogle } from 'next/font/google'
-import type { ReactNode } from 'react'
+import { Suspense, type ReactNode } from 'react'
 import './globals.css'
 
 // Bind Figtree to the SAME CSS var you already use everywhere
@@ -34,11 +34,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </head>
       <body>
         <Providers>
-          <AdminBar />
-          <LivePreviewListener />
-          <Header />
-          <main>{children}</main>
-          <Footer />
+          <Suspense fallback={null}>
+            <AdminBar />
+            <LivePreviewListener />
+            <Header />
+            <main>{children}</main>
+            <Footer />
+          </Suspense>
         </Providers>
       </body>
     </html>
