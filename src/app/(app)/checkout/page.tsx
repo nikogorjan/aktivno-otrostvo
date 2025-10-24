@@ -1,7 +1,7 @@
-import type { Metadata } from 'next'
-
+// app/checkout/page.tsx
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
-import React, { Fragment } from 'react'
+import type { Metadata } from 'next'
+import { Fragment, Suspense } from 'react'
 
 import { CheckoutPage } from '@/components/checkout/CheckoutPage'
 
@@ -34,10 +34,17 @@ export default function Checkout() {
 
       <h1 className="sr-only">Checkout</h1>
 
-      <CheckoutPage />
+      {/* ⬇️ wrap the subtree that uses useSearchParams */}
+      <Suspense fallback={<div />}>
+        <CheckoutPage />
+      </Suspense>
     </div>
   )
 }
+
+// If prerendering/export is still trying to statically build this page,
+// mark it dynamic (query params imply dynamic rendering):
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   description: 'Checkout.',
