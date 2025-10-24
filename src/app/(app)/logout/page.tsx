@@ -2,12 +2,15 @@ import type { Metadata } from 'next'
 
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 
+import { Suspense } from 'react'
 import { LogoutPage } from './LogoutPage'
 
 export default async function Logout() {
   return (
     <div className="container max-w-lg my-16">
-      <LogoutPage />
+      <Suspense fallback={null}>
+        <LogoutPage />
+      </Suspense>
     </div>
   )
 }
