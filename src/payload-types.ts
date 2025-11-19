@@ -470,12 +470,13 @@ export interface Page {
       | null;
     media?: (string | null) | Media;
     left?: {
+      photo: string | Media;
       tagline?: string | null;
-      stars?: number | null;
       title: string;
+      subtitle?: string | null;
       description?: string | null;
       /**
-       * Primary CTA
+       * Primary CTA (optional)
        */
       links?:
         | {
@@ -498,38 +499,19 @@ export interface Page {
         | null;
     };
     right?: {
-      columns?:
+      cards?:
         | {
-            cards?:
-              | (
-                  | {
-                      media: string | Media;
-                      badge?: string | null;
-                      badgeIcon?: (string | null) | Media;
-                      /**
-                       * Enter URL to make entire card clickable
-                       */
-                      href?: string | null;
-                      id?: string | null;
-                      blockName?: string | null;
-                      blockType: 'imageCard';
-                    }
-                  | {
-                      icon?: (string | null) | Media;
-                      heading: string;
-                      body?: string | null;
-                      color?: ('roza' | 'rumena' | 'modra') | null;
-                      /**
-                       * Enter URL to make entire card clickable
-                       */
-                      href?: string | null;
-                      id?: string | null;
-                      blockName?: string | null;
-                      blockType: 'infoCard';
-                    }
-                )[]
-              | null;
+            icon?: (string | null) | Media;
+            heading: string;
+            body?: string | null;
+            color?: ('roza' | 'oranzna' | 'rumena' | 'zelena' | 'vijolicna' | 'modra' | 'mint') | null;
+            /**
+             * Enter URL to make entire card clickable
+             */
+            href?: string | null;
             id?: string | null;
+            blockName?: string | null;
+            blockType: 'infoCard';
           }[]
         | null;
     };
@@ -1440,9 +1422,10 @@ export interface PagesSelect<T extends boolean = true> {
         left?:
           | T
           | {
+              photo?: T;
               tagline?: T;
-              stars?: T;
               title?: T;
+              subtitle?: T;
               description?: T;
               links?:
                 | T
@@ -1463,35 +1446,20 @@ export interface PagesSelect<T extends boolean = true> {
         right?:
           | T
           | {
-              columns?:
+              cards?:
                 | T
                 | {
-                    cards?:
+                    infoCard?:
                       | T
                       | {
-                          imageCard?:
-                            | T
-                            | {
-                                media?: T;
-                                badge?: T;
-                                badgeIcon?: T;
-                                href?: T;
-                                id?: T;
-                                blockName?: T;
-                              };
-                          infoCard?:
-                            | T
-                            | {
-                                icon?: T;
-                                heading?: T;
-                                body?: T;
-                                color?: T;
-                                href?: T;
-                                id?: T;
-                                blockName?: T;
-                              };
+                          icon?: T;
+                          heading?: T;
+                          body?: T;
+                          color?: T;
+                          href?: T;
+                          id?: T;
+                          blockName?: T;
                         };
-                    id?: T;
                   };
             };
       };

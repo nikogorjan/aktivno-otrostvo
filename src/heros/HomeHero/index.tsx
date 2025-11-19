@@ -1,12 +1,8 @@
 'use client'
 
-import leafAnimation from '@/../public/lottie/green-leaf.json'
-import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
 import type { Page } from '@/payload-types'
 import { useHeaderTheme } from '@/providers/HeaderTheme'
-import Lottie, { LottieRefCurrentProps } from 'lottie-react'
-import { Star } from 'lucide-react'
 import Link from 'next/link'
 import React, { useEffect } from 'react'
 
@@ -17,180 +13,140 @@ const isHomeHero = (
 ): h is HomeHeroProps & Required<Pick<HomeHeroProps, 'left' | 'right'>> => h?.type === 'homeHero'
 
 type ArrayElement<T> = T extends Array<infer U> ? U : never
-
-type Left = NonNullable<HomeHeroProps['left']>
-type Links = NonNullable<Left['links']>
-type LinkRow = ArrayElement<Links>
-
 type Right = NonNullable<HomeHeroProps['right']>
-type Columns = NonNullable<Right['columns']>
-type Column = ArrayElement<Columns>
-type Card = ArrayElement<NonNullable<Column['cards']>>
+type Cards = NonNullable<Right['cards']>
+type Card = ArrayElement<Cards>
 
+// Tailwind classes for pastel cards – adjust to your palette
 const INFO_CARD_STYLES: Record<string, string> = {
-  roza: 'bg-roza text-roza-dark border border-roza-border',
-  rumena: 'bg-rumena text-rumena-dark border border-rumena-border',
-  modra: 'bg-modra text-modra-dark border border-modra-border',
+  roza: 'bg-roza hover:bg-roza-hover transition-transform duration-150',
+  oranzna: 'bg-oranzna hover:bg-oranzna-hover transition-transform duration-150',
+  rumena: 'bg-rumena hover:bg-rumena-hover transition-transform duration-150',
+  zelena: 'bg-zelena hover:bg-zelena-hover transition-transform duration-150',
+  vijolicna: 'bg-vijolicna hover:bg-vijolicna-hover transition-transform duration-150',
+  modra: 'bg-modra hover:bg-modra-hover transition-transform duration-150',
+  mint: 'bg-mint hover:bg-mint-hover transition-transform duration-150',
 }
 
 export const HomeHero: React.FC<HomeHeroProps> = (props) => {
-  // ✅ Hooks must be called unconditionally and before any early returns
   const { setHeaderTheme } = useHeaderTheme()
-  const lottieRef = React.useRef<LottieRefCurrentProps>(null)
 
   useEffect(() => {
     setHeaderTheme('light')
   }, [setHeaderTheme])
 
-  React.useEffect(() => {
-    lottieRef.current?.setSpeed(0.3)
-  }, [])
-
-  // Guard AFTER hooks have been called
   if (!isHomeHero(props)) return null
 
   const { left, right } = props
-  const stars = Math.max(0, Math.min(5, left?.stars ?? 0))
+  const cards = (right?.cards ?? []) as Card[]
+
+  // Expect exactly 7 cards, but be defensive
+  const row1 = cards.slice(0, 3)
+  const middleRight = cards[3]
+  const row3 = cards.slice(4, 7)
+
+  const heroPhoto = left?.photo && typeof left.photo === 'object' ? left.photo : undefined
+
+  const renderInfoCard = (card: Card | undefined, key: React.Key, extraClass = '') => {
+    if (!card || card.blockType !== 'infoCard') {
+      return <div key={key} />
+    }
+
+    const href = 'href' in card && card.href ? card.href : undefined
+    const isLinked = !!href
+    const styleClasses = INFO_CARD_STYLES[card.color || 'roza'] ?? INFO_CARD_STYLES.roza
+
+    const inner = (
+      <div className="w-full h-full aspect-square sm:aspect-[4/3]">
+        <div
+          className={`
+            w-full h-full rounded-xl px-6 py-7 flex flex-col items-center justify-center text-center
+            transition-transform duration-150
+            ${styleClasses}
+            ${isLinked ? 'cursor-pointer' : ''}
+            ${extraClass}
+          `}
+        >
+          {card.icon && typeof card.icon === 'object' && (
+            <div className="mb-2 h-10 w-10 flex flex-col items-center justify-center">
+              <Media resource={card.icon} imgClassName="object-contain" />
+            </div>
+          )}
+          <h3 className="text-sm md:text-base font-semibold leading-snug">{card.heading}</h3>
+          {card.body && (
+            <p className="mt-2 text-xs md:text-sm leading-relaxed opacity-80">{card.body}</p>
+          )}
+        </div>
+      </div>
+    )
+
+    return isLinked ? (
+      <Link key={key} href={href} className="block h-full">
+        {inner}
+      </Link>
+    ) : (
+      <React.Fragment key={key}>{inner}</React.Fragment>
+    )
+  }
 
   return (
-    <section className="relative py-10 md:py-16 lg:py-20 bg-card/30">
-      <div className="container grid grid-cols-1 lg:grid-cols-[2fr_3fr] gap-10 items-start">
-        {/* LEFT */}
-        <div className="max-w-[46rem] h-full flex flex-col justify-between md:py-12">
-          <div>
-            {(left?.tagline || stars > 0) && (
-              <div className="mb-6 inline-flex items-center gap-3 rounded-full bg-card border-border border px-2.5 py-1">
-                {stars > 0 && (
-                  <div className="flex text-kournikova">
-                    {Array.from({ length: stars }).map((_, i) => (
-                      <Star key={i} className="w-3 h-3 fill-current" />
-                    ))}
-                  </div>
-                )}
-                {left?.tagline && (
-                  <span className="text-sm text-foreground font-medium">{left.tagline}</span>
-                )}
-              </div>
-            )}
-
-            {left?.title && <h1 className="mb-6 text-5xl md:text-6xl font-medium">{left.title}</h1>}
-          </div>
-          <div>
-            <div className="relative mb-6">
-              {left?.description && (
-                <p className="text-lg text-muted-foreground">{left.description}</p>
-              )}
-
-              <div className="absolute -top-10 -right-2 w-20 h-20 pointer-events-none rotate-20">
-                <Lottie lottieRef={lottieRef} animationData={leafAnimation} loop autoplay />
-              </div>
-            </div>
-
-            {Array.isArray(left?.links) && left.links.length > 0 && (
-              <ul className="flex gap-3">
-                {left.links.map(({ link }: LinkRow, i: number) => (
-                  <li key={i}>
-                    <CMSLink {...link} />
-                  </li>
-                ))}
-              </ul>
-            )}
+    <section className="relative bg-background py-12 md:py-16 lg:py-20">
+      <div className="container grid grid-cols-1 items-center gap-10 lg:grid-cols-[1.1fr_1.4fr] lg:gap-16">
+        {/* LEFT: big rounded photo */}
+        <div className="mb-0 text-center md:hidden">
+          {left?.tagline && (
+            <p className="mb-2 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
+              {left.tagline}
+            </p>
+          )}
+          {left?.title && <h1 className="text-5xl font-[800] leading-tight">{left.title}</h1>}
+          {left?.subtitle && <p className="mt-2 text-sm text-muted-foreground">{left.subtitle}</p>}
+        </div>
+        <div className="flex justify-center">
+          <div className="relative aspect-[3/4] w-full max-w-[520px] overflow-hidden rounded-xl bg-muted">
+            {heroPhoto && <Media resource={heroPhoto} fill priority imgClassName="object-cover" />}
           </div>
         </div>
 
-        {/* RIGHT GRID */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-stretch">
-          {(right?.columns ?? []).map((col: Column, colIdx: number) => (
-            <div key={colIdx} className="flex flex-col gap-4 h-full min-h-0">
-              {(col.cards ?? []).map((card: Card, cardIdx: number) => {
-                const href = 'href' in card && card.href ? card.href : undefined
-                const isLinked = !!href
+        {/* RIGHT: grid + title */}
+        <div className="w-full">
+          {/* Mobile title */}
 
-                if (card.blockType === 'imageCard') {
-                  const Img = (
-                    <div
-                      className={`relative overflow-hidden rounded-lg aspect-[215/354]
-                          ${isLinked ? 'cursor-pointer  transition-transform duration-200' : ''}
-                        `}
-                    >
-                      {card.media && typeof card.media === 'object' && (
-                        <Media resource={card.media} fill imgClassName="object-cover" priority />
-                      )}
-                      {(card.badge || card.badgeIcon) && (
-                        <div className="absolute bottom-4 left-0 flex items-center gap-2 rounded-r-full bg-white pr-1 pl-3 py-1 translate-y-[-18px]">
-                          {card.badge && (
-                            <span className="text-sm font-medium text-foreground">
-                              {card.badge}
-                            </span>
-                          )}
-                          {card.badgeIcon && typeof card.badgeIcon === 'object' && (
-                            <div className="relative h-8 w-8 overflow-hidden rounded-full bg-neutral-dark p-1">
-                              <Media resource={card.badgeIcon} imgClassName="object-contain" />
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  )
+          {/* 3x3 grid */}
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-5 lg:gap-6">
+            {/* Row 1: three cards */}
+            {row1.map((card, idx) => renderInfoCard(card, `row1-${idx}`))}
 
-                  return isLinked ? (
-                    <Link key={cardIdx} href={href!} className="block">
-                      {Img}
-                    </Link>
-                  ) : (
-                    <React.Fragment key={cardIdx}>{Img}</React.Fragment>
-                  )
-                }
-
-                if (card.blockType === 'infoCard') {
-                  const styleClasses =
-                    INFO_CARD_STYLES[card.color || 'roza'] ?? INFO_CARD_STYLES.roza
-
-                  return (
-                    <div
-                      key={cardIdx}
-                      className={`
-                        rounded-lg p-5 md:p-6 flex flex-col gap-2 transition-all duration-200 min-h-0
-                        ${styleClasses}
-                        ${isLinked ? 'cursor-pointer' : ''}
-                        flex-1
-                      `}
-                    >
-                      {isLinked ? (
-                        <Link href={href!} className="h-full flex flex-col justify-between gap-2">
-                          {card.icon && typeof card.icon === 'object' && (
-                            <div className="h-12 w-12">
-                              <Media resource={card.icon} imgClassName="object-contain" />
-                            </div>
-                          )}
-                          <div>
-                            <h3 className="text-lg font-semibold">{card.heading}</h3>
-                            {card.body && (
-                              <p className="text-sm leading-relaxed opacity-80">{card.body}</p>
-                            )}
-                          </div>
-                        </Link>
-                      ) : (
-                        <>
-                          {card.icon && typeof card.icon === 'object' && (
-                            <div className="h-12 w-12">
-                              <Media resource={card.icon} imgClassName="object-contain" />
-                            </div>
-                          )}
-                          <div className="h-full flex flex-col justify-between gap-2">
-                            <h3 className="text-lg font-semibold">{card.heading}</h3>
-                            {card.body && <p className="text-sm leading-relaxed">{card.body}</p>}
-                          </div>
-                        </>
-                      )}
-                    </div>
-                  )
-                }
-
-                return null
-              })}
+            {/* Row 2: heading (col-span-2) + right card */}
+            <div
+              className="
+                hidden md:flex md:col-span-2 md:row-start-2
+                h-full rounded-3xl bg-white 
+                items-center justify-center text-center px-6 
+              "
+            >
+              <div>
+                {left?.tagline && (
+                  <p className="mb-2 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
+                    {left.tagline}
+                  </p>
+                )}
+                {left?.title && (
+                  <h2 className="text-6xl lg:text-6xl font-[800] tracking-tight leading-tight text-start">
+                    {left.title}
+                  </h2>
+                )}
+                {left?.subtitle && (
+                  <p className="mt-2 text-sm text-muted-foreground">{left.subtitle}</p>
+                )}
+              </div>
             </div>
-          ))}
+
+            {renderInfoCard(middleRight, 'middle-right', 'md:row-start-2 md:col-start-3')}
+
+            {/* Row 3: three cards */}
+            {row3.map((card, idx) => renderInfoCard(card, `row3-${idx}`))}
+          </div>
         </div>
       </div>
     </section>

@@ -79,96 +79,76 @@ export const hero: Field = {
         condition: (_, { type } = {}) => type === 'homeHero',
       },
       fields: [
-        { name: 'tagline', type: 'text', label: 'Tagline' },
-        { name: 'stars', type: 'number', min: 0, max: 5, defaultValue: 5, label: 'Stars (0–5)' },
+        {
+          name: 'photo',
+          type: 'upload',
+          relationTo: 'media',
+          label: 'Main photo',
+          required: true,
+        },
+        { name: 'tagline', type: 'text', label: 'Tagline above title' },
         {
           name: 'title',
           type: 'text',
           required: true,
-          label: 'Title',
+          label: 'Main title (e.g. "AKTIVNO OTROŠTVO")',
         },
         {
-          name: 'description',
+          name: 'subtitle',
           type: 'text',
-          label: 'Description',
+          label: 'Optional subtitle under title',
         },
+        { name: 'description', type: 'text', label: 'Description (optional)' },
         linkGroup({
-          overrides: { maxRows: 1, admin: { description: 'Primary CTA' } },
+          overrides: { maxRows: 1, admin: { description: 'Primary CTA (optional)' } },
         }),
       ],
     },
+
     {
       name: 'right',
       type: 'group',
-      label: 'HomeHero • Right Grid',
+      label: 'HomeHero • Grid',
       admin: {
         condition: (_, { type } = {}) => type === 'homeHero',
       },
       fields: [
         {
-          name: 'columns',
-          type: 'array',
-          label: 'Columns',
-          minRows: 3,
-          maxRows: 3,
-          fields: [
+          name: 'cards',
+          type: 'blocks',
+          label: 'Info cards (order matters – 7 items)',
+          minRows: 7,
+          maxRows: 7,
+          blocks: [
             {
-              name: 'cards',
-              type: 'blocks',
-              minRows: 1,
-              maxRows: 2,
-              blocks: [
+              slug: 'infoCard',
+              labels: { singular: 'Info Card', plural: 'Info Cards' },
+              fields: [
+                { name: 'icon', type: 'upload', relationTo: 'media', label: 'Icon' },
+                { name: 'heading', type: 'text', required: true, label: 'Heading' },
+                { name: 'body', type: 'textarea', label: 'Description (optional)' },
                 {
-                  slug: 'imageCard',
-                  labels: { singular: 'Image Card', plural: 'Image Cards' },
-                  fields: [
-                    {
-                      name: 'media',
-                      type: 'upload',
-                      relationTo: 'media',
-                      required: true,
-                      label: 'Image',
-                    },
-                    { name: 'badge', type: 'text', label: 'Badge text (overlay)' },
-                    { name: 'badgeIcon', type: 'upload', relationTo: 'media', label: 'Badge icon' },
-                    {
-                      name: 'href',
-                      type: 'text',
-                      label: 'Link URL (optional)',
-                      admin: {
-                        description: 'Enter URL to make entire card clickable',
-                      },
-                    },
+                  name: 'color',
+                  type: 'select',
+                  defaultValue: 'roza',
+                  label: 'Background Color',
+                  options: [
+                    { label: 'Roza (pink)', value: 'roza' },
+                    { label: 'Oranžna (peach)', value: 'oranzna' },
+                    { label: 'Rumena (yellow)', value: 'rumena' },
+                    { label: 'Zelena (green)', value: 'zelena' },
+                    { label: 'Vijolična (purple)', value: 'vijolicna' },
+                    { label: 'Modra (blue)', value: 'modra' },
+                    { label: 'Mint (light green)', value: 'mint' },
                   ],
                 },
                 {
-                  slug: 'infoCard',
-                  labels: { singular: 'Info Card', plural: 'Info Cards' },
-                  fields: [
-                    { name: 'icon', type: 'upload', relationTo: 'media', label: 'Icon' },
-                    { name: 'heading', type: 'text', required: true, label: 'Heading' },
-                    { name: 'body', type: 'textarea', label: 'Description' },
-                    // NEW: Color select
-                    {
-                      name: 'color',
-                      type: 'select',
-                      defaultValue: 'roza',
-                      label: 'Background Color',
-                      options: [
-                        { label: 'Roza (Pink)', value: 'roza' },
-                        { label: 'Rumena (Yellow)', value: 'rumena' },
-                        { label: 'Modra (Blue)', value: 'modra' },
-                      ],
-                    },
-                    {
-                      name: 'href',
-                      type: 'text',
-                      label: 'Link URL (optional)',
-                      admin: {
-                        description: 'Enter URL to make entire card clickable',
-                      },
-                    },
-                  ],
+                  name: 'href',
+                  type: 'text',
+                  label: 'Link URL (optional)',
+                  admin: {
+                    description: 'Enter URL to make entire card clickable',
+                  },
                 },
               ],
             },
