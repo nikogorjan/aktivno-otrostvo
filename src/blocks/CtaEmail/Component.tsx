@@ -33,7 +33,7 @@ export const CtaEmailBlock: React.FC<CtaEmailBlockProps & { className?: string }
   }
 
   return (
-    <section className={cn('py-8 md:py-10', className)}>
+    <section className={cn('py-10 md:py-14 lg:py-20', className)}>
       <div className="container">
         {/* Inner wrapper with background */}
         <div className="relative overflow-hidden rounded-2xl  bg-kournikova-light p-3">

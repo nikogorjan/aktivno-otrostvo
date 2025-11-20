@@ -530,6 +530,7 @@ export interface Page {
     | FaqSectionBlock
     | TestimonialsBlock
     | CtaEmailBlock
+    | VideoSectionBlock
   )[];
   meta?: {
     title?: string | null;
@@ -1099,6 +1100,60 @@ export interface CtaEmailBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "VideoSectionBlock".
+ */
+export interface VideoSectionBlock {
+  heading: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Primary CTA(s) shown under the description.
+   */
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?: {
+            relationTo: 'pages';
+            value: string | Page;
+          } | null;
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  backgroundColor: 'modra' | 'roza' | 'rumena' | 'zelena';
+  /**
+   * E.g. "Gibanje nosečnic in mamic po porodu".
+   */
+  mediaTitle?: string | null;
+  browserUrl?: string | null;
+  media: string | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'videoSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "variants".
  */
 export interface Variant {
@@ -1479,6 +1534,7 @@ export interface PagesSelect<T extends boolean = true> {
         faqSection?: T | FaqSectionBlockSelect<T>;
         testimonials?: T | TestimonialsBlockSelect<T>;
         ctaEmail?: T | CtaEmailBlockSelect<T>;
+        videoSection?: T | VideoSectionBlockSelect<T>;
       };
   meta?:
     | T
@@ -1710,6 +1766,35 @@ export interface CtaEmailBlockSelect<T extends boolean = true> {
   action?: T;
   successRedirect?: T;
   honeypotName?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "VideoSectionBlock_select".
+ */
+export interface VideoSectionBlockSelect<T extends boolean = true> {
+  heading?: T;
+  description?: T;
+  links?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
+  backgroundColor?: T;
+  mediaTitle?: T;
+  browserUrl?: T;
+  media?: T;
   id?: T;
   blockName?: T;
 }
