@@ -6,24 +6,24 @@ import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { GeistMono } from 'geist/font/mono' // keep if you still want this mono
-import { Figtree as FigtreeGoogle } from 'next/font/google'
+import { Nunito as NunitoGoogle } from 'next/font/google'
 import { Suspense, type ReactNode } from 'react'
 import './globals.css'
 
 // Bind Figtree to the SAME CSS var you already use everywhere
-const Figtree = FigtreeGoogle({
+const Nunito = NunitoGoogle({
   subsets: ['latin'],
   display: 'swap',
   // keep the existing var name so no other changes are needed
   variable: '--font-geist-sans',
   // optional: pick weights you need
-  weight: ['400', '500', '600', '700'],
+  weight: ['400', '500', '600', '700', '800', '900', '1000'],
 })
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
-      className={[Figtree.variable, GeistMono.variable].filter(Boolean).join(' ')}
+      className={[Nunito.variable, GeistMono.variable].filter(Boolean).join(' ')}
       lang="en"
       suppressHydrationWarning
     >

@@ -36,7 +36,7 @@ export const CtaEmailBlock: React.FC<CtaEmailBlockProps & { className?: string }
     <section className={cn('py-8 md:py-10', className)}>
       <div className="container">
         {/* Inner wrapper with background */}
-        <div className="relative overflow-hidden rounded-2xl  bg-kournikova-light px-4 py-8 md:px-8 md:py-10">
+        <div className="relative overflow-hidden rounded-2xl  bg-kournikova-light p-3">
           <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             {/* LEFT IMAGE */}
             <div className="relative w-full h-72 md:h-[420px] rounded-xl overflow-hidden  bg-card">
@@ -83,7 +83,7 @@ export const CtaEmailBlock: React.FC<CtaEmailBlockProps & { className?: string }
                   <input
                     type="email"
                     name="email"
-                    placeholder={inputPlaceholder ?? 'Vpiši e-naslov'}
+                    placeholder={inputPlaceholder ?? ''}
                     required
                     className={cn(
                       'flex-1 rounded-full px-4 py-3',

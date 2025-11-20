@@ -36,7 +36,7 @@
 
 :root {
   --background: hsl(0 0% 100%);
-  --foreground: hsl(216 7% 13.5%);
+  --foreground: hsl(216, 7%, 14%);
 
   --card: hsl(240 5% 96%);
   --card-foreground: hsl(222.2 84% 4.9%);
@@ -73,10 +73,21 @@
   --kournikova-light: hsl(42, 100%, 81%);
   --kournikova-lightest: hsl(54, 100%, 75%);
 
-  --info-roza: hsl(0, 100%, 95%);
-  --info-rumena: hsl(42, 100%, 95%);
-  --info-modra: hsl(219, 100%, 95%);
-  --info-vijolicna: hsl(270, 85%, 92%);
+  --info-roza: hsl(337, 100%, 95%);
+  --info-oranzna: hsl(25, 85%, 93%);
+  --info-rumena: hsl(57, 100%, 91%);
+  --info-zelena: hsl(106, 95%, 92%);
+  --info-modra: hsl(222, 86%, 95%);
+  --info-mint: hsl(143, 81%, 94%);
+  --info-vijolicna: hsl(274, 92%, 95%);
+
+  --info-roza-hover: hsl(337, 100%, 92%);
+  --info-oranzna-hover: hsl(26, 94%, 87%);
+  --info-rumena-hover: hsl(58, 100%, 83%);
+  --info-zelena-hover: hsl(105, 100%, 84%);
+  --info-modra-hover: hsl(222, 100%, 92%);
+  --info-mint-hover: hsl(144, 93%, 88%);
+  --info-vijolicna-hover: hsl(275, 100%, 91%);
 
   --neutral-dark: hsl(220 6% 14%);
 
@@ -161,9 +172,20 @@
   --color-kournikova-lightest: var(--kournikova-lightest);
 
   --color-roza: var(--info-roza);
+  --color-oranzna: var(--info-oranzna);
   --color-rumena: var(--info-rumena);
+  --color-zelena: var(--info-zelena);
   --color-modra: var(--info-modra);
+  --color-mint: var(--info-mint);
   --color-vijolicna: var(--info-vijolicna);
+
+  --color-roza-hover: var(--info-roza-hover);
+  --color-oranzna-hover: var(--info-oranzna-hover);
+  --color-rumena-hover: var(--info-rumena-hover);
+  --color-zelena-hover: var(--info-zelena-hover);
+  --color-modra-hover: var(--info-modra-hover);
+  --color-mint-hover: var(--info-mint-hover);
+  --color-vijolicna-hover: var(--info-vijolicna-hover);
 
   --color-roza-dark: var(--info-roza-dark);
   --color-rumena-dark: var(--info-rumena-dark);
