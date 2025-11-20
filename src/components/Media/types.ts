@@ -19,4 +19,9 @@ export interface Props {
   src?: StaticImageData // for static media
   videoClassName?: string
   width?: number
+
+  videoControls?: boolean
+  videoAutoPlay?: boolean
+  videoLoop?: boolean
+  videoMuted?: boolean
 }

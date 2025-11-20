@@ -92,8 +92,13 @@ export const VideoSectionBlock: React.FC<
                   {media && typeof media === 'object' && (
                     <Media
                       resource={media}
-                      fill
-                      imgClassName="object-cover"
+      imgClassName="object-cover"
+      videoClassName="w-full h-full object-cover"
+
+      videoControls
+      videoAutoPlay={false}
+      videoLoop={false}
+      videoMuted={false}
                     />
                   )}
                 </div>
