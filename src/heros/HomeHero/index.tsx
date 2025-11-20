@@ -17,15 +17,14 @@ type Right = NonNullable<HomeHeroProps['right']>
 type Cards = NonNullable<Right['cards']>
 type Card = ArrayElement<Cards>
 
-// Tailwind classes for pastel cards – adjust to your palette
 const INFO_CARD_STYLES: Record<string, string> = {
-  roza: 'bg-roza hover:bg-roza-hover transition-transform duration-150',
-  oranzna: 'bg-oranzna hover:bg-oranzna-hover transition-transform duration-150',
-  rumena: 'bg-rumena hover:bg-rumena-hover transition-transform duration-150',
-  zelena: 'bg-zelena hover:bg-zelena-hover transition-transform duration-150',
-  vijolicna: 'bg-vijolicna hover:bg-vijolicna-hover transition-transform duration-150',
-  modra: 'bg-modra hover:bg-modra-hover transition-transform duration-150',
-  mint: 'bg-mint hover:bg-mint-hover transition-transform duration-150',
+  roza: 'bg-roza hover:bg-roza-hover',
+  oranzna: 'bg-oranzna hover:bg-oranzna-hover',
+  rumena: 'bg-rumena hover:bg-rumena-hover',
+  zelena: 'bg-zelena hover:bg-zelena-hover',
+  vijolicna: 'bg-vijolicna hover:bg-vijolicna-hover',
+  modra: 'bg-modra hover:bg-modra-hover',
+  mint: 'bg-mint hover:bg-mint-hover',
 }
 
 export const HomeHero: React.FC<HomeHeroProps> = (props) => {
@@ -57,11 +56,11 @@ export const HomeHero: React.FC<HomeHeroProps> = (props) => {
     const styleClasses = INFO_CARD_STYLES[card.color || 'roza'] ?? INFO_CARD_STYLES.roza
 
     const inner = (
-      <div className="w-full h-full aspect-square sm:aspect-[4/3]">
+      <div className="w-full h-full aspect-square lg:aspect-[4/3]">
         <div
           className={`
             w-full h-full rounded-xl px-6 py-7 flex flex-col items-center justify-center text-center
-            transition-transform duration-150
+            transition-all duration-500 hover:-translate-y-1
             ${styleClasses}
             ${isLinked ? 'cursor-pointer' : ''}
             ${extraClass}
@@ -93,7 +92,7 @@ export const HomeHero: React.FC<HomeHeroProps> = (props) => {
     <section className="relative bg-background py-12 md:py-16 lg:py-20">
       <div className="container grid grid-cols-1 items-center gap-10 lg:grid-cols-[1.1fr_1.4fr] lg:gap-16">
         {/* LEFT: big rounded photo */}
-        <div className="mb-0 text-center md:hidden">
+        <div className="mb-0 text-center lg:hidden">
           {left?.tagline && (
             <p className="mb-2 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
               {left.tagline}
@@ -113,14 +112,14 @@ export const HomeHero: React.FC<HomeHeroProps> = (props) => {
           {/* Mobile title */}
 
           {/* 3x3 grid */}
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-5 lg:gap-6">
+          <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 md:gap-5 lg:gap-6">
             {/* Row 1: three cards */}
             {row1.map((card, idx) => renderInfoCard(card, `row1-${idx}`))}
 
             {/* Row 2: heading (col-span-2) + right card */}
             <div
               className="
-                hidden md:flex md:col-span-2 md:row-start-2
+                hidden lg:flex md:col-span-2 md:row-start-2
                 h-full rounded-3xl bg-white 
                 items-center justify-center text-center px-6 
               "
