@@ -1,10 +1,9 @@
 'use client'
 
-import leafAnimation from '@/../public/lottie/green-leaf.json'
 import { Media } from '@/components/Media'
 import type { TestimonialsBlock as TestimonialsBlockProps } from '@/payload-types'
 import { cn } from '@/utilities/cn'
-import Lottie, { LottieRefCurrentProps } from 'lottie-react'
+import { LottieRefCurrentProps } from 'lottie-react'
 import { ChevronLeft, ChevronRight, Star } from 'lucide-react'
 import * as React from 'react'
 
@@ -91,12 +90,10 @@ export const TestimonialsBlock: React.FC<TestimonialsBlockProps & { className?: 
           <div className="flex lg:justify-self-end">
             <div className="w-full max-w-2xl lg:mb-24 lg:mr-20">
               <div className="relative">
-                <div className="absolute -top-12 -right-4 w-20 h-20 pointer-events-none rotate-20">
-                  <Lottie lottieRef={lottieRef} animationData={leafAnimation} loop autoplay />
-                </div>
+               
               </div>
               {heading && (
-                <h2 className="mb-5 text-4xl md:text-5xl font-medium leading-tight">{heading}</h2>
+                <h2 className="mb-5 text-4xl md:text-5xl font-semibold leading-tight">{heading}</h2>
               )}
               {description && <p className="text-lg text-muted-foreground">{description}</p>}
             </div>

@@ -83,7 +83,7 @@ export const VideoSectionBlock: React.FC<
               {/* Inner content: title + media */}
               <div className="px-4 pb-4 pt-3 md:px-6 md:py-12 max-w-3xl mx-auto">
                 {mediaTitle && (
-                  <p className="mb-3 text-xl font-medium text-foreground md:text-4xl md:max-w-[420px] md:pb-4">
+                  <p className="mb-3 text-xl font-semibold text-foreground md:text-4xl md:max-w-[420px] md:pb-4">
                     {mediaTitle}
                   </p>
                 )}
@@ -92,13 +92,13 @@ export const VideoSectionBlock: React.FC<
                   {media && typeof media === 'object' && (
                     <Media
                       resource={media}
-      imgClassName="object-cover"
-      videoClassName="w-full h-full object-cover"
+                      imgClassName="object-cover"
+                      videoClassName="w-full h-full object-cover"
 
-      videoControls
-      videoAutoPlay={false}
-      videoLoop={false}
-      videoMuted={false}
+                      videoControls
+                      videoAutoPlay={true}
+                      videoLoop={true}
+                      videoMuted={true}
                     />
                   )}
                 </div>
