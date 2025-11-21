@@ -463,7 +463,7 @@ export interface Page {
             /**
              * Choose how the link should be rendered.
              */
-            appearance?: ('default' | 'outline') | null;
+            appearance?: ('default' | 'outline' | 'rumen' | 'siv') | null;
           };
           id?: string | null;
         }[]
@@ -492,7 +492,7 @@ export interface Page {
               /**
                * Choose how the link should be rendered.
                */
-              appearance?: ('default' | 'outline') | null;
+              appearance?: ('default' | 'outline' | 'rumen' | 'siv') | null;
             };
             id?: string | null;
           }[]
@@ -585,7 +585,7 @@ export interface ContentBlock {
           /**
            * Choose how the link should be rendered.
            */
-          appearance?: ('default' | 'outline') | null;
+          appearance?: ('default' | 'outline' | 'rumen' | 'siv') | null;
         };
         id?: string | null;
       }[]
@@ -958,7 +958,7 @@ export interface AboutUsSectionBlock {
           /**
            * Choose how the link should be rendered.
            */
-          appearance?: ('default' | 'outline') | null;
+          appearance?: ('default' | 'outline' | 'rumen' | 'siv') | null;
         };
         id?: string | null;
       }[]
@@ -1136,7 +1136,7 @@ export interface VideoSectionBlock {
           /**
            * Choose how the link should be rendered.
            */
-          appearance?: ('default' | 'outline') | null;
+          appearance?: ('default' | 'outline' | 'rumen' | 'siv') | null;
         };
         id?: string | null;
       }[]
@@ -2246,6 +2246,13 @@ export interface Header {
  */
 export interface Footer {
   id: string;
+  newsletter?: {
+    illustration?: (string | null) | Media;
+    heading?: string | null;
+    placeholder?: string | null;
+    buttonLabel?: string | null;
+    legalNote?: string | null;
+  };
   navItems?:
     | {
         link: {
@@ -2261,6 +2268,33 @@ export interface Footer {
         id?: string | null;
       }[]
     | null;
+  programNavItems?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?: {
+            relationTo: 'pages';
+            value: string | Page;
+          } | null;
+          url?: string | null;
+          label: string;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  socialLinks?:
+    | {
+        icon?: (string | null) | Media;
+        label: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  terms: {
+    label?: string | null;
+    url: string;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -2292,6 +2326,15 @@ export interface HeaderSelect<T extends boolean = true> {
  * via the `definition` "footer_select".
  */
 export interface FooterSelect<T extends boolean = true> {
+  newsletter?:
+    | T
+    | {
+        illustration?: T;
+        heading?: T;
+        placeholder?: T;
+        buttonLabel?: T;
+        legalNote?: T;
+      };
   navItems?:
     | T
     | {
@@ -2305,6 +2348,34 @@ export interface FooterSelect<T extends boolean = true> {
               label?: T;
             };
         id?: T;
+      };
+  programNavItems?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+            };
+        id?: T;
+      };
+  socialLinks?:
+    | T
+    | {
+        icon?: T;
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  terms?:
+    | T
+    | {
+        label?: T;
+        url?: T;
       };
   updatedAt?: T;
   createdAt?: T;

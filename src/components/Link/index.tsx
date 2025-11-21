@@ -58,7 +58,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
         {label ?? children}
 
         {/* 👇 show arrow bubble for both default & rumen */}
-        {(appearance === 'default' || appearance === 'rumen') && (
+        {(appearance === 'default' || appearance === 'rumen' || appearance === 'siv') && (
           <span className="ml-2 inline-flex items-center justify-center rounded-full bg-white text-neutral-dark size-9">
             <ArrowUpRight className="size-6" />
           </span>

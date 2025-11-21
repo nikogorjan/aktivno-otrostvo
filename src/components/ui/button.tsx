@@ -11,6 +11,7 @@ const buttonVariants = cva(
       variant: {
         default: 'bg-neutral-dark text-white shadow-xs hover:bg-neutral-dark/90 px-6 py-3',
         rumen: 'bg-kournikova-lightest text-foreground hover:bg-kournikova-lightest/90 px-6 py-3',
+        siv: 'bg-neutral-300 text-neutral-900 shadow-xs hover:bg-neutral-400 px-6 py-3',
         destructive:
           'bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40',
         outline:

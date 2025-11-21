@@ -15,7 +15,7 @@ export const linkGroup: LinkGroupType = ({ appearances, overrides = {} } = {}) =
     name: 'links',
     type: 'array',
     fields: [
-      link({
+      link({ 
         appearances,
       }),
     ],
