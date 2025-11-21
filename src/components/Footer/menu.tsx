@@ -12,19 +12,16 @@ export function FooterMenu({ navItems, programItems, socialLinks }: Props) {
   if (!navItems?.length && !programItems?.length && !socialLinks?.length) return null
 
   return (
-<nav className="grid gap-16 text-sm text-neutral-700 sm:grid-cols-2 lg:grid-cols-3">
-      {/* Navigacija */}
-
-      {/* Vsi programi – render manually so we ALWAYS see something */}
+    <nav className="flex flex-col gap-10 sm:gap-24 text-sm text-neutral-700 sm:inline-flex sm:flex-row sm:flex-wrap">
+      {/* Vsi programi */}
       {programItems && programItems.length > 0 && (
-        <div>
+        <div className="flex-none w-auto">
           <h3 className="mb-3 font-semibold text-neutral-900">Vsi programi</h3>
           <ul className="space-y-1.5">
             {programItems.map((item) => {
               const l = item.link
               if (!l) return null
 
-              // basic href construction similar to CMSLink
               let href: string | undefined
 
               if (l.type === 'custom') {
@@ -42,7 +39,6 @@ export function FooterMenu({ navItems, programItems, socialLinks }: Props) {
               const label = l.label || '(manjkajoča oznaka)'
 
               if (!href) {
-                // show plain text if href can’t be resolved
                 return (
                   <li key={item.id}>
                     <span className="text-neutral-500">{label}</span>
@@ -62,8 +58,9 @@ export function FooterMenu({ navItems, programItems, socialLinks }: Props) {
         </div>
       )}
 
+      {/* Navigacije */}
       {navItems && navItems.length > 0 && (
-        <div>
+        <div className="flex-none w-auto">
           <h3 className="mb-3 font-semibold text-neutral-900">Navigacije</h3>
           <ul className="space-y-1.5">
             {navItems.map((item) => (
@@ -81,11 +78,9 @@ export function FooterMenu({ navItems, programItems, socialLinks }: Props) {
         </div>
       )}
 
-      
-
       {/* Sledi mi */}
       {socialLinks && socialLinks.length > 0 && (
-        <div>
+        <div className="flex-none w-auto">
           <h3 className="mb-3 font-semibold text-neutral-900">Sledi mi</h3>
           <ul className="space-y-1.5">
             {socialLinks.map((item) => (

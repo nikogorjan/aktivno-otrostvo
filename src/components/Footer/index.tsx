@@ -94,11 +94,13 @@ export async function Footer() {
                 </div>
               }
             >
-              <FooterMenu
-                navItems={navItems}
-                programItems={programItems}
-                socialLinks={socialLinks}
-              />
+              <div className="flex md:justify-end">
+                <FooterMenu
+                  navItems={navItems}
+                  programItems={programItems}
+                  socialLinks={socialLinks}
+                />
+              </div>
             </Suspense>
           </div>
         </div>
@@ -106,30 +108,35 @@ export async function Footer() {
 
       {/* BOTTOM BAR */}
       <div className="border-t border-neutral-200 py-6 text-sm dark:border-neutral-700">
-        <div className="container mx-auto flex w-full flex-col items-center gap-2 md:flex-row md:gap-0">
-          <p>
-            &copy; {copyrightDate} {copyrightName}
-            {copyrightName.length && !copyrightName.endsWith('.') ? '.' : ''} Vse pravice
-            pridržane.
-          </p>
+  <div
+    className="
+      container mx-auto flex w-full
+      flex-col items-center gap-2 text-center
+      sm:flex-row sm:gap-4 sm:text-left
+    "
+  >
+    <p>
+      &copy; {copyrightDate} {copyrightName}
+      {copyrightName.length && !copyrightName.endsWith('.') ? '.' : ''} Vse pravice pridržane.
+    </p>
 
-          <hr className="mx-4 hidden h-4 w-[1px] border-l border-neutral-400 md:inline-block" />
+    <hr className="hidden h-4 w-[1px] border-l border-neutral-400 sm:inline-block" />
 
-          <p>Izdelano v Sloveniji</p>
+    <p>Izdelano v Sloveniji</p>
 
-          {/* Terms link on the right */}
-          <div className="mt-1 w-full text-center md:ml-auto md:mt-0 md:text-right">
-            {terms?.url && (
-              <a
-                href={terms.url}
-                className="text-neutral-800 underline-offset-2 hover:underline dark:text-white"
-              >
-                {terms.label || 'Pogoji poslovanja'}
-              </a>
-            )}
-          </div>
-        </div>
-      </div>
+    {/* Terms link on the right */}
+    <div className="w-full sm:w-auto sm:ml-auto sm:text-right">
+      {terms?.url && (
+        <a
+          href={terms.url}
+          className="text-neutral-800 underline-offset-2 hover:underline dark:text-white"
+        >
+          {terms.label || 'Pogoji poslovanja'}
+        </a>
+      )}
+    </div>
+  </div>
+</div>
     </footer>
   )
 }
