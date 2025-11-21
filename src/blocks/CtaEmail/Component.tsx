@@ -96,7 +96,7 @@ export const CtaEmailBlock: React.FC<CtaEmailBlockProps & { className?: string }
                     type="custom"
                     url="#"
                     appearance="rumen"
-                    className="mt-2 flex items-center gap-1 sm:mt-0 sm:ml-3"
+                  className="self-start mt-2 flex items-center gap-1 sm:mt-0 sm:ml-3"
                   >
                     {buttonLabel ?? 'Prijava'}
                   </CMSLink>

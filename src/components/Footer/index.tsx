@@ -108,35 +108,35 @@ export async function Footer() {
 
       {/* BOTTOM BAR */}
       <div className="border-t border-neutral-200 py-6 text-sm dark:border-neutral-700">
-  <div
-    className="
+        <div
+          className="
       container mx-auto flex w-full
       flex-col items-center gap-2 text-center
       sm:flex-row sm:gap-4 sm:text-left
     "
-  >
-    <p>
-      &copy; {copyrightDate} {copyrightName}
-      {copyrightName.length && !copyrightName.endsWith('.') ? '.' : ''} Vse pravice pridržane.
-    </p>
-
-    <hr className="hidden h-4 w-[1px] border-l border-neutral-400 sm:inline-block" />
-
-    <p>Izdelano v Sloveniji</p>
-
-    {/* Terms link on the right */}
-    <div className="w-full sm:w-auto sm:ml-auto sm:text-right">
-      {terms?.url && (
-        <a
-          href={terms.url}
-          className="text-neutral-800 underline-offset-2 hover:underline dark:text-white"
         >
-          {terms.label || 'Pogoji poslovanja'}
-        </a>
-      )}
-    </div>
-  </div>
-</div>
+          <p>
+            &copy; {copyrightDate} {copyrightName}
+            {copyrightName.length && !copyrightName.endsWith('.') ? '.' : ''} Vse pravice pridržane.
+          </p>
+
+          <hr className="hidden h-4 w-[1px] border-l border-neutral-400 sm:inline-block" />
+
+          <p>Izdelano v Sloveniji</p>
+
+          {/* Terms link on the right */}
+          <div className="w-full sm:w-auto sm:ml-auto sm:text-right">
+            {terms?.url && (
+              <a
+                href={terms.url}
+                className="text-neutral-800 underline-offset-2 hover:underline dark:text-white"
+              >
+                {terms.label || 'Pogoji poslovanja'}
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
     </footer>
   )
 }
