@@ -463,7 +463,7 @@ export interface Page {
             /**
              * Choose how the link should be rendered.
              */
-            appearance?: ('default' | 'outline') | null;
+            appearance?: ('default' | 'outline' | 'rumen' | 'siv') | null;
           };
           id?: string | null;
         }[]
@@ -492,7 +492,7 @@ export interface Page {
               /**
                * Choose how the link should be rendered.
                */
-              appearance?: ('default' | 'outline') | null;
+              appearance?: ('default' | 'outline' | 'rumen' | 'siv') | null;
             };
             id?: string | null;
           }[]
@@ -530,6 +530,7 @@ export interface Page {
     | FaqSectionBlock
     | TestimonialsBlock
     | CtaEmailBlock
+    | VideoSectionBlock
   )[];
   meta?: {
     title?: string | null;
@@ -584,7 +585,7 @@ export interface ContentBlock {
           /**
            * Choose how the link should be rendered.
            */
-          appearance?: ('default' | 'outline') | null;
+          appearance?: ('default' | 'outline' | 'rumen' | 'siv') | null;
         };
         id?: string | null;
       }[]
@@ -957,7 +958,7 @@ export interface AboutUsSectionBlock {
           /**
            * Choose how the link should be rendered.
            */
-          appearance?: ('default' | 'outline') | null;
+          appearance?: ('default' | 'outline' | 'rumen' | 'siv') | null;
         };
         id?: string | null;
       }[]
@@ -1096,6 +1097,60 @@ export interface CtaEmailBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'ctaEmail';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "VideoSectionBlock".
+ */
+export interface VideoSectionBlock {
+  heading: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Primary CTA(s) shown under the description.
+   */
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?: {
+            relationTo: 'pages';
+            value: string | Page;
+          } | null;
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline' | 'rumen' | 'siv') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  backgroundColor: 'modra' | 'roza' | 'rumena' | 'zelena';
+  /**
+   * E.g. "Gibanje nosečnic in mamic po porodu".
+   */
+  mediaTitle?: string | null;
+  browserUrl?: string | null;
+  media: string | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'videoSection';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1479,6 +1534,7 @@ export interface PagesSelect<T extends boolean = true> {
         faqSection?: T | FaqSectionBlockSelect<T>;
         testimonials?: T | TestimonialsBlockSelect<T>;
         ctaEmail?: T | CtaEmailBlockSelect<T>;
+        videoSection?: T | VideoSectionBlockSelect<T>;
       };
   meta?:
     | T
@@ -1710,6 +1766,35 @@ export interface CtaEmailBlockSelect<T extends boolean = true> {
   action?: T;
   successRedirect?: T;
   honeypotName?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "VideoSectionBlock_select".
+ */
+export interface VideoSectionBlockSelect<T extends boolean = true> {
+  heading?: T;
+  description?: T;
+  links?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
+  backgroundColor?: T;
+  mediaTitle?: T;
+  browserUrl?: T;
+  media?: T;
   id?: T;
   blockName?: T;
 }
@@ -2161,6 +2246,13 @@ export interface Header {
  */
 export interface Footer {
   id: string;
+  newsletter?: {
+    illustration?: (string | null) | Media;
+    heading?: string | null;
+    placeholder?: string | null;
+    buttonLabel?: string | null;
+    legalNote?: string | null;
+  };
   navItems?:
     | {
         link: {
@@ -2176,6 +2268,33 @@ export interface Footer {
         id?: string | null;
       }[]
     | null;
+  programNavItems?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?: {
+            relationTo: 'pages';
+            value: string | Page;
+          } | null;
+          url?: string | null;
+          label: string;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  socialLinks?:
+    | {
+        icon?: (string | null) | Media;
+        label: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  terms: {
+    label?: string | null;
+    url: string;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -2207,6 +2326,15 @@ export interface HeaderSelect<T extends boolean = true> {
  * via the `definition` "footer_select".
  */
 export interface FooterSelect<T extends boolean = true> {
+  newsletter?:
+    | T
+    | {
+        illustration?: T;
+        heading?: T;
+        placeholder?: T;
+        buttonLabel?: T;
+        legalNote?: T;
+      };
   navItems?:
     | T
     | {
@@ -2220,6 +2348,34 @@ export interface FooterSelect<T extends boolean = true> {
               label?: T;
             };
         id?: T;
+      };
+  programNavItems?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+            };
+        id?: T;
+      };
+  socialLinks?:
+    | T
+    | {
+        icon?: T;
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  terms?:
+    | T
+    | {
+        label?: T;
+        url?: T;
       };
   updatedAt?: T;
   createdAt?: T;

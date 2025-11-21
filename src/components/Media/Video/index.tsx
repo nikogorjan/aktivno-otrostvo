@@ -24,8 +24,23 @@ const s3Direct = (filename?: string) => {
 }
 // --------------------------------
 
+
+
+// helpers stay the same...
+
 export const Video: React.FC<MediaProps> = (props) => {
-  const { onClick, resource, videoClassName } = props
+  const {
+    onClick,
+    resource,
+    videoClassName,
+
+    // ✅ NEW: configurable with safe defaults (old behaviour)
+    videoControls = false,
+    videoAutoPlay = true,
+    videoLoop = true,
+    videoMuted = true,
+  } = props
+
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
@@ -39,26 +54,24 @@ export const Video: React.FC<MediaProps> = (props) => {
   if (!mimeType?.includes('video')) return null
 
   let src: string | undefined
-
   if (url && !isBad(url)) {
     src = isAbs(url) ? url : joinBase(getBaseURL(), url)
   } else if (filename) {
     src = s3Direct(filename) || joinBase(getBaseURL(), `/media/${filename}`)
   }
-
   if (!src) return null
 
   return (
     <video
-      autoPlay
+      ref={videoRef}
       className={cn(videoClassName)}
-      controls={false}
-      loop
-      muted
       onClick={onClick}
       playsInline
       preload="metadata"
-      ref={videoRef}
+      autoPlay={videoAutoPlay}
+      loop={videoLoop}
+      muted={videoMuted}
+      controls={videoControls}   // 👈 progress bar, pause, etc.
     >
       <source src={src} />
     </video>

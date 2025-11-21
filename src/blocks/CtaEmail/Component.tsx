@@ -1,9 +1,9 @@
 'use client'
 
+import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
 import type { CtaEmailBlock as CtaEmailBlockProps } from '@/payload-types'
 import { cn } from '@/utilities/cn'
-import { ArrowUpRight } from 'lucide-react'
 import Image from 'next/image'
 import * as React from 'react'
 
@@ -33,7 +33,7 @@ export const CtaEmailBlock: React.FC<CtaEmailBlockProps & { className?: string }
   }
 
   return (
-    <section className={cn('py-8 md:py-10', className)}>
+    <section className={cn('py-10 md:py-14 lg:py-20', className)}>
       <div className="container">
         {/* Inner wrapper with background */}
         <div className="relative overflow-hidden rounded-2xl  bg-kournikova-light p-3">
@@ -57,7 +57,7 @@ export const CtaEmailBlock: React.FC<CtaEmailBlockProps & { className?: string }
             <div className="relative z-10">
               <div className="max-w-xl">
                 {heading && (
-                  <h2 className="text-3xl md:text-4xl font-semibold text-foreground mb-4">
+                  <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
                     {heading}
                   </h2>
                 )}
@@ -92,16 +92,14 @@ export const CtaEmailBlock: React.FC<CtaEmailBlockProps & { className?: string }
                       'focus:outline-none focus:ring-2 focus:ring-accent',
                     )}
                   />
-                  <button
-                    type="submit"
-                    className={cn(
-                      'mt-2 sm:mt-0 sm:ml-3 px-6 py-3 rounded-full font-medium transition flex items-center gap-1',
-                      'bg-kournikova-lightest text-foreground hover:brightness-105',
-                    )}
+                  <CMSLink
+                    type="custom"
+                    url="#"
+                    appearance="rumen"
+                  className="self-start mt-2 flex items-center gap-1 sm:mt-0 sm:ml-3"
                   >
                     {buttonLabel ?? 'Prijava'}
-                    <ArrowUpRight className="size-4" />
-                  </button>
+                  </CMSLink>
 
                   {successRedirect ? (
                     <input type="hidden" name="successRedirect" value={successRedirect} />

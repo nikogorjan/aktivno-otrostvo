@@ -19,7 +19,7 @@ export const FaqSectionBlock: React.FC<FaqSectionBlockProps & { className?: stri
   return (
     <section className={cn('py-10 md:py-16 lg:py-20', className)}>
       <div className="container">
-        {heading && <h2 className="text-4xl md:text-5xl font-medium tracking-tight">{heading}</h2>}
+        {heading && <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">{heading}</h2>}
         {intro && (
           <div className="mt-4 max-w-3xl text-muted-foreground">
             <RichText data={intro} enableGutter={false} />

@@ -57,7 +57,8 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
       <Link className={cn('pl-4 pr-1.5', className)} href={href} {...newTabProps}>
         {label ?? children}
 
-        {appearance === 'default' && (
+        {/* 👇 show arrow bubble for both default & rumen */}
+        {(appearance === 'default' || appearance === 'rumen' || appearance === 'siv') && (
           <span className="ml-2 inline-flex items-center justify-center rounded-full bg-white text-neutral-dark size-9">
             <ArrowUpRight className="size-6" />
           </span>
