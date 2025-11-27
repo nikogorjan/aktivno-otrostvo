@@ -90,8 +90,15 @@ export const HomeHero: React.FC<HomeHeroProps> = (props) => {
 
   return (
     <section className="relative bg-background py-12 md:py-16 lg:py-20">
-      <div className="container grid grid-cols-1 items-center gap-4 lg:grid-cols-[1.1fr_1.4fr] lg:gap-16">
-        {/* LEFT: big rounded photo */}
+      <div
+        className="
+          container 
+          grid grid-cols-1 
+          items-center lg:items-stretch 
+          gap-4 lg:grid-cols-[1.1fr_1.4fr] lg:gap-16
+        "
+      >
+        {/* LEFT: mobile title + image */}
         <div className="mb-0 text-center lg:hidden">
           {left?.tagline && (
             <p className="mb-2 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
@@ -101,18 +108,26 @@ export const HomeHero: React.FC<HomeHeroProps> = (props) => {
           {left?.title && <h1 className="text-5xl font-[800] leading-tight mb-8">{left.title}</h1>}
           {left?.subtitle && <p className="mt-2 text-sm text-muted-foreground">{left.subtitle}</p>}
         </div>
-        <div className="flex justify-center">
-          <div className="relative aspect-[3/4] w-full max-w-[520px] overflow-hidden rounded-xl bg-muted">
-            {heroPhoto && <Media resource={heroPhoto} fill priority imgClassName="object-cover" />}
+
+        {/* LEFT: image */}
+        <div className="flex justify-center lg:h-full">
+          <div
+            className="
+              relative 
+              w-full max-w-[520px] 
+              overflow-hidden rounded-xl bg-muted
+              aspect-[3/4] lg:aspect-auto lg:h-full
+            "
+          >
+            {heroPhoto && (
+              <Media resource={heroPhoto} fill priority imgClassName="object-cover" />
+            )}
           </div>
         </div>
 
         {/* RIGHT: grid + title */}
-        <div className="w-full">
-          {/* Mobile title */}
-
-          {/* 3x3 grid */}
-          <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 md:gap-5 lg:gap-6">
+        <div className="w-full h-full">
+          <div className="grid grid-cols-2 gap-4 md:gap-5 lg:grid-cols-3 lg:gap-6 h-full">
             {/* Row 1: three cards */}
             {row1.map((card, idx) => renderInfoCard(card, `row1-${idx}`))}
 
@@ -124,14 +139,14 @@ export const HomeHero: React.FC<HomeHeroProps> = (props) => {
                 items-center justify-center text-center px-6 
               "
             >
-              <div>
+              <div className="text-left">
                 {left?.tagline && (
                   <p className="mb-2 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
                     {left.tagline}
                   </p>
                 )}
                 {left?.title && (
-                  <h2 className="text-6xl lg:text-6xl font-[800] tracking-tight leading-tight text-start">
+                  <h2 className="text-6xl font-[800] tracking-tight leading-tight">
                     {left.title}
                   </h2>
                 )}
