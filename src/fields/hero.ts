@@ -91,6 +91,7 @@ export const hero: Field = {
           name: 'title',
           type: 'text',
           required: true,
+          localized: true,
           label: 'Main title (e.g. "AKTIVNO OTROŠTVO")',
         },
         {

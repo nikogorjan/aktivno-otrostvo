@@ -41,6 +41,20 @@ export default buildConfig({
     user: Users.slug,
   },
   collections: [Users, Pages, Categories, Media],
+  localization: {
+    locales: [
+      {
+        label: 'English',
+        code: 'en',
+      },
+      {
+        code: 'sl',
+        label: 'Slovenščina',
+      },
+    ],
+    defaultLocale: 'sl',
+    fallback: true,
+  },
   db: mongooseAdapter({
     url: process.env.DATABASE_URI || '',
   }),
@@ -79,6 +93,8 @@ export default buildConfig({
       ]
     },
   }),
+
+
   //email: nodemailerAdapter(),
   endpoints: [],
   globals: [Header, Footer],
