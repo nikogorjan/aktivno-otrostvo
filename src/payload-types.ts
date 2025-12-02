@@ -1008,7 +1008,7 @@ export interface TabsSectionBlock {
       };
       [k: string]: unknown;
     } | null;
-    color?: ('roza' | 'rumena' | 'modra' | 'vijolicna') | null;
+    color?: ('roza' | 'oranzna' | 'rumena' | 'zelena' | 'vijolicna' | 'modra' | 'mint') | null;
     image: string | Media;
     id?: string | null;
   }[];
@@ -2237,6 +2237,18 @@ export interface Header {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Languages available in the header switcher. Use short code like "en", "sl".
+   */
+  languages?:
+    | {
+        code: string;
+        title: string;
+        shortTitle: string;
+        languageIcon?: (string | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -2315,6 +2327,15 @@ export interface HeaderSelect<T extends boolean = true> {
               url?: T;
               label?: T;
             };
+        id?: T;
+      };
+  languages?:
+    | T
+    | {
+        code?: T;
+        title?: T;
+        shortTitle?: T;
+        languageIcon?: T;
         id?: T;
       };
   updatedAt?: T;

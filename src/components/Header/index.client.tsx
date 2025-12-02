@@ -13,6 +13,7 @@ import { cn } from '@/utilities/cn'
 import { User2 } from 'lucide-react'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
+import { LanguageSwitcher } from '../LanguageSwitcher/LanguageSwitcher'
 
 type Props = { header: Header }
 
@@ -27,12 +28,9 @@ export function HeaderClient({ header }: Props) {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/me`,
-          {
-            credentials: 'include',
-          },
-        )
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/me`, {
+          credentials: 'include',
+        })
 
         if (!res.ok) {
           setAuthUser(null)
@@ -66,36 +64,39 @@ export function HeaderClient({ header }: Props) {
               width={160}
               height={40}
               priority
-              className="h-8 w-auto"
+              className="h-9 w-auto"
             />
           </Link>
+          <div className="hidden md:flex md:flex-1 md:justify-center ml-6">
+            {menu.length ? (
+              <ul className="flex items-center gap-5 text-sm">
+                {menu.map((item) => (
+                  <li key={item.id}>
+                    <CMSLink
+                      {...item.link}
+                      size="clear"
+                      className={cn('relative navLink pl-3 pr-3 text-[14px]', {
+                        active:
+                          item.link.url && item.link.url !== '/'
+                            ? pathname.includes(item.link.url)
+                            : false,
+                      })}
+                      appearance="nav"
+                    />
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+          </div>
         </div>
 
         {/* CENTER: Desktop nav */}
-        <div className="hidden md:flex md:flex-1 md:justify-center">
-          {menu.length ? (
-            <ul className="flex items-center gap-5 text-sm">
-              {menu.map((item) => (
-                <li key={item.id}>
-                  <CMSLink
-                    {...item.link}
-                    size="clear"
-                    className={cn('relative navLink pl-3 pr-3', {
-                      active:
-                        item.link.url && item.link.url !== '/'
-                          ? pathname.includes(item.link.url)
-                          : false,
-                    })}
-                    appearance="nav"
-                  />
-                </li>
-              ))}
-            </ul>
-          ) : null}
-        </div>
 
         {/* RIGHT: Icons (account + cart) and hamburger on mobile */}
         <div className="flex items-center gap-1 md:gap-2">
+          <div className="hidden md:block">
+            <LanguageSwitcher languages={header.languages} />
+          </div>
           {/* Account button */}
           <Link
             href="/login" // if your profile page is different, change this
@@ -107,11 +108,13 @@ export function HeaderClient({ header }: Props) {
             )}
           >
             <User2 className="h-5 w-5 transition-colors duration-200" />
-            <span className="
-      uppercase tracking-[0.1em] text-xs
+            <span
+              className="
+      uppercase tracking-[0.1em] text-xs md:text-sm
       pt-6 pb-6 
       hover:text-primary/50 font-bold
-    ">
+    "
+            >
               {/* while auth is still loading, show "Prijava" to avoid flicker */}
               {authChecked && isLoggedIn ? 'Profil' : 'Prijava'}
             </span>
@@ -126,7 +129,7 @@ export function HeaderClient({ header }: Props) {
 
           {/* Mobile hamburger */}
           <div className="block md:hidden">
-            <MobileMenu menu={menu} />
+            <MobileMenu menu={menu} languages={header.languages} />
           </div>
         </div>
       </nav>

@@ -71,10 +71,13 @@ export const TabsSection: Block = {
           defaultValue: 'roza',
           label: 'Number Background Color',
           options: [
-            { label: 'Roza (Pink)', value: 'roza' },
-            { label: 'Rumena (Yellow)', value: 'rumena' },
-            { label: 'Modra (Blue)', value: 'modra' },
-            { label: 'Vijolična (Purple)', value: 'vijolicna' },
+            { label: 'Roza (pink)', value: 'roza' },
+            { label: 'Oranžna (peach)', value: 'oranzna' },
+            { label: 'Rumena (yellow)', value: 'rumena' },
+            { label: 'Zelena (green)', value: 'zelena' },
+            { label: 'Vijolična (purple)', value: 'vijolicna' },
+            { label: 'Modra (blue)', value: 'modra' },
+            { label: 'Mint (light green)', value: 'mint' },
           ],
         },
         {
