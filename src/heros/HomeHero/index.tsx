@@ -105,7 +105,7 @@ export const HomeHero: React.FC<HomeHeroProps> = (props) => {
               {left.tagline}
             </p>
           )}
-          {left?.title && <h1 className="text-5xl font-[800] leading-tight mb-8">{left.title}</h1>}
+        
           {left?.subtitle && <p className="mt-2 text-sm text-muted-foreground">{left.subtitle}</p>}
         </div>
 

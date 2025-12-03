@@ -1,3 +1,4 @@
+// src/app/[locale]/(auth)/login/page.tsx
 import type { Metadata } from 'next'
 
 import { RenderParams } from '@/components/RenderParams'
@@ -10,13 +11,25 @@ import { redirect } from 'next/navigation'
 import { getPayload } from 'payload'
 import { Suspense } from 'react'
 
-export default async function Login() {
+type Params = {
+  locale: string
+}
+
+type Props = {
+  params: Promise<Params>
+}
+
+export default async function Login({ params }: Props) {
+  const { locale } = await params
+
   const headers = await getHeaders()
   const payload = await getPayload({ config: configPromise })
   const { user } = await payload.auth({ headers })
 
   if (user) {
-    redirect(`/account?warning=${encodeURIComponent('Si že prijavljen.')}`)
+    redirect(
+      `/${locale}/account?warning=${encodeURIComponent('Si že prijavljen.')}`,
+    )
   }
 
   return (
@@ -26,7 +39,11 @@ export default async function Login() {
 
         <h1 className="mb-4 text-[1.8rem]">Prijava</h1>
         <p className="mb-8">
-          <Link href="/admin/collections/users">Prijavi se v nadzorno ploščo</Link>.
+          {/* admin stays without locale, since it’s a separate app */}
+          <Link href="/admin/collections/users">
+            Prijavi se v nadzorno ploščo
+          </Link>
+          .
         </p>
         <Suspense fallback={<div />}>
           <LoginForm />
@@ -36,11 +53,18 @@ export default async function Login() {
   )
 }
 
-export const metadata: Metadata = {
-  description: 'Prijavi se ali ustvari račun.',
-  openGraph: {
+// Locale-aware metadata
+export async function generateMetadata({
+  params,
+}: Props): Promise<Metadata> {
+  const { locale } = await params
+
+  return {
     title: 'Login',
-    url: '/login',
-  },
-  title: 'Login',
+    description: 'Prijavi se ali ustvari račun.',
+    openGraph: {
+      title: 'Login',
+      url: `/${locale}/login`,
+    },
+  }
 }

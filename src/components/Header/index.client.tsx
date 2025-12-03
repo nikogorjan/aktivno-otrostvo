@@ -20,6 +20,7 @@ type Props = { header: Header }
 export function HeaderClient({ header }: Props) {
   const menu = header.navItems || []
   const pathname = usePathname()
+  const currentLocale = (pathname.split('/')[1] || 'sl').toLowerCase()
 
   // --- AUTH STATE ---
   const [authUser, setAuthUser] = useState<User | null>(null)
@@ -67,24 +68,50 @@ export function HeaderClient({ header }: Props) {
               className="h-9 w-auto"
             />
           </Link>
-          <div className="hidden md:flex md:flex-1 md:justify-center ml-6">
+          <div className="hidden lg:flex md:flex-1 md:justify-center ml-6">
             {menu.length ? (
               <ul className="flex items-center gap-5 text-sm">
-                {menu.map((item) => (
-                  <li key={item.id}>
-                    <CMSLink
-                      {...item.link}
-                      size="clear"
-                      className={cn('relative navLink pl-3 pr-3 text-[14px]', {
-                        active:
-                          item.link.url && item.link.url !== '/'
-                            ? pathname.includes(item.link.url)
-                            : false,
-                      })}
-                      appearance="nav"
-                    />
-                  </li>
-                ))}
+                {menu.map((item) => {
+                  const link = item.link
+
+                  let url = link.url || '/'
+
+                  const isExternal =
+                    url.startsWith('http://') ||
+                    url.startsWith('https://') ||
+                    url.startsWith('mailto:')
+
+                  if (!isExternal) {
+                    // normalize: remove double leading slash
+                    if (!url.startsWith('/')) url = `/${url}`
+
+                    url =
+                      url === '/'
+                        ? `/${currentLocale}`
+                        : `/${currentLocale}${url}`
+                  }
+
+                  const localizedLink = {
+                    ...link,
+                    url,
+                  }
+
+                  return (
+                    <li key={item.id}>
+                      <CMSLink
+                        {...localizedLink}
+                        size="clear"
+                        className={cn('relative navLink pl-3 pr-3', {
+                          active:
+                            localizedLink.url && localizedLink.url !== `/${currentLocale}`
+                              ? pathname.includes(localizedLink.url)
+                              : false,
+                        })}
+                        appearance="nav"
+                      />
+                    </li>
+                  )
+                })}
               </ul>
             ) : null}
           </div>
@@ -94,12 +121,16 @@ export function HeaderClient({ header }: Props) {
 
         {/* RIGHT: Icons (account + cart) and hamburger on mobile */}
         <div className="flex items-center gap-1 md:gap-2">
-          <div className="hidden md:block">
+          <div className="hidden lg:block">
             <LanguageSwitcher languages={header.languages} />
           </div>
           {/* Account button */}
           <Link
-            href="/login" // if your profile page is different, change this
+            href={
+              isLoggedIn
+                ? `/${currentLocale}/account`
+                : `/${currentLocale}/login`
+            }
             aria-label={isLoggedIn ? 'Profil' : 'Prijava'}
             className={cn(
               'relative flex h-11 items-center gap-2 px-3 rounded-md transition-colors',
@@ -109,13 +140,8 @@ export function HeaderClient({ header }: Props) {
           >
             <User2 className="h-5 w-5 transition-colors duration-200" />
             <span
-              className="
-      uppercase tracking-[0.1em] text-xs md:text-sm
-      pt-6 pb-6 
-      hover:text-primary/50 font-bold
-    "
+              className="uppercase tracking-[0.1em] text-xs md:text-sm pt-6 pb-6 hover:text-primary/50 font-bold"
             >
-              {/* while auth is still loading, show "Prijava" to avoid flicker */}
               {authChecked && isLoggedIn ? 'Profil' : 'Prijava'}
             </span>
           </Link>
@@ -128,7 +154,7 @@ export function HeaderClient({ header }: Props) {
           </div>
 
           {/* Mobile hamburger */}
-          <div className="block md:hidden">
+          <div className="block lg:hidden">
             <MobileMenu menu={menu} languages={header.languages} />
           </div>
         </div>

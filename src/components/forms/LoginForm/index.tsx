@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useAuth } from '@/providers/Auth'
 import Link from 'next/link'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import React, { useCallback, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -21,9 +21,15 @@ export const LoginForm: React.FC = () => {
   const searchParams = useSearchParams()
   const allParams = searchParams.toString() ? `?${searchParams.toString()}` : ''
   const redirect = useRef(searchParams.get('redirect'))
+
   const { login } = useAuth()
   const router = useRouter()
+  const pathname = usePathname()
   const [error, setError] = React.useState<null | string>(null)
+
+  // derive current locale from the URL: /sl/login, /en/login, etc.
+  const segments = pathname.split('/')
+  const currentLocale = (segments[1] || 'sl').toLowerCase()
 
   const {
     formState: { errors, isLoading },
@@ -35,13 +41,21 @@ export const LoginForm: React.FC = () => {
     async (data: FormData) => {
       try {
         await login(data)
-        if (redirect?.current) router.push(redirect.current)
-        else router.push('/account')
+
+        if (redirect?.current) {
+          // assume redirect already contains a proper path, e.g. /sl/account
+          router.push(redirect.current)
+        } else {
+          // fallback: go to locale-aware account page
+          router.push(`/${currentLocale}/account`)
+        }
       } catch (_) {
-        setError('There was an error with the credentials provided. Please try again.')
+        setError(
+          'There was an error with the credentials provided. Please try again.',
+        )
       }
     },
-    [login, router],
+    [login, router, currentLocale],
   )
 
   return (
@@ -63,25 +77,41 @@ export const LoginForm: React.FC = () => {
           <Input
             id="password"
             type="password"
-            {...register('password', { required: 'Please provide a password.' })}
+            {...register('password', {
+              required: 'Please provide a password.',
+            })}
           />
           {errors.password && <FormError message={errors.password.message} />}
         </FormItem>
 
         <div className="text-primary/70 mb-6 prose prose-a:hover:text-primary dark:prose-invert">
           <p>
-            Pozabljeno geslo? <Link href={`/recover-password${allParams}`}>Ponastavi geslo</Link>
+            Pozabljeno geslo?{' '}
+            <Link
+              href={`/${currentLocale}/recover-password${allParams}`}
+            >
+              Ponastavi geslo
+            </Link>
           </p>
         </div>
       </div>
 
       <div className="flex gap-4 justify-between">
         <Button asChild variant="outline" size="lg">
-          <Link href={`/create-account${allParams}`} className="grow max-w-[50%]">
+          <Link
+            href={`/${currentLocale}/create-account${allParams}`}
+            className="grow max-w-[50%]"
+          >
             Registriraj
           </Link>
         </Button>
-        <Button className="grow" disabled={isLoading} size="lg" type="submit" variant="default">
+        <Button
+          className="grow"
+          disabled={isLoading}
+          size="lg"
+          type="submit"
+          variant="default"
+        >
           {isLoading ? 'Obdelava' : 'Nadaljuj'}
         </Button>
       </div>
