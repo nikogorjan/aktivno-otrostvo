@@ -1,10 +1,9 @@
-// src/components/LanguageSwitcher.tsx
 'use client'
 
 import { Media } from '@/components/Media'
 import { ChevronDown } from 'lucide-react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { Header } from 'src/payload-types'
 
 type Lang = NonNullable<Header['languages']>[number]
@@ -28,7 +27,31 @@ export function LanguageSwitcher({
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
-  const [open, setOpen] = useState(false) // 👈 hook BEFORE any early return
+
+  const [open, setOpen] = useState(false)
+
+  // 👇 Add ref for click-outside detection
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  // 👇 Close on outside click
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (!containerRef.current) return
+
+      // If click is outside the dropdown, close
+      if (!containerRef.current.contains(e.target as Node)) {
+        setOpen(false)
+      }
+    }
+
+    if (open) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [open])
 
   const langs = Array.isArray(languages) ? languages : []
   if (langs.length === 0) return null
@@ -49,14 +72,14 @@ export function LanguageSwitcher({
   }
 
   return (
-    <div className={`relative ${className}`}>
-      {/* Trigger button */}
+    <div ref={containerRef} className={`relative ${className}`}>
+      {/* Trigger */}
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
         className="
           flex items-center gap-2 rounded-full border
-          px-2 py-2
+          px-1.5 py-1.5
           text-sm font-semibold uppercase
           bg-white hover:bg-neutral-100 border-neutral-300
           cursor-pointer
@@ -75,7 +98,7 @@ export function LanguageSwitcher({
         <ChevronDown className="h-4 w-4" />
       </button>
 
-      {/* Dropdown – aligned under left edge */}
+      {/* Dropdown */}
       {open && (
         <div
           className="
@@ -86,7 +109,6 @@ export function LanguageSwitcher({
           {langs.map((lang, i) => {
             const code = (lang?.code || '').toLowerCase()
             const isCurrent = code === currentLocale
-
             return (
               <button
                 key={`${code}-${i}`}
@@ -104,21 +126,17 @@ export function LanguageSwitcher({
                   }
                 `}
               >
-                {lang?.languageIcon ? (
+                {lang.languageIcon && (
                   <span className="relative w-5 h-5 overflow-hidden rounded-full border border-neutral-300">
-                    <Media
-                      resource={lang.languageIcon}
-                      fill
-                      imgClassName="object-cover rounded-full"
-                    />
+                    <Media resource={lang.languageIcon} fill imgClassName="object-cover rounded-full" />
                   </span>
-                ) : null}
+                )}
 
                 <span className="uppercase font-semibold min-w-[26px]">
-                  {lang?.shortTitle || lang?.code}
+                  {lang.shortTitle || lang.code}
                 </span>
 
-                <span className="text-sm text-neutral-700">{lang?.title}</span>
+                <span className="text-sm text-neutral-700">{lang.title}</span>
               </button>
             )
           })}
