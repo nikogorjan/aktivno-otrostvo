@@ -98,16 +98,7 @@ export const HomeHero: React.FC<HomeHeroProps> = (props) => {
           gap-4 lg:grid-cols-[1.1fr_1.4fr] lg:gap-16
         "
       >
-        {/* LEFT: mobile title + image */}
-        <div className="mb-0 text-center lg:hidden">
-          {left?.tagline && (
-            <p className="mb-2 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
-              {left.tagline}
-            </p>
-          )}
-
-          {left?.subtitle && <p className="mt-2 text-sm text-muted-foreground">{left.subtitle}</p>}
-        </div>
+      
 
         {/* LEFT: image */}
         <div className="flex justify-center lg:h-full">
@@ -144,18 +135,10 @@ export const HomeHero: React.FC<HomeHeroProps> = (props) => {
               "
             >
               <div className="text-left">
-                {left?.tagline && (
-                  <p className="mb-2 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
-                    {left.tagline}
-                  </p>
-                )}
                 {left?.title && (
                   <h2 className="text-6xl font-[800] tracking-tight leading-tight">
                     {left.title}
                   </h2>
-                )}
-                {left?.subtitle && (
-                  <p className="mt-2 text-sm text-muted-foreground">{left.subtitle}</p>
                 )}
               </div>
             </div>

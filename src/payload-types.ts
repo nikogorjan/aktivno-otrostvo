@@ -471,32 +471,7 @@ export interface Page {
     media?: (string | null) | Media;
     left?: {
       photo: string | Media;
-      tagline?: string | null;
       title: string;
-      subtitle?: string | null;
-      description?: string | null;
-      /**
-       * Primary CTA (optional)
-       */
-      links?:
-        | {
-            link: {
-              type?: ('reference' | 'custom') | null;
-              newTab?: boolean | null;
-              reference?: {
-                relationTo: 'pages';
-                value: string | Page;
-              } | null;
-              url?: string | null;
-              label: string;
-              /**
-               * Choose how the link should be rendered.
-               */
-              appearance?: ('default' | 'outline' | 'rumen' | 'siv') | null;
-            };
-            id?: string | null;
-          }[]
-        | null;
     };
     right?: {
       cards?:
@@ -1478,25 +1453,7 @@ export interface PagesSelect<T extends boolean = true> {
           | T
           | {
               photo?: T;
-              tagline?: T;
               title?: T;
-              subtitle?: T;
-              description?: T;
-              links?:
-                | T
-                | {
-                    link?:
-                      | T
-                      | {
-                          type?: T;
-                          newTab?: T;
-                          reference?: T;
-                          url?: T;
-                          label?: T;
-                          appearance?: T;
-                        };
-                    id?: T;
-                  };
             };
         right?:
           | T

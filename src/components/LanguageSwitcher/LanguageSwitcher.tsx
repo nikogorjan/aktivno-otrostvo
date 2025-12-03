@@ -1,5 +1,4 @@
 'use client'
-
 import { Media } from '@/components/Media'
 import { ChevronDown } from 'lucide-react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
@@ -80,7 +79,7 @@ export function LanguageSwitcher({
         className="
           flex items-center gap-2 rounded-full border
           px-1.5 py-1.5
-          text-sm font-semibold uppercase
+          text-sm font-bold uppercase
           bg-white hover:bg-neutral-100 border-neutral-300
           cursor-pointer
         "
@@ -132,11 +131,11 @@ export function LanguageSwitcher({
                   </span>
                 )}
 
-                <span className="uppercase font-semibold min-w-[26px]">
+                <span className="uppercase text-sm font-bold min-w-[26px]">
                   {lang.shortTitle || lang.code}
                 </span>
 
-                <span className="text-sm text-neutral-700">{lang.title}</span>
+                <span className="text-sm font-semibold text-neutral-700">{lang.title}</span>
               </button>
             )
           })}

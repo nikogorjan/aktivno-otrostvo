@@ -86,7 +86,6 @@ export const hero: Field = {
           label: 'Main photo',
           required: true,
         },
-        { name: 'tagline', type: 'text', label: 'Tagline above title' },
         {
           name: 'title',
           type: 'text',
@@ -94,15 +93,7 @@ export const hero: Field = {
           localized: true,
           label: 'Main title (e.g. "AKTIVNO OTROŠTVO")',
         },
-        {
-          name: 'subtitle',
-          type: 'text',
-          label: 'Optional subtitle under title',
-        },
-        { name: 'description', type: 'text', label: 'Description (optional)' },
-        linkGroup({
-          overrides: { maxRows: 1, admin: { description: 'Primary CTA (optional)' } },
-        }),
+  
       ],
     },
 
