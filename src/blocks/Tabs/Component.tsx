@@ -116,7 +116,7 @@ export const TabsSectionBlock: React.FC<TabsSectionBlockProps & { className?: st
                   </span>
 
                   {/* Desktop vertical label */}
-                  <span className="hidden xl:block [writing-mode:vertical-rl] rotate-180 text-2xl font-semibold text-foreground/80">
+                  <span className="hidden xl:block [writing-mode:vertical-rl] rotate-180 text-xl font-semibold text-foreground/80">
                     {item.verticalLabel}
                   </span>
                 </div>
@@ -128,7 +128,7 @@ export const TabsSectionBlock: React.FC<TabsSectionBlockProps & { className?: st
                       <div className="grid grid-cols-1 xl:grid-cols-[1.2fr_1.8fr] gap-8 p-6 md:p-10 xl:p-12 h-full min-w-0">
                         <div className="flex flex-col justify-center min-w-0">
                           {item.title && (
-                            <h3 className="text-3xl md:text-4xl font-semibold mb-4">
+                            <h3 className="text-3xl md:text-2xl font-semibold mb-4">
                               {item.title}
                             </h3>
                           )}

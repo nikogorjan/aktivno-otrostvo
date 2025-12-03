@@ -9,10 +9,13 @@ import type { DefaultDocumentIDType } from 'payload'
 import React from 'react'
 
 const BG_COLOR_MAP: Record<string, string> = {
-  modra: 'bg-modra',     // big pastel blue background
   roza: 'bg-roza',
+  oranzna: 'bg-oranzna',
   rumena: 'bg-rumena',
   zelena: 'bg-zelena',
+  vijolicna: 'bg-vijolicna',
+  modra: 'bg-modra',
+  mint: 'bg-mint',
 }
 
 export const VideoSectionBlock: React.FC<

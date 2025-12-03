@@ -14,12 +14,14 @@ export const TabsSection: Block = {
       name: 'heading',
       type: 'text',
       required: true,
-      label: 'Section Heading',
+      label: 'Naslov',
+      localized: true,
     },
     {
       name: 'intro',
       type: 'richText',
-      label: 'Section Intro',
+      label: 'Opis',
+      localized: true,
       editor: lexicalEditor({
         features: ({ rootFeatures }) => [
           ...rootFeatures,
@@ -32,7 +34,7 @@ export const TabsSection: Block = {
     {
       name: 'items',
       type: 'array',
-      label: 'Tabs',
+      label: 'Stebri',
       required: true,
       admin: { initCollapsed: true },
       fields: [
@@ -40,23 +42,27 @@ export const TabsSection: Block = {
           name: 'verticalLabel',
           type: 'text',
           required: true,
-          label: 'Vertical Label (right rail)',
+                localized: true,
+          label: 'Verticalni naslov ',
         },
         {
           name: 'horizontalLabel',
           type: 'text',
-          label: 'Horizontal Label (mobile)',
+          label: 'Horizontalni naslov (mobile)',
+                localized: true,
         },
         {
           name: 'title',
           type: 'text',
           required: true,
-          label: 'Tab Title',
+          label: 'Naslov (ko je odprto)',
+                localized: true,
         },
         {
           name: 'description',
           type: 'richText',
-          label: 'Tab Description',
+          label: 'Opis',
+                localized: true,
           editor: lexicalEditor({
             features: ({ rootFeatures }) => [
               ...rootFeatures,
@@ -69,7 +75,7 @@ export const TabsSection: Block = {
           name: 'color',
           type: 'select',
           defaultValue: 'roza',
-          label: 'Number Background Color',
+          label: 'Barva krogca',
           options: [
             { label: 'Roza (pink)', value: 'roza' },
             { label: 'Oranžna (peach)', value: 'oranzna' },

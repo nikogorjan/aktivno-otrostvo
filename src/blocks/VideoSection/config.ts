@@ -1,8 +1,8 @@
 import {
-    FixedToolbarFeature,
-    HeadingFeature,
-    InlineToolbarFeature,
-    lexicalEditor,
+  FixedToolbarFeature,
+  HeadingFeature,
+  InlineToolbarFeature,
+  lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 import type { Block } from 'payload'
 
@@ -16,12 +16,14 @@ export const VideoSection: Block = {
       name: 'heading',
       type: 'text',
       required: true,
-      label: 'Heading (left, large)',
+      label: 'Naslov',
+      localized: true
     },
     {
       name: 'description',
       type: 'richText',
-      label: 'Description (right column)',
+      label: 'Opis',
+      localized: true,
       editor: lexicalEditor({
         features: ({ rootFeatures }) => [
           ...rootFeatures,
@@ -33,27 +35,32 @@ export const VideoSection: Block = {
     },
     linkGroup({
       overrides: {
-        label: 'Buttons',
-        admin: { description: 'Primary CTA(s) shown under the description.' },
+        label: 'Gumbi',
+        admin: { description: 'Pod opisom.' },
+        localized: true
       },
     }),
     {
       name: 'backgroundColor',
       type: 'select',
-      label: 'Background color behind video',
+      label: 'Barva ozadja za videoposnetkom',
       defaultValue: 'modra',
       required: true,
       options: [
-        { label: 'Modra (blue)', value: 'modra' },
         { label: 'Roza (pink)', value: 'roza' },
+        { label: 'Oranžna (peach)', value: 'oranzna' },
         { label: 'Rumena (yellow)', value: 'rumena' },
         { label: 'Zelena (green)', value: 'zelena' },
+        { label: 'Vijolična (purple)', value: 'vijolicna' },
+        { label: 'Modra (blue)', value: 'modra' },
+        { label: 'Mint (light green)', value: 'mint' },
       ],
     },
     {
       name: 'mediaTitle',
       type: 'text',
-      label: 'Title inside the video frame',
+      label: 'Naslov nad videoposnetkom',
+      localized: true,
       admin: {
         description: 'E.g. "Gibanje nosečnic in mamic po porodu".',
       },
@@ -61,15 +68,16 @@ export const VideoSection: Block = {
     {
       name: 'browserUrl',
       type: 'text',
-      label: 'URL in browser bar',
+      label: 'URL v iskalniku',
       defaultValue: 'website.com',
+      localized: true,
     },
     {
       name: 'media',
       type: 'upload',
       relationTo: 'media',
       required: true,
-      label: 'Video or image',
+      label: 'Video ali slika',
     },
   ],
 }

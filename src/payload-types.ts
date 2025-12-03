@@ -1094,7 +1094,7 @@ export interface VideoSectionBlock {
     [k: string]: unknown;
   } | null;
   /**
-   * Primary CTA(s) shown under the description.
+   * Pod opisom.
    */
   links?:
     | {
@@ -1115,7 +1115,7 @@ export interface VideoSectionBlock {
         id?: string | null;
       }[]
     | null;
-  backgroundColor: 'modra' | 'roza' | 'rumena' | 'zelena';
+  backgroundColor: 'roza' | 'oranzna' | 'rumena' | 'zelena' | 'vijolicna' | 'modra' | 'mint';
   /**
    * E.g. "Gibanje nosečnic in mamic po porodu".
    */
