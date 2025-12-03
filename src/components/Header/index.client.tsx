@@ -133,14 +133,21 @@ export function HeaderClient({ header }: Props) {
             }
             aria-label={isLoggedIn ? 'Profil' : 'Prijava'}
             className={cn(
-              'relative flex h-11 items-center gap-2 px-3 rounded-md transition-colors',
-              'hover:text-primary/50 hover:bg-neutral-100 text-primary/100',
+              'group relative flex h-11 items-center gap-2 px-3 rounded-md',
+              'text-primary/100 transition-colors',
+              'hover:bg-neutral-100 hover:text-primary/50',
               'dark:bg-black dark:text-white dark:hover:bg-neutral-900',
             )}
           >
             <User2 className="h-5 w-5 transition-colors duration-200" />
+
             <span
-              className="uppercase tracking-[0.1em] text-xs md:text-sm pt-6 pb-6 hover:text-primary/50 font-bold"
+              className={cn(
+                'uppercase tracking-[0.1em] text-xs md:text-sm font-bold',
+                'py-6', // if you really need vertical padding
+                'transition-colors duration-200',
+                // no own hover: let it inherit from parent
+              )}
             >
               {authChecked && isLoggedIn ? 'Profil' : 'Prijava'}
             </span>
