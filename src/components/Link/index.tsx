@@ -1,12 +1,13 @@
 import type { Page, Product } from '@/payload-types'
+import type { AnchorHTMLAttributes } from 'react'
+import React from 'react'
 
 import { Button, type ButtonProps } from '@/components/ui/button'
 import { Link } from '@/i18n/navigation'
 import { cn } from '@/utilities/cn'
 import { ArrowUpRight } from 'lucide-react'
-import React from 'react'
 
-type CMSLinkType = {
+type CMSLinkBaseProps = {
   appearance?: 'inline' | ButtonProps['variant']
   children?: React.ReactNode
   className?: string
@@ -21,6 +22,10 @@ type CMSLinkType = {
   url?: string | null
 }
 
+// 👇 inherit all anchor props EXCEPT "type" (because we already use our own)
+type CMSLinkType = CMSLinkBaseProps &
+  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'type'>
+
 export const CMSLink: React.FC<CMSLinkType> = (props) => {
   const {
     type,
@@ -32,6 +37,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
     reference,
     size: sizeFromProps,
     url,
+    ...rest // 👈 grab the rest (onMouseEnter, etc.)
   } = props
 
   const href =
@@ -46,7 +52,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
 
   if (appearance === 'inline') {
     return (
-      <Link className={cn(className)} href={href} {...newTabProps}>
+      <Link className={cn(className)} href={href} {...newTabProps} {...rest}>
         {label ?? children}
       </Link>
     )
@@ -54,10 +60,14 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
 
   return (
     <Button asChild className={className} size={size} variant={appearance}>
-      <Link className={cn('pl-4 pr-1.5', className)} href={href} {...newTabProps}>
+      <Link
+        className="pl-4 pr-1.5"
+        href={href}
+        {...newTabProps}
+        {...rest} // 👈 pass onMouseEnter etc. down to <a>
+      >
         {label ?? children}
 
-        {/* 👇 show arrow bubble for both default & rumen */}
         {(appearance === 'default' || appearance === 'rumen' || appearance === 'siv') && (
           <span className="ml-2 inline-flex items-center justify-center rounded-full bg-white text-neutral-dark size-9">
             <ArrowUpRight className="size-6" />
