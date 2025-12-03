@@ -105,7 +105,7 @@ export const HomeHero: React.FC<HomeHeroProps> = (props) => {
               {left.tagline}
             </p>
           )}
-        
+
           {left?.subtitle && <p className="mt-2 text-sm text-muted-foreground">{left.subtitle}</p>}
         </div>
 
@@ -113,15 +113,19 @@ export const HomeHero: React.FC<HomeHeroProps> = (props) => {
         <div className="flex justify-center lg:h-full">
           <div
             className="
-              relative 
-              w-full max-w-[520px] 
-              overflow-hidden rounded-xl bg-muted
-              aspect-[3/4] lg:aspect-auto lg:h-full
-            "
+    relative 
+    w-full max-w-[520px] 
+    overflow-visible rounded-xl
+    aspect-square lg:aspect-auto lg:h-full
+  "
           >
             {heroPhoto && (
-              <Media resource={heroPhoto} fill priority imgClassName="object-cover" />
-            )}
+              <Media
+                resource={heroPhoto}
+                fill
+                priority
+                imgClassName="object-contain "
+              />)}
           </div>
         </div>
 

@@ -17,7 +17,7 @@ const COLOR_BADGES: Record<string, string> = {
   mint: 'bg-mint',
 }
 
-function useIsDesktop(query = '(min-width: 1024px)') {
+function useIsDesktop(query = '(min-width: 1280px)') {
   const [isDesktop, setIsDesktop] = React.useState(false)
   React.useEffect(() => {
     const mq = window.matchMedia(query)
@@ -44,7 +44,7 @@ export const TabsSectionBlock: React.FC<TabsSectionBlockProps & { className?: st
   if (!items.length) return null
 
   return (
-    <section className={cn('py-6 md:py-12 lg:py-16', className)}>
+    <section className={cn('py-6 md:py-12 xl:py-16', className)}>
       <div className="container">
         {heading && (
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">{heading}</h2>
@@ -56,8 +56,8 @@ export const TabsSectionBlock: React.FC<TabsSectionBlockProps & { className?: st
         )}
       </div>
 
-      <div className="container mt-12 overflow-hidden  rounded-lg lg:h-[500px]">
-        <div className="flex flex-col lg:flex-row  h-full">
+      <div className="container mt-12 overflow-hidden  rounded-lg xl:h-[500px]">
+        <div className="flex flex-col xl:flex-row  h-full">
           {items.map((item, i) => {
             const isActive = i === active
             const color = COLOR_BADGES[item.color || 'roza'] ?? COLOR_BADGES.roza
@@ -70,11 +70,11 @@ export const TabsSectionBlock: React.FC<TabsSectionBlockProps & { className?: st
                 onClick={() => setActive(i)}
                 onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && setActive(i)}
                 className={cn(
-                  'group relative flex flex-col lg:flex-row overflow-hidden border-border cursor-pointer',
+                  'group relative flex flex-col xl:flex-row overflow-hidden border-border cursor-pointer',
                   'focus:outline-none focus-visible:ring-2 focus-visible:ring-ring/30',
-                  'lg:border-r last:lg:border-r-0 box-border min-w-0',
-                  isActive ? 'border-b lg:border-b-0' : 'border-b-0',
-                  'lg:border-r last:lg:border-r-0',
+                  'xl:border-r last:xl:border-r-0 box-border min-w-0',
+                  isActive ? 'border-b xl:border-b-0' : 'border-b-0',
+                  'xl:border-r last:xl:border-r-0',
                   'box-border min-w-0',
                 )}
                 initial={
@@ -97,13 +97,13 @@ export const TabsSectionBlock: React.FC<TabsSectionBlockProps & { className?: st
                 <div
                   className={cn(
                     'relative flex h-16 items-center justify-start gap-4 border-b border-border  md:h-20',
-                    'lg:h-full lg:w-[80px] lg:min-w-[80px] lg:max-w-[80px] lg:flex-col lg:justify-between lg:border-none lg:px-0',
+                    'xl:h-full xl:w-[80px] xl:min-w-[80px] xl:max-w-[80px] xl:flex-col xl:justify-between xl:border-none xl:px-0',
                   )}
                 >
                   <span
                     className={cn(
                       'inline-flex size-10 items-center justify-center rounded-full text-sm font-semibold',
-                      'lg:mt-5 lg:mx-auto',
+                      'xl:mt-5 xl:mx-auto',
                       color,
                     )}
                   >
@@ -111,12 +111,12 @@ export const TabsSectionBlock: React.FC<TabsSectionBlockProps & { className?: st
                   </span>
 
                   {/* Mobile label */}
-                  <span className="text-base font-semibold lg:hidden">
+                  <span className="text-base font-semibold xl:hidden">
                     {item.horizontalLabel || item.verticalLabel}
                   </span>
 
                   {/* Desktop vertical label */}
-                  <span className="hidden lg:block [writing-mode:vertical-rl] rotate-180 text-2xl font-semibold text-foreground/80">
+                  <span className="hidden xl:block [writing-mode:vertical-rl] rotate-180 text-2xl font-semibold text-foreground/80">
                     {item.verticalLabel}
                   </span>
                 </div>
@@ -124,8 +124,8 @@ export const TabsSectionBlock: React.FC<TabsSectionBlockProps & { className?: st
                 {/* Desktop content (mount only when active) */}
                 {isDesktop ? (
                   isActive ? (
-                    <div className="lg:flex-1 h-full min-w-0">
-                      <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1.8fr] gap-8 p-6 md:p-10 lg:p-12 h-full min-w-0">
+                    <div className="xl:flex-1 h-full min-w-0">
+                      <div className="grid grid-cols-1 xl:grid-cols-[1.2fr_1.8fr] gap-8 p-6 md:p-10 xl:p-12 h-full min-w-0">
                         <div className="flex flex-col justify-center min-w-0">
                           {item.title && (
                             <h3 className="text-3xl md:text-4xl font-semibold mb-4">
