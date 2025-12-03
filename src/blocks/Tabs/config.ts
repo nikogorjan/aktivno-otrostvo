@@ -42,27 +42,27 @@ export const TabsSection: Block = {
           name: 'verticalLabel',
           type: 'text',
           required: true,
-                localized: true,
+          localized: true,
           label: 'Verticalni naslov ',
         },
         {
           name: 'horizontalLabel',
           type: 'text',
           label: 'Horizontalni naslov (mobile)',
-                localized: true,
+          localized: true,
         },
         {
           name: 'title',
           type: 'text',
           required: true,
           label: 'Naslov (ko je odprto)',
-                localized: true,
+          localized: true,
         },
         {
           name: 'description',
           type: 'richText',
           label: 'Opis',
-                localized: true,
+          localized: true,
           editor: lexicalEditor({
             features: ({ rootFeatures }) => [
               ...rootFeatures,

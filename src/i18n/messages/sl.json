@@ -1,0 +1,16 @@
+{
+  "Header": {
+    "profile": "Profil",
+    "login": "Prijava"
+  },
+  "AccountPage": {
+    "settingsTitle": "Nastavitve računa",
+    "recentOrdersTitle": "Nedavna naročila",
+    "recentOrdersText": "To so vaša zadnja naročila. Vsako naročilo je povezano s plačilom. Ko boste opravili več naročil, se bodo prikazala na seznamu naročil.",
+    "noOrders": "Nimate še nobenega naročila.",
+    "viewAllOrders": "Prikaži vsa naročila",
+    "loginWarning": "Za dostop do nastavitev računa se prosim prijavite.",
+    "metaTitle": "Račun",
+    "metaDescription": "Ustvarite račun ali se prijavite v obstoječi račun."
+  }
+}

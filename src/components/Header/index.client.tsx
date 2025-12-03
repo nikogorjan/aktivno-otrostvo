@@ -3,7 +3,7 @@
 import { Cart } from '@/components/Cart'
 import { OpenCartButton } from '@/components/Cart/OpenCart'
 import { CMSLink } from '@/components/Link'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { Suspense, useEffect, useState } from 'react'
 
 import type { Header, User } from 'src/payload-types'
@@ -11,16 +11,20 @@ import { MobileMenu } from './MobileMenu'
 
 import { cn } from '@/utilities/cn'
 import { User2 } from 'lucide-react'
+import { useLocale, useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { LanguageSwitcher } from '../LanguageSwitcher/LanguageSwitcher'
+
 
 type Props = { header: Header }
 
 export function HeaderClient({ header }: Props) {
   const menu = header.navItems || []
+  const t = useTranslations('Header')
+  const locale = useLocale()
   const pathname = usePathname()
-  const currentLocale = (pathname.split('/')[1] || 'sl').toLowerCase()
+  const currentLocale = locale
 
   // --- AUTH STATE ---
   const [authUser, setAuthUser] = useState<User | null>(null)
@@ -65,7 +69,7 @@ export function HeaderClient({ header }: Props) {
               width={160}
               height={40}
               priority
-              className="h-9 w-auto"
+              className="h-8 sm:h-11 w-auto"
             />
           </Link>
           <div className="hidden lg:flex md:flex-1 md:justify-center ml-6">
@@ -82,30 +86,33 @@ export function HeaderClient({ header }: Props) {
                     url.startsWith('mailto:')
 
                   if (!isExternal) {
-                    // normalize: remove double leading slash
+                    // normalize: ensure leading slash, but NO locale here
                     if (!url.startsWith('/')) url = `/${url}`
-
-                    url =
-                      url === '/'
-                        ? `/${currentLocale}`
-                        : `/${currentLocale}${url}`
                   }
 
-                  const localizedLink = {
+                  const cmsLinkProps = {
                     ...link,
-                    url,
+                    url, // locale-less path, e.g. "/", "/about", "/blog"
                   }
 
                   return (
                     <li key={item.id}>
                       <CMSLink
-                        {...localizedLink}
+                        {...cmsLinkProps}
                         size="clear"
-                        className={cn('relative navLink pl-3 pr-3', {
+                        className={cn('relative navLink pl-2 pr-2 text-xs xl:text-sm', {
                           active:
-                            localizedLink.url && localizedLink.url !== `/${currentLocale}`
-                              ? pathname.includes(localizedLink.url)
-                              : false,
+                            !isExternal &&
+                            (() => {
+                              // pathname includes locale (e.g. "/en/about")
+                              // url does NOT (e.g. "/about")
+                              const targetPath =
+                                url === '/'
+                                  ? `/${currentLocale}`
+                                  : `/${currentLocale}${url}`
+
+                              return pathname.startsWith(targetPath)
+                            })(),
                         })}
                         appearance="nav"
                       />
@@ -126,12 +133,8 @@ export function HeaderClient({ header }: Props) {
           </div>
           {/* Account button */}
           <Link
-            href={
-              isLoggedIn
-                ? `/${currentLocale}/account`
-                : `/${currentLocale}/login`
-            }
-            aria-label={isLoggedIn ? 'Profil' : 'Prijava'}
+            href={isLoggedIn ? '/account' : '/login'}
+            aria-label={authChecked && isLoggedIn ? t('profile') : t('login')}
             className={cn(
               'group relative flex h-11 items-center gap-2 px-3 rounded-md',
               'text-primary/100 transition-colors',
@@ -140,16 +143,14 @@ export function HeaderClient({ header }: Props) {
             )}
           >
             <User2 className="h-5 w-5 transition-colors duration-200" />
-
             <span
               className={cn(
-                'uppercase tracking-[0.1em] text-xs md:text-sm font-bold',
-                'py-6', // if you really need vertical padding
+                'uppercase tracking-[0.1em] text-xs xl:text-sm font-bold',
+                'py-6',
                 'transition-colors duration-200',
-                // no own hover: let it inherit from parent
               )}
             >
-              {authChecked && isLoggedIn ? 'Profil' : 'Prijava'}
+              {authChecked && isLoggedIn ? t('profile') : t('login')}
             </span>
           </Link>
 

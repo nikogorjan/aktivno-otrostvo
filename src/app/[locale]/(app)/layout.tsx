@@ -5,10 +5,12 @@ import { Header } from '@/components/Header'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
-import { GeistMono } from 'geist/font/mono' // keep if you still want this mono
+import { GeistMono } from 'geist/font/mono'; // keep if you still want this mono
+import { NextIntlClientProvider } from 'next-intl'
 import { Nunito as NunitoGoogle } from 'next/font/google'
 import { Suspense, type ReactNode } from 'react'
 import './globals.css'
+
 
 // Bind Figtree to the SAME CSS var you already use everywhere
 const Nunito = NunitoGoogle({
@@ -33,15 +35,19 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>
       <body>
+
         <Providers>
           <Suspense fallback={null}>
-            <AdminBar />
-            <LivePreviewListener />
-            <Header />
-            <main>{children}</main>
-            <Footer />
+            <NextIntlClientProvider>
+              <AdminBar />
+              <LivePreviewListener />
+              <Header />
+              <main>{children}</main>
+              <Footer />
+            </NextIntlClientProvider>
           </Suspense>
         </Providers>
+
       </body>
     </html>
   )

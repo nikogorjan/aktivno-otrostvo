@@ -56,7 +56,7 @@ export const HomeHero: React.FC<HomeHeroProps> = (props) => {
     const styleClasses = INFO_CARD_STYLES[card.color || 'roza'] ?? INFO_CARD_STYLES.roza
 
     const inner = (
-      <div className="w-full h-full aspect-square xl:aspect-[4/3]">
+      <div className="w-full h-full aspect-square xl:aspect-[4/3] ">
         <div
           className={`
             w-full h-full rounded-xl px-6 py-7 flex flex-col items-center justify-center text-center
@@ -101,12 +101,7 @@ export const HomeHero: React.FC<HomeHeroProps> = (props) => {
         {/* LEFT: image */}
         <div className="flex justify-center lg:h-full">
           <div
-            className="
-    relative 
-    w-full lg:max-w-[520px] 
-    overflow-visible rounded-xl
-    aspect-square lg:aspect-auto lg:h-full
-  "
+            className="relative w-full lg:max-w-[520px] overflow-visible rounded-xl aspect-square lg:aspect-auto lg:h-full"
           >
             {heroPhoto && (
               <Media

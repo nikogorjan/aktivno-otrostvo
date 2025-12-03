@@ -1,0 +1,16 @@
+{
+  "Header": {
+    "profile": "Profile",
+    "login": "Login"
+  },
+  "AccountPage": {
+    "settingsTitle": "Account settings",
+    "recentOrdersTitle": "Recent orders",
+    "recentOrdersText": "These are the most recent orders you have placed. Each order is associated with a payment. As you place more orders, they will appear in your orders list.",
+    "noOrders": "You have no orders.",
+    "viewAllOrders": "View all orders",
+    "loginWarning": "Please login to access your account settings.",
+    "metaTitle": "Account",
+    "metaDescription": "Create an account or log in to your existing account."
+  }
+}

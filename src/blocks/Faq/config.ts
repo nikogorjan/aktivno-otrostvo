@@ -14,12 +14,14 @@ export const FaqSection: Block = {
       name: 'heading',
       type: 'text',
       required: true,
-      label: 'Section Heading',
+      label: 'Naslov',
+      localized: true,
     },
     {
       name: 'intro',
       type: 'richText',
-      label: 'Intro',
+      label: 'Opis',
+            localized: true,
       editor: lexicalEditor({
         features: ({ rootFeatures }) => [
           ...rootFeatures,
@@ -34,19 +36,20 @@ export const FaqSection: Block = {
       type: 'array',
       label: 'FAQs',
       required: true,
+            localized: true,
       admin: { initCollapsed: true },
       fields: [
         {
           name: 'question',
           type: 'text',
           required: true,
-          label: 'Question',
+          label: 'Vprašanje',
         },
         {
           name: 'answer',
           type: 'richText',
           required: true,
-          label: 'Answer',
+          label: 'Odgovor',
           editor: lexicalEditor({
             features: ({ rootFeatures }) => [
               ...rootFeatures,

@@ -1,9 +1,9 @@
 import type { Page, Product } from '@/payload-types'
 
 import { Button, type ButtonProps } from '@/components/ui/button'
+import { Link } from '@/i18n/navigation'
 import { cn } from '@/utilities/cn'
 import { ArrowUpRight } from 'lucide-react'
-import Link from 'next/link'
 import React from 'react'
 
 type CMSLinkType = {
