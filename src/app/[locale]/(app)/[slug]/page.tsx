@@ -17,8 +17,9 @@ type PageParams = {
   locale: Locale
 }
 
+// 👇 IMPORTANT: `params` is a Promise here
 type PageProps = {
-  params: PageParams
+  params: Promise<PageParams>
 }
 
 // Generate all { locale, slug } combinations for static pages
@@ -57,7 +58,8 @@ export async function generateStaticParams(): Promise<PageParams[]> {
 }
 
 export default async function Page({ params }: PageProps) {
-  const { slug = 'home', locale } = params
+  // 👇 await params
+  const { slug = 'home', locale } = await params
 
   let page = await queryPageBySlug({
     slug,
@@ -84,7 +86,8 @@ export default async function Page({ params }: PageProps) {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { slug = 'home', locale } = params
+  // 👇 await params here too
+  const { slug = 'home', locale } = await params
 
   const page = await queryPageBySlug({
     slug,
