@@ -56,7 +56,7 @@ export const HomeHero: React.FC<HomeHeroProps> = (props) => {
     const styleClasses = INFO_CARD_STYLES[card.color || 'roza'] ?? INFO_CARD_STYLES.roza
 
     const inner = (
-      <div className="w-full h-full aspect-square lg:aspect-[4/3]">
+      <div className="w-full h-full aspect-square xl:aspect-[4/3]">
         <div
           className={`
             w-full h-full rounded-xl px-6 py-7 flex flex-col items-center justify-center text-center
@@ -72,9 +72,7 @@ export const HomeHero: React.FC<HomeHeroProps> = (props) => {
             </div>
           )}
           <h3 className="text-sm md:text-base font-semibold leading-snug">{card.heading}</h3>
-          {card.body && (
-            <p className="mt-2 text-xs md:text-sm leading-relaxed opacity-80">{card.body}</p>
-          )}
+        
         </div>
       </div>
     )
@@ -105,7 +103,7 @@ export const HomeHero: React.FC<HomeHeroProps> = (props) => {
           <div
             className="
     relative 
-    w-full max-w-[520px] 
+    w-full lg:max-w-[520px] 
     overflow-visible rounded-xl
     aspect-square lg:aspect-auto lg:h-full
   "
@@ -122,7 +120,7 @@ export const HomeHero: React.FC<HomeHeroProps> = (props) => {
 
         {/* RIGHT: grid + title */}
         <div className="w-full h-full">
-          <div className="grid grid-cols-2 gap-4 md:gap-5 lg:grid-cols-3 lg:gap-6 h-full">
+          <div className="grid grid-cols-2 gap-4 md:gap-5 md:grid-cols-3 lg:gap-6 h-full">
             {/* Row 1: three cards */}
             {row1.map((card, idx) => renderInfoCard(card, `row1-${idx}`))}
 

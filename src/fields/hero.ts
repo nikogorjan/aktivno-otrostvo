@@ -74,7 +74,7 @@ export const hero: Field = {
     {
       name: 'left',
       type: 'group',
-      label: 'HomeHero • Left',
+      label: 'Prva sekcija',
       admin: {
         condition: (_, { type } = {}) => type === 'homeHero',
       },
@@ -83,7 +83,7 @@ export const hero: Field = {
           name: 'photo',
           type: 'upload',
           relationTo: 'media',
-          label: 'Main photo',
+          label: 'Naslovna slika',
           required: true,
         },
         {
@@ -91,16 +91,16 @@ export const hero: Field = {
           type: 'text',
           required: true,
           localized: true,
-          label: 'Main title (e.g. "AKTIVNO OTROŠTVO")',
+          label: 'Prvi naslov (e.g. "AKTIVNO OTROŠTVO")',
         },
-  
+
       ],
     },
 
     {
       name: 'right',
       type: 'group',
-      label: 'HomeHero • Grid',
+      label: 'Mreža programov',
       admin: {
         condition: (_, { type } = {}) => type === 'homeHero',
       },
@@ -108,22 +108,23 @@ export const hero: Field = {
         {
           name: 'cards',
           type: 'blocks',
-          label: 'Info cards (order matters – 7 items)',
+          label: 'Programi (Do 7 elementov)',
           minRows: 7,
           maxRows: 7,
           blocks: [
             {
               slug: 'infoCard',
-              labels: { singular: 'Info Card', plural: 'Info Cards' },
+              labels: { singular: 'Kartivca programa z ikono', plural: 'Kartivca programov z ikono' },
               fields: [
-                { name: 'icon', type: 'upload', relationTo: 'media', label: 'Icon' },
-                { name: 'heading', type: 'text', required: true, label: 'Heading' },
-                { name: 'body', type: 'textarea', label: 'Description (optional)' },
+                { name: 'icon', type: 'upload', relationTo: 'media', label: 'Ikona' },
+                {
+                  name: 'heading', type: 'text', required: true, label: 'Naslov', localized: true,
+                },
                 {
                   name: 'color',
                   type: 'select',
                   defaultValue: 'roza',
-                  label: 'Background Color',
+                  label: 'Barva ozadja',
                   options: [
                     { label: 'Roza (pink)', value: 'roza' },
                     { label: 'Oranžna (peach)', value: 'oranzna' },
@@ -137,9 +138,9 @@ export const hero: Field = {
                 {
                   name: 'href',
                   type: 'text',
-                  label: 'Link URL (optional)',
+                  label: 'Link URL',
                   admin: {
-                    description: 'Enter URL to make entire card clickable',
+                    description: 'Primer (/gibanje-nosecnic-in-mamic)',
                   },
                 },
               ],

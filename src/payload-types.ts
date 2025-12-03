@@ -478,10 +478,9 @@ export interface Page {
         | {
             icon?: (string | null) | Media;
             heading: string;
-            body?: string | null;
             color?: ('roza' | 'oranzna' | 'rumena' | 'zelena' | 'vijolicna' | 'modra' | 'mint') | null;
             /**
-             * Enter URL to make entire card clickable
+             * Primer (/gibanje-nosecnic-in-mamic)
              */
             href?: string | null;
             id?: string | null;
@@ -1466,7 +1465,6 @@ export interface PagesSelect<T extends boolean = true> {
                       | {
                           icon?: T;
                           heading?: T;
-                          body?: T;
                           color?: T;
                           href?: T;
                           id?: T;
