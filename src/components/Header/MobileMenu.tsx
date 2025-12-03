@@ -1,3 +1,4 @@
+// MobileMenu.tsx
 'use client'
 
 import type { Header } from '@/payload-types'
@@ -17,12 +18,14 @@ import { MenuIcon } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { LanguageSwitcher } from '../LanguageSwitcher/LanguageSwitcher'
 
 interface Props {
   menu: Header['navItems']
+  languages: Header['languages']
 }
 
-export function MobileMenu({ menu }: Props) {
+export function MobileMenu({ menu, languages }: Props) {
   const { user } = useAuth()
 
   const pathname = usePathname()
@@ -39,7 +42,7 @@ export function MobileMenu({ menu }: Props) {
     }
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
-  }, [isOpen])
+  }, [])
 
   useEffect(() => {
     setIsOpen(false)
@@ -54,7 +57,6 @@ export function MobileMenu({ menu }: Props) {
       <SheetContent side="left" className="px-4">
         <SheetHeader className="px-0 pt-4 pb-0">
           <SheetTitle>Navigacija</SheetTitle>
-
           <SheetDescription />
         </SheetHeader>
 
@@ -68,6 +70,11 @@ export function MobileMenu({ menu }: Props) {
               ))}
             </ul>
           ) : null}
+        </div>
+
+        {/* LANG SWITCHER AT TOP OF SHEET */}
+        <div className="mt-4 mb-2">
+          <LanguageSwitcher languages={languages} />
         </div>
 
         {user ? (

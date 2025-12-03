@@ -8,10 +8,13 @@ import { motion } from 'framer-motion'
 import * as React from 'react'
 
 const COLOR_BADGES: Record<string, string> = {
-  roza: 'bg-roza text-roza-dark',
-  rumena: 'bg-rumena text-rumena-dark',
-  modra: 'bg-modra text-modra-dark',
-  vijolicna: 'bg-vijolicna text-vijolicna-dark',
+  roza: 'bg-roza',
+  oranzna: 'bg-oranzna',
+  rumena: 'bg-rumena',
+  zelena: 'bg-zelena',
+  vijolicna: 'bg-vijolicna',
+  modra: 'bg-modra',
+  mint: 'bg-mint',
 }
 
 function useIsDesktop(query = '(min-width: 1024px)') {
@@ -43,7 +46,9 @@ export const TabsSectionBlock: React.FC<TabsSectionBlockProps & { className?: st
   return (
     <section className={cn('py-6 md:py-12 lg:py-16', className)}>
       <div className="container">
-        {heading && <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">{heading}</h2>}
+        {heading && (
+          <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">{heading}</h2>
+        )}
         {intro && (
           <div className="mt-4 max-w-3xl text-lg text-muted-foreground">
             <RichText data={intro} enableGutter={false} />
@@ -123,7 +128,9 @@ export const TabsSectionBlock: React.FC<TabsSectionBlockProps & { className?: st
                       <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1.8fr] gap-8 p-6 md:p-10 lg:p-12 h-full min-w-0">
                         <div className="flex flex-col justify-center min-w-0">
                           {item.title && (
-                            <h3 className="text-3xl md:text-4xl font-semibold mb-4">{item.title}</h3>
+                            <h3 className="text-3xl md:text-4xl font-semibold mb-4">
+                              {item.title}
+                            </h3>
                           )}
                           {item.description && (
                             <div className="max-w-xl text-muted-foregroun">
