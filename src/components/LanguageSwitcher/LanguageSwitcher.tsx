@@ -28,14 +28,13 @@ export function LanguageSwitcher({
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
+  const [open, setOpen] = useState(false) // 👈 hook BEFORE any early return
 
   const langs = Array.isArray(languages) ? languages : []
   if (langs.length === 0) return null
 
   const currentLocale = (pathname.split('/')[1] || 'sl').toLowerCase()
   const selected = langs.find((l) => (l?.code || '').toLowerCase() === currentLocale) ?? langs[0]
-
-  const [open, setOpen] = useState(false)
 
   const onPick = (lang: Lang) => {
     const code = (lang?.code || '').toLowerCase()
@@ -51,7 +50,7 @@ export function LanguageSwitcher({
 
   return (
     <div className={`relative ${className}`}>
-      {/* Trigger button – reduced padding */}
+      {/* Trigger button */}
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
@@ -76,13 +75,13 @@ export function LanguageSwitcher({
         <ChevronDown className="h-4 w-4" />
       </button>
 
-      {/* Dropdown */}
+      {/* Dropdown – aligned under left edge */}
       {open && (
         <div
           className="
-      absolute left-0 mt-1 min-w-[150px] rounded-lg border bg-white shadow-md
-      z-50 py-1
-    "
+            absolute left-0 mt-1 min-w-[150px] rounded-lg border bg-white shadow-md
+            z-50 py-1
+          "
         >
           {langs.map((lang, i) => {
             const code = (lang?.code || '').toLowerCase()
@@ -98,8 +97,11 @@ export function LanguageSwitcher({
                   w-full px-3 py-2 text-left
                   flex items-center gap-3
                   text-sm leading-none
-                  cursor-pointer
-                  ${isCurrent ? 'text-neutral-400 cursor-default bg-neutral-50' : 'hover:bg-neutral-100'}
+                  ${
+                    isCurrent
+                      ? 'text-neutral-400 cursor-default bg-neutral-50'
+                      : 'hover:bg-neutral-100 cursor-pointer'
+                  }
                 `}
               >
                 {lang?.languageIcon ? (
