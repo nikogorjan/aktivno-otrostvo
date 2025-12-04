@@ -87,7 +87,7 @@ export const HomeHero: React.FC<HomeHeroProps> = (props) => {
   }
 
   return (
-    <section className="relative bg-background py-12 md:py-16 lg:py-20">
+<section className="relative bg-background py-12 md:py-16 lg:py-20 overflow-visible">
       <div
         className="
           container 
@@ -99,19 +99,26 @@ export const HomeHero: React.FC<HomeHeroProps> = (props) => {
       
 
         {/* LEFT: image */}
-        <div className="flex justify-center lg:h-full">
-          <div
-            className="relative w-full lg:max-w-[520px] overflow-visible rounded-xl aspect-square lg:aspect-auto lg:h-full"
-          >
-            {heroPhoto && (
-              <Media
-                resource={heroPhoto}
-                fill
-                priority
-                imgClassName="object-contain "
-              />)}
-          </div>
-        </div>
+      <div className="flex justify-center lg:h-full">
+  <div
+    className="
+      relative w-full lg:max-w-[520px] overflow-visible rounded-xl
+      aspect-square lg:aspect-auto lg:h-full
+      lg:origin-right lg:scale-[1.1]
+      xl:scale-[1.2]
+      2xl:scale-[1.25]
+    "
+  >
+    {heroPhoto && (
+      <Media
+        resource={heroPhoto}
+        fill
+        priority
+        imgClassName="object-contain"
+      />
+    )}
+  </div>
+</div>
 
         {/* RIGHT: grid + title */}
         <div className="w-full h-full">
