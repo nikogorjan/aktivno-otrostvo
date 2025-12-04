@@ -12,5 +12,96 @@
     "loginWarning": "Please login to access your account settings.",
     "metaTitle": "Account",
     "metaDescription": "Create an account or log in to your existing account."
+  },
+    "AccountForm": {
+    "changeDetailsIntro": "Change your account details below, or",
+    "clickHere": "click here",
+    "toChangePassword": "to change your password.",
+    "changePasswordIntro": "Change your password below, or",
+    "cancel": "cancel",
+    "emailLabel": "Email Address",
+    "nameLabel": "Name",
+    "newPasswordLabel": "New password",
+    "confirmPasswordLabel": "Confirm password",
+    "errorEmailRequired": "Please provide an email.",
+    "errorNameRequired": "Please provide a name.",
+    "errorPasswordRequired": "Please provide a new password.",
+    "errorPasswordConfirmRequired": "Please confirm your new password.",
+    "errorPasswordMismatch": "The passwords do not match",
+    "submitProcessing": "Processing",
+    "submitChangePassword": "Change Password",
+    "submitUpdateAccount": "Update Account",
+    "toastUpdateSuccess": "Successfully updated account.",
+    "toastUpdateError": "There was a problem updating your account.",
+    "mustBeLoggedIn": "You must be logged in to view this page."
+  },
+  "AddressesPage": {
+    "loginWarning": "Please login to access your account settings.",
+    "title": "Addresses",
+    "metaTitle": "Addresses",
+    "metaDescription": "Manage your addresses."
+  },
+
+  "AddressListing": {
+    "noAddresses": "No addresses found."
+  },
+
+   "CreateAddressModal": {
+    "buttonText": "Add a new address",
+    "modalTitle": "Add a new address",
+    "description": "This address will be connected to your account.",
+    "editButtonText": "Edit",
+    "editModalTitle": "Edit address"
+  },
+
+  "AddressForm": {
+    "titleLabel": "Title",
+    "titlePlaceholder": "Title",
+    "firstNameLabel": "First name*",
+    "lastNameLabel": "Last name*",
+    "phoneLabel": "Phone",
+    "companyLabel": "Company",
+    "addressLine1Label": "Address line 1*",
+    "addressLine2Label": "Address line 2",
+    "cityLabel": "City*",
+    "stateLabel": "State",
+    "postalCodeLabel": "Zip Code*",
+    "countryLabel": "Country*",
+
+    "firstNameRequired": "First name is required.",
+    "lastNameRequired": "Last name is required.",
+    "addressLine1Required": "Address line 1 is required.",
+    "cityRequired": "City is required.",
+    "postalCodeRequired": "Postal code is required.",
+    "countryRequired": "Country is required.",
+
+    "countryPlaceholder": "Country",
+    "submit": "Save address"
+  },
+   "AccountNav": {
+    "settings": "Settings",
+    "addresses": "Addresses",
+    "orders": "Orders",
+    "logout": "Logout"
+  },
+   "OrdersPage": {
+    "loginWarning": "Please login to access your orders.",
+    "title": "Orders",
+    "noOrders": "You have no orders.",
+    "metaTitle": "Orders",
+    "metaDescription": "Your orders."
+  },
+
+  "OrderDetailPage": {
+    "allOrders": "All orders",
+    "orderNumber": "Order #{id}",
+    "orderDateLabel": "Order Date",
+    "totalLabel": "Total",
+    "statusLabel": "Status",
+    "itemsLabel": "Items",
+    "itemUnavailable": "This item is no longer available.",
+    "shippingAddressLabel": "Shipping Address",
+    "metaTitle": "Order {id}",
+    "metaDescription": "Order details for order {id}."
   }
 }

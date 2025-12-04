@@ -2,7 +2,6 @@
 import type { Metadata } from 'next'
 
 import { RenderParams } from '@/components/RenderParams'
-import Link from 'next/link'
 
 import { LoginForm } from '@/components/forms/LoginForm'
 import configPromise from '@payload-config'
@@ -40,10 +39,8 @@ export default async function Login({ params }: Props) {
         <h1 className="mb-4 text-[1.8rem]">Prijava</h1>
         <p className="mb-8">
           {/* admin stays without locale, since it’s a separate app */}
-          <Link href="/admin/collections/users">
-            Prijavi se v nadzorno ploščo
-          </Link>
-          .
+          
+        
         </p>
         <Suspense fallback={<div />}>
           <LoginForm />

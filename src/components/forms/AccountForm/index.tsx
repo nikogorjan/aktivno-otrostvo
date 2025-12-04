@@ -2,12 +2,12 @@
 
 import { FormError } from '@/components/forms/FormError'
 import { FormItem } from '@/components/forms/FormItem'
-import { Message } from '@/components/Message'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { User } from '@/payload-types'
 import { useAuth } from '@/providers/Auth'
+import { useLocale, useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -23,6 +23,10 @@ type FormData = {
 export const AccountForm: React.FC = () => {
   const { setUser, user } = useAuth()
   const [changePassword, setChangePassword] = useState(false)
+  const password = useRef('')
+
+  const t = useTranslations('AccountForm')
+  const locale = useLocale()
 
   const {
     formState: { errors, isLoading, isSubmitting, isDirty },
@@ -32,7 +36,7 @@ export const AccountForm: React.FC = () => {
     watch,
   } = useForm<FormData>()
 
-  const password = useRef({})
+  password.current = watch('password', '')
   password.current = watch('password', '')
 
   const router = useRouter()
@@ -40,20 +44,22 @@ export const AccountForm: React.FC = () => {
   const onSubmit = useCallback(
     async (data: FormData) => {
       if (user) {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${user.id}`, {
-          // Make sure to include cookies with fetch
-          body: JSON.stringify(data),
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${user.id}`,
+          {
+            body: JSON.stringify(data),
+            credentials: 'include',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            method: 'PATCH',
           },
-          method: 'PATCH',
-        })
+        )
 
         if (response.ok) {
           const json = await response.json()
           setUser(json.doc)
-          toast.success('Successfully updated account.')
+          toast.success(t('toastUpdateSuccess'))
           setChangePassword(false)
           reset({
             name: json.doc.name,
@@ -62,23 +68,22 @@ export const AccountForm: React.FC = () => {
             passwordConfirm: '',
           })
         } else {
-          toast.error('There was a problem updating your account.')
+          toast.error(t('toastUpdateError'))
         }
       }
     },
-    [user, setUser, reset],
+    [user, setUser, reset, t],
   )
 
   useEffect(() => {
     if (user === null) {
       router.push(
-        `/login?error=${encodeURIComponent(
-          'You must be logged in to view this page.',
+        `/${locale}/login?error=${encodeURIComponent(
+          t('mustBeLoggedIn'),
         )}&redirect=${encodeURIComponent('/account')}`,
       )
     }
 
-    // Once user is loaded, reset form to have default values
     if (user) {
       reset({
         name: user.name,
@@ -87,35 +92,37 @@ export const AccountForm: React.FC = () => {
         passwordConfirm: '',
       })
     }
-  }, [user, router, reset, changePassword])
+  }, [user, router, reset, changePassword, locale, t])
 
   return (
     <form className="max-w-xl" onSubmit={handleSubmit(onSubmit)}>
       {!changePassword ? (
         <Fragment>
           <div className="prose dark:prose-invert mb-8">
-            <p className="">
-              {'Change your account details below, or '}
+            <p>
+              {t('changeDetailsIntro')}{' '}
               <Button
                 className="px-0 text-inherit underline hover:cursor-pointer"
                 onClick={() => setChangePassword(!changePassword)}
                 type="button"
                 variant="link"
               >
-                click here
-              </Button>
-              {' to change your password.'}
+                {t('clickHere')}
+              </Button>{' '}
+              {t('toChangePassword')}
             </p>
           </div>
 
           <div className="flex flex-col gap-8 mb-8">
             <FormItem>
               <Label htmlFor="email" className="mb-2">
-                Email Address
+                {t('emailLabel')}
               </Label>
               <Input
                 id="email"
-                {...register('email', { required: 'Please provide an email.' })}
+                {...register('email', {
+                  required: t('errorEmailRequired'),
+                })}
                 type="email"
               />
               {errors.email && <FormError message={errors.email.message} />}
@@ -123,11 +130,13 @@ export const AccountForm: React.FC = () => {
 
             <FormItem>
               <Label htmlFor="name" className="mb-2">
-                Name
+                {t('nameLabel')}
               </Label>
               <Input
                 id="name"
-                {...register('name', { required: 'Please provide a name.' })}
+                {...register('name', {
+                  required: t('errorNameRequired'),
+                })}
                 type="text"
               />
               {errors.name && <FormError message={errors.name.message} />}
@@ -138,14 +147,14 @@ export const AccountForm: React.FC = () => {
         <Fragment>
           <div className="prose dark:prose-invert mb-8">
             <p>
-              {'Change your password below, or '}
+              {t('changePasswordIntro')}{' '}
               <Button
                 className="px-0 text-inherit underline hover:cursor-pointer"
                 onClick={() => setChangePassword(!changePassword)}
                 type="button"
                 variant="link"
               >
-                cancel
+                {t('cancel')}
               </Button>
               .
             </p>
@@ -154,11 +163,13 @@ export const AccountForm: React.FC = () => {
           <div className="flex flex-col gap-8 mb-8">
             <FormItem>
               <Label htmlFor="password" className="mb-2">
-                New password
+                {t('newPasswordLabel')}
               </Label>
               <Input
                 id="password"
-                {...register('password', { required: 'Please provide a new password.' })}
+                {...register('password', {
+                  required: t('errorPasswordRequired'),
+                })}
                 type="password"
               />
               {errors.password && <FormError message={errors.password.message} />}
@@ -166,27 +177,35 @@ export const AccountForm: React.FC = () => {
 
             <FormItem>
               <Label htmlFor="passwordConfirm" className="mb-2">
-                Confirm password
+                {t('confirmPasswordLabel')}
               </Label>
               <Input
                 id="passwordConfirm"
                 {...register('passwordConfirm', {
-                  required: 'Please confirm your new password.',
-                  validate: (value) => value === password.current || 'The passwords do not match',
+                  required: t('errorPasswordConfirmRequired'),
+                  validate: (value) =>
+                    value === password.current || t('errorPasswordMismatch'),
                 })}
                 type="password"
               />
-              {errors.passwordConfirm && <FormError message={errors.passwordConfirm.message} />}
+              {errors.passwordConfirm && (
+                <FormError message={errors.passwordConfirm.message} />
+              )}
             </FormItem>
           </div>
         </Fragment>
       )}
-      <Button disabled={isLoading || isSubmitting || !isDirty} type="submit" variant="default">
+
+      <Button
+        disabled={isLoading || isSubmitting || !isDirty}
+        type="submit"
+        variant="default"
+      >
         {isLoading || isSubmitting
-          ? 'Processing'
+          ? t('submitProcessing')
           : changePassword
-            ? 'Change Password'
-            : 'Update Account'}
+            ? t('submitChangePassword')
+            : t('submitUpdateAccount')}
       </Button>
     </form>
   )

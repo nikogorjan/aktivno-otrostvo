@@ -12,5 +12,95 @@
     "loginWarning": "Za dostop do nastavitev računa se prosim prijavite.",
     "metaTitle": "Račun",
     "metaDescription": "Ustvarite račun ali se prijavite v obstoječi račun."
+  },
+   "AccountForm": {
+    "changeDetailsIntro": "Spodaj lahko spremenite podatke svojega računa ali",
+    "clickHere": "kliknite tukaj",
+    "toChangePassword": "če želite spremeniti geslo.",
+    "changePasswordIntro": "Spodaj lahko spremenite svoje geslo ali",
+    "cancel": "prekličete",
+    "emailLabel": "E-poštni naslov",
+    "nameLabel": "Ime",
+    "newPasswordLabel": "Novo geslo",
+    "confirmPasswordLabel": "Potrdite geslo",
+    "errorEmailRequired": "Vnesite e-poštni naslov.",
+    "errorNameRequired": "Vnesite ime.",
+    "errorPasswordRequired": "Vnesite novo geslo.",
+    "errorPasswordConfirmRequired": "Potrdite novo geslo.",
+    "errorPasswordMismatch": "Gesli se ne ujemata.",
+    "submitProcessing": "Obdelava...",
+    "submitChangePassword": "Spremeni geslo",
+    "submitUpdateAccount": "Posodobi račun",
+    "toastUpdateSuccess": "Račun je bil uspešno posodobljen.",
+    "toastUpdateError": "Pri posodabljanju računa je prišlo do napake.",
+    "mustBeLoggedIn": "Za ogled te strani se morate prijaviti."
+  },
+   "AddressesPage": {
+    "loginWarning": "Za dostop do nastavitev računa se prosim prijavite.",
+    "title": "Naslovi",
+    "metaTitle": "Naslovi",
+    "metaDescription": "Upravljajte svoje naslove."
+  },
+
+  "AddressListing": {
+    "noAddresses": "Ni shranjenih naslovov."
+  },
+
+  "CreateAddressModal": {
+    "buttonText": "Dodaj nov naslov",
+    "modalTitle": "Dodaj nov naslov",
+    "description": "Ta naslov bo povezan z vašim računom.",
+    "editButtonText": "Uredi",
+    "editModalTitle": "Uredi naslov"
+  },
+
+  "AddressForm": {
+    "titleLabel": "Naziv",
+    "titlePlaceholder": "Naziv",
+    "firstNameLabel": "Ime*",
+    "lastNameLabel": "Priimek*",
+    "phoneLabel": "Telefon",
+    "companyLabel": "Podjetje",
+    "addressLine1Label": "Naslov, vrstica 1*",
+    "addressLine2Label": "Naslov, vrstica 2",
+    "cityLabel": "Mesto*",
+    "stateLabel": "Regija",
+    "postalCodeLabel": "Poštna številka*",
+    "countryLabel": "Država*",
+    "firstNameRequired": "Ime je obvezno.",
+    "lastNameRequired": "Priimek je obvezen.",
+    "addressLine1Required": "Prva vrstica naslova je obvezna.",
+    "cityRequired": "Mesto je obvezno.",
+    "postalCodeRequired": "Poštna številka je obvezna.",
+    "countryRequired": "Država je obvezna.",
+    "countryPlaceholder": "Država",
+    "submit": "Shrani naslov"
+  },
+  
+  "AccountNav": {
+    "settings": "Nastavitve",
+    "addresses": "Lokacije",
+    "orders": "Naročila",
+    "logout": "Odjava"
+  },
+    "OrdersPage": {
+    "loginWarning": "Za dostop do svojih naročil se prosim prijavite.",
+    "title": "Naročila",
+    "noOrders": "Nimate še nobenega naročila.",
+    "metaTitle": "Naročila",
+    "metaDescription": "Vaša naročila."
+  },
+
+  "OrderDetailPage": {
+    "allOrders": "Vsa naročila",
+    "orderNumber": "Naročilo #{id}",
+    "orderDateLabel": "Datum naročila",
+    "totalLabel": "Skupaj",
+    "statusLabel": "Status",
+    "itemsLabel": "Izdelki",
+    "itemUnavailable": "Ta izdelek ni več na voljo.",
+    "shippingAddressLabel": "Dostavni naslov",
+    "metaTitle": "Naročilo {id}",
+    "metaDescription": "Podrobnosti naročila {id}."
   }
 }

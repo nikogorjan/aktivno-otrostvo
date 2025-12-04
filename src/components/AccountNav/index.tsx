@@ -1,9 +1,9 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
+import { Link, usePathname } from '@/i18n/navigation'
 import clsx from 'clsx'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 
 type Props = {
   className?: string
@@ -11,51 +11,58 @@ type Props = {
 
 export const AccountNav: React.FC<Props> = ({ className }) => {
   const pathname = usePathname()
+  const t = useTranslations('AccountNav')
 
-  // derive current locale from URL: /sl/account, /en/account, etc.
+  // pathname looks like "/sl/account" or "/sl/orders" etc.
   const segments = pathname.split('/')
-  const currentLocale = (segments[1] || 'sl').toLowerCase()
+  const currentLocale = segments[1] || 'sl'
 
-  const accountPath = `/${currentLocale}/account`
-  const addressesPath = `/${currentLocale}/account/addresses`
-  const ordersPath = `/${currentLocale}/orders`
-  const logoutPath = `/${currentLocale}/logout`
+  // HREFs are locale-less because i18n Link adds /sl or /en automatically
+  const accountHref = '/account'
+  const addressesHref = '/account/addresses'
+  const ordersHref = '/orders'
+  const logoutHref = '/logout'
+
+  // Localized paths for active state comparison
+  const accountPath = `/${currentLocale}${accountHref}`          // /sl/account
+  const addressesPath = `/${currentLocale}${addressesHref}`      // /sl/account/addresses
+  const ordersPath = `/${currentLocale}${ordersHref}`            // /sl/orders
+  const logoutPath = `/${currentLocale}${logoutHref}`            // /sl/logout
 
   return (
     <div className={clsx(className)}>
       <ul className="flex flex-col gap-2">
+        {/* Account settings */}
         <li>
           <Button asChild variant="link">
             <Link
-              href={accountPath}
+              href={accountHref}
               className={clsx(
                 'text-primary/50 hover:text-primary/100 hover:no-underline',
-                {
-                  'text-primary/100': pathname === accountPath,
-                },
+                { 'text-primary/100': pathname === accountPath },
               )}
             >
-              Nastavitve
+              {t('settings')}
             </Link>
           </Button>
         </li>
 
+        {/* Addresses */}
         <li>
           <Button asChild variant="link">
             <Link
-              href={addressesPath}
+              href={addressesHref}
               className={clsx(
                 'text-primary/50 hover:text-primary/100 hover:no-underline',
-                {
-                  'text-primary/100': pathname === addressesPath,
-                },
+                { 'text-primary/100': pathname === addressesPath },
               )}
             >
-              Lokacije
+              {t('addresses')}
             </Link>
           </Button>
         </li>
 
+        {/* Orders */}
         <li>
           <Button
             asChild
@@ -68,24 +75,23 @@ export const AccountNav: React.FC<Props> = ({ className }) => {
               },
             )}
           >
-            <Link href={ordersPath}>Naročila</Link>
+            <Link href={ordersHref}>{t('orders')}</Link>
           </Button>
         </li>
       </ul>
 
       <hr className="w-full border-white/5" />
 
+      {/* Logout */}
       <Button
         asChild
         variant="link"
         className={clsx(
           'text-primary/50 hover:text-primary/100 hover:no-underline',
-          {
-            'text-primary/100': pathname === logoutPath,
-          },
+          { 'text-primary/100': pathname === logoutPath },
         )}
       >
-        <Link href={logoutPath}>Odjava</Link>
+        <Link href={logoutHref}>{t('logout')}</Link>
       </Button>
     </div>
   )
