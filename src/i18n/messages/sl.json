@@ -156,6 +156,17 @@
     "errorSendFailed": "Pri pošiljanju e-pošte za ponastavitev gesla je prišlo do težave. Poskusi znova.",
     "successTitle": "Zahteva poslana",
     "successText": "Preveri svojo e-pošto. Poslali smo ti povezavo za varno ponastavitev gesla."
+  },
+    "Footer": {
+    "madeInSlovenia": "Izdelano v Sloveniji",
+    "allRightsReserved": "Vse pravice pridržane.",
+    "termsFallback": "Pogoji poslovanja"
+  },
+   "FooterMenu": {
+    "allPrograms": "Vsi programi",
+    "navigation": "Navigacije",
+    "followMe": "Sledi mi",
+    "missingLabel": "(manjkajoča oznaka)"
   }
 
 }

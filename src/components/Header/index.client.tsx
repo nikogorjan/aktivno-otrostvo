@@ -59,19 +59,19 @@ export function HeaderClient({ header }: Props) {
   const isLoggedIn = !!authUser
 
   const handleNavMouseEnter = (e: MouseEvent<HTMLAnchorElement>) => {
-  const el = e.currentTarget
-  const rect = el.getBoundingClientRect()
-  const x = e.clientX - rect.left
-  const half = rect.width / 2
+    const el = e.currentTarget
+    const rect = el.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const half = rect.width / 2
 
-  if (x < half) {
-    el.classList.remove('hover-from-right')
-    el.classList.add('hover-from-left')
-  } else {
-    el.classList.remove('hover-from-left')
-    el.classList.add('hover-from-right')
+    if (x < half) {
+      el.classList.remove('hover-from-right')
+      el.classList.add('hover-from-left')
+    } else {
+      el.classList.remove('hover-from-left')
+      el.classList.add('hover-from-right')
+    }
   }
-}
 
   return (
     <div className="relative z-20 border-b bg-card">
@@ -113,33 +113,33 @@ export function HeaderClient({ header }: Props) {
 
                   return (
                     <li key={item.id}>
-                     <CMSLink
-  {...cmsLinkProps}
-  size="clear"
-  onMouseEnter={handleNavMouseEnter}
-  className={cn(
-    // base text & spacing
-    'relative pl-2 pr-2 text-xs xl:text-sm',
-    // underline pseudo-element (hidden by default)
-    'after:absolute after:left-0 after:-bottom-[2px] after:h-[2px] after:w-full after:bg-primary',
-    'after:scale-x-0 after:transition-transform after:duration-200',
-    // show underline on hover
-    'hover:after:scale-x-100',
-    {
-      active:
-        !isExternal &&
-        (() => {
-          const targetPath =
-            url === '/'
-              ? `/${currentLocale}`
-              : `/${currentLocale}${url}`
+                      <CMSLink
+                        {...cmsLinkProps}
+                        size="clear"
+                        onMouseEnter={handleNavMouseEnter}
+                        className={cn(
+                          // base text & spacing
+                          'relative pl-2 pr-2 text-xs xl:text-sm',
+                          // underline pseudo-element (hidden by default)
+                          'after:absolute after:left-0 after:-bottom-[2px] after:h-[2px] after:w-full after:bg-primary',
+                          'after:scale-x-0 after:transition-transform after:duration-200',
+                          // show underline on hover
+                          'hover:after:scale-x-100',
+                          {
+                            active:
+                              !isExternal &&
+                              (() => {
+                                const targetPath =
+                                  url === '/'
+                                    ? `/${currentLocale}`
+                                    : `/${currentLocale}${url}`
 
-          return pathname.startsWith(targetPath)
-        })(),
-    },
-  )}
-  appearance="nav"
-/>
+                                return pathname.startsWith(targetPath)
+                              })(),
+                          },
+                        )}
+                        appearance="nav"
+                      />
                     </li>
                   )
                 })}

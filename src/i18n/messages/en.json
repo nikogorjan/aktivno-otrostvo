@@ -156,5 +156,16 @@
     "errorSendFailed": "There was a problem while attempting to send you a password reset email. Please try again.",
     "successTitle": "Request submitted",
     "successText": "Check your email for a link that will allow you to securely reset your password."
+  },
+  "Footer": {
+    "madeInSlovenia": "Made in Slovenia",
+    "allRightsReserved": "All rights reserved.",
+    "termsFallback": "Terms & Conditions"
+  },
+   "FooterMenu": {
+    "allPrograms": "All programs",
+    "navigation": "Navigation",
+    "followMe": "Follow me",
+    "missingLabel": "(missing label)"
   }
 }

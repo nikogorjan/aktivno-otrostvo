@@ -61,7 +61,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
   return (
     <Button asChild className={className} size={size} variant={appearance}>
       <Link
-        className="pl-4 pr-1.5"
+        className="pl-2 pr-2"
         href={href}
         {...newTabProps}
         {...rest} // 👈 pass onMouseEnter etc. down to <a>
