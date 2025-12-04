@@ -1,13 +1,14 @@
 import type { Page, Product } from '@/payload-types'
-
-import { Button, type ButtonProps } from '@/components/ui/button'
-import { cn } from '@/utilities/cn'
-import { ArrowUpRight } from 'lucide-react'
-import Link from 'next/link'
+import type { AnchorHTMLAttributes } from 'react'
 import React from 'react'
 
-type CMSLinkType = {
-  appearance?: 'inline' | ButtonProps['variant']
+import { Button, type ButtonProps } from '@/components/ui/button'
+import { Link } from '@/i18n/navigation'
+import { cn } from '@/utilities/cn'
+import { ArrowUpRight } from 'lucide-react'
+
+type CMSLinkBaseProps = {
+  appearance?: 'inline' | ButtonProps['variant']  // includes "nav"
   children?: React.ReactNode
   className?: string
   label?: string | null
@@ -21,6 +22,9 @@ type CMSLinkType = {
   url?: string | null
 }
 
+type CMSLinkType = CMSLinkBaseProps &
+  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'type'>
+
 export const CMSLink: React.FC<CMSLinkType> = (props) => {
   const {
     type,
@@ -32,6 +36,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
     reference,
     size: sizeFromProps,
     url,
+    ...rest
   } = props
 
   const href =
@@ -44,21 +49,36 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
   const size = appearance === 'link' ? 'clear' : sizeFromProps
   const newTabProps = newTab ? { rel: 'noopener noreferrer', target: '_blank' } : {}
 
+  const showArrow =
+    appearance === 'default' || appearance === 'rumen' || appearance === 'siv'
+
+  // 🔹 For pure text links (e.g. in content, footer)
   if (appearance === 'inline') {
     return (
-      <Link className={cn(className)} href={href} {...newTabProps}>
+      <Link
+        className={cn(className)}
+        href={href}
+        {...newTabProps}
+        {...rest}
+      >
         {label ?? children}
       </Link>
     )
   }
 
+  // 🔹 For button-like + nav variants -> use Button + Slot
   return (
     <Button asChild className={className} size={size} variant={appearance}>
-      <Link className={cn('pl-4 pr-1.5', className)} href={href} {...newTabProps}>
+      <Link
+        // ✅ Only add extra padding for CTA buttons that show arrow
+        className={cn(showArrow && 'pl-4 pr-1.5')}
+        href={href}
+        {...newTabProps}
+        {...rest}
+      >
         {label ?? children}
 
-        {/* 👇 show arrow bubble for both default & rumen */}
-        {(appearance === 'default' || appearance === 'rumen' || appearance === 'siv') && (
+        {showArrow && (
           <span className="ml-2 inline-flex items-center justify-center rounded-full bg-white text-neutral-dark size-9">
             <ArrowUpRight className="size-6" />
           </span>

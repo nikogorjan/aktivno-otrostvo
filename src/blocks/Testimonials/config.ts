@@ -8,24 +8,27 @@ export const Testimonials: Block = {
       name: 'heading',
       type: 'text',
       required: true,
-      label: 'Heading',
+      label: 'Naslov',
+      localized: true,
     },
     {
       name: 'description',
       type: 'textarea',
-      label: 'Description',
+      label: 'Opis',
+      localized: true,
+
     },
     {
       name: 'items',
       type: 'array',
-      label: 'Testimonials',
+      label: 'Pričevanja',
       required: true,
       admin: { initCollapsed: true },
       fields: [
         {
           name: 'numberOfStars',
           type: 'number',
-          label: 'Stars (0–5)',
+          label: 'Zvezdice (0–5)',
           min: 0,
           max: 5,
           defaultValue: 5,
@@ -35,7 +38,9 @@ export const Testimonials: Block = {
           name: 'quote',
           type: 'textarea',
           required: true,
-          label: 'Quote',
+          label: 'Pričevanje',
+                localized: true,
+
         },
         {
           name: 'avatar',
@@ -52,7 +57,7 @@ export const Testimonials: Block = {
         {
           name: 'subtitle',
           type: 'text',
-          label: 'Subtitle (e.g., “mamica 3-mesečne punčke”)',
+          label: 'Podnaslov (e.g., “mamica 3-mesečne punčke”)',
         },
       ],
     },

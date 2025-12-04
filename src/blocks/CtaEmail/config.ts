@@ -7,7 +7,7 @@ export const CtaEmail: Block = {
   fields: [
     {
       name: 'image',
-      label: 'Left Image',
+      label: 'Slika',
       type: 'upload',
       relationTo: 'media',
       required: true,
@@ -16,12 +16,14 @@ export const CtaEmail: Block = {
       name: 'heading',
       type: 'text',
       required: true,
-      label: 'Heading',
+      label: 'Naslov',
+      localized: true,
     },
     {
       name: 'description',
       type: 'textarea',
-      label: 'Description',
+      label: 'Opis',
+      localized: true,
     },
     {
       type: 'row',
@@ -29,24 +31,27 @@ export const CtaEmail: Block = {
         {
           name: 'inputPlaceholder',
           type: 'text',
-          label: 'Input Placeholder',
+          label: 'Besedilo v prijavni vrstici',
           defaultValue: 'Vpiši e-naslov',
           admin: { width: '50%' },
+          localized: true,
         },
         {
           name: 'buttonLabel',
           type: 'text',
-          label: 'Button Label',
+          label: 'Napis v gumbu',
           defaultValue: 'Prijava',
           admin: { width: '50%' },
+          localized: true,
         },
       ],
     },
     {
       name: 'legalNote',
       type: 'text',
-      label: 'Legal Note',
+      label: 'Sporočilo - pogoji poslovanja',
       defaultValue: 'Z klikom na gumb se strinjate s pogoji poslovanja.',
+      localized: true,
     },
     {
       name: 'showDecoration',

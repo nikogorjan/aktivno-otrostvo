@@ -471,42 +471,16 @@ export interface Page {
     media?: (string | null) | Media;
     left?: {
       photo: string | Media;
-      tagline?: string | null;
       title: string;
-      subtitle?: string | null;
-      description?: string | null;
-      /**
-       * Primary CTA (optional)
-       */
-      links?:
-        | {
-            link: {
-              type?: ('reference' | 'custom') | null;
-              newTab?: boolean | null;
-              reference?: {
-                relationTo: 'pages';
-                value: string | Page;
-              } | null;
-              url?: string | null;
-              label: string;
-              /**
-               * Choose how the link should be rendered.
-               */
-              appearance?: ('default' | 'outline' | 'rumen' | 'siv') | null;
-            };
-            id?: string | null;
-          }[]
-        | null;
     };
     right?: {
       cards?:
         | {
             icon?: (string | null) | Media;
             heading: string;
-            body?: string | null;
             color?: ('roza' | 'oranzna' | 'rumena' | 'zelena' | 'vijolicna' | 'modra' | 'mint') | null;
             /**
-             * Enter URL to make entire card clickable
+             * Primer (/gibanje-nosecnic-in-mamic)
              */
             href?: string | null;
             id?: string | null;
@@ -1120,7 +1094,7 @@ export interface VideoSectionBlock {
     [k: string]: unknown;
   } | null;
   /**
-   * Primary CTA(s) shown under the description.
+   * Pod opisom.
    */
   links?:
     | {
@@ -1141,7 +1115,7 @@ export interface VideoSectionBlock {
         id?: string | null;
       }[]
     | null;
-  backgroundColor: 'modra' | 'roza' | 'rumena' | 'zelena';
+  backgroundColor: 'roza' | 'oranzna' | 'rumena' | 'zelena' | 'vijolicna' | 'modra' | 'mint';
   /**
    * E.g. "Gibanje nosečnic in mamic po porodu".
    */
@@ -1478,25 +1452,7 @@ export interface PagesSelect<T extends boolean = true> {
           | T
           | {
               photo?: T;
-              tagline?: T;
               title?: T;
-              subtitle?: T;
-              description?: T;
-              links?:
-                | T
-                | {
-                    link?:
-                      | T
-                      | {
-                          type?: T;
-                          newTab?: T;
-                          reference?: T;
-                          url?: T;
-                          label?: T;
-                          appearance?: T;
-                        };
-                    id?: T;
-                  };
             };
         right?:
           | T
@@ -1509,7 +1465,6 @@ export interface PagesSelect<T extends boolean = true> {
                       | {
                           icon?: T;
                           heading?: T;
-                          body?: T;
                           color?: T;
                           href?: T;
                           id?: T;

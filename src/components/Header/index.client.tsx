@@ -3,23 +3,29 @@
 import { Cart } from '@/components/Cart'
 import { OpenCartButton } from '@/components/Cart/OpenCart'
 import { CMSLink } from '@/components/Link'
-import Link from 'next/link'
-import { Suspense, useEffect, useState } from 'react'
+import { Link } from '@/i18n/navigation'
+import { Suspense, useEffect, useState, type MouseEvent } from 'react'
 
 import type { Header, User } from 'src/payload-types'
 import { MobileMenu } from './MobileMenu'
 
 import { cn } from '@/utilities/cn'
 import { User2 } from 'lucide-react'
+import { useLocale, useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { LanguageSwitcher } from '../LanguageSwitcher/LanguageSwitcher'
+
+
 
 type Props = { header: Header }
 
 export function HeaderClient({ header }: Props) {
   const menu = header.navItems || []
+  const t = useTranslations('Header')
+  const locale = useLocale()
   const pathname = usePathname()
+  const currentLocale = locale
 
   // --- AUTH STATE ---
   const [authUser, setAuthUser] = useState<User | null>(null)
@@ -52,6 +58,21 @@ export function HeaderClient({ header }: Props) {
 
   const isLoggedIn = !!authUser
 
+  const handleNavMouseEnter = (e: MouseEvent<HTMLAnchorElement>) => {
+    const el = e.currentTarget
+    const rect = el.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const half = rect.width / 2
+
+    if (x < half) {
+      el.classList.remove('hover-from-right')
+      el.classList.add('hover-from-left')
+    } else {
+      el.classList.remove('hover-from-left')
+      el.classList.add('hover-from-right')
+    }
+  }
+
   return (
     <div className="relative z-20 border-b bg-card">
       <nav className="container flex items-center justify-between ">
@@ -64,27 +85,64 @@ export function HeaderClient({ header }: Props) {
               width={160}
               height={40}
               priority
-              className="h-9 w-auto"
+              className="h-8 sm:h-11 w-auto"
             />
           </Link>
-          <div className="hidden md:flex md:flex-1 md:justify-center ml-6">
+          <div className="hidden lg:flex md:flex-1 md:justify-center ml-6">
             {menu.length ? (
               <ul className="flex items-center gap-5 text-sm">
-                {menu.map((item) => (
-                  <li key={item.id}>
-                    <CMSLink
-                      {...item.link}
-                      size="clear"
-                      className={cn('relative navLink pl-3 pr-3 text-[14px]', {
-                        active:
-                          item.link.url && item.link.url !== '/'
-                            ? pathname.includes(item.link.url)
-                            : false,
-                      })}
-                      appearance="nav"
-                    />
-                  </li>
-                ))}
+                {menu.map((item) => {
+                  const link = item.link
+
+                  let url = link.url || '/'
+
+                  const isExternal =
+                    url.startsWith('http://') ||
+                    url.startsWith('https://') ||
+                    url.startsWith('mailto:')
+
+                  if (!isExternal) {
+                    // normalize: ensure leading slash, but NO locale here
+                    if (!url.startsWith('/')) url = `/${url}`
+                  }
+
+                  const cmsLinkProps = {
+                    ...link,
+                    url, // locale-less path, e.g. "/", "/about", "/blog"
+                  }
+
+                  return (
+                    <li key={item.id}>
+                      <CMSLink
+                        {...cmsLinkProps}
+                        size="clear"
+                        onMouseEnter={handleNavMouseEnter}
+                        className={cn(
+                          // base text & spacing
+                          'relative pl-2 pr-2 text-xs xl:text-sm',
+                          // underline pseudo-element (hidden by default)
+                          'after:absolute after:left-0 after:-bottom-[2px] after:h-[2px] after:w-full after:bg-primary',
+                          'after:scale-x-0 after:transition-transform after:duration-200',
+                          // show underline on hover
+                          'hover:after:scale-x-100',
+                          {
+                            active:
+                              !isExternal &&
+                              (() => {
+                                const targetPath =
+                                  url === '/'
+                                    ? `/${currentLocale}`
+                                    : `/${currentLocale}${url}`
+
+                                return pathname.startsWith(targetPath)
+                              })(),
+                          },
+                        )}
+                        appearance="nav"
+                      />
+                    </li>
+                  )
+                })}
               </ul>
             ) : null}
           </div>
@@ -94,29 +152,29 @@ export function HeaderClient({ header }: Props) {
 
         {/* RIGHT: Icons (account + cart) and hamburger on mobile */}
         <div className="flex items-center gap-1 md:gap-2">
-          <div className="hidden md:block">
+          <div className="hidden lg:block">
             <LanguageSwitcher languages={header.languages} />
           </div>
           {/* Account button */}
           <Link
-            href="/login" // if your profile page is different, change this
-            aria-label={isLoggedIn ? 'Profil' : 'Prijava'}
+            href={isLoggedIn ? '/account' : '/login'}
+            aria-label={authChecked && isLoggedIn ? t('profile') : t('login')}
             className={cn(
-              'relative flex h-11 items-center gap-2 px-3 rounded-md transition-colors',
-              'hover:text-primary/50 hover:bg-neutral-100 text-primary/100',
+              'group relative flex h-11 items-center gap-2 px-3 rounded-md',
+              'text-primary/100 transition-colors',
+              'hover:bg-neutral-100 hover:text-primary/50',
               'dark:bg-black dark:text-white dark:hover:bg-neutral-900',
             )}
           >
             <User2 className="h-5 w-5 transition-colors duration-200" />
             <span
-              className="
-      uppercase tracking-[0.1em] text-xs md:text-sm
-      pt-6 pb-6 
-      hover:text-primary/50 font-bold
-    "
+              className={cn(
+                'uppercase tracking-[0.1em] text-xs xl:text-sm font-bold',
+                'py-6',
+                'transition-colors duration-200',
+              )}
             >
-              {/* while auth is still loading, show "Prijava" to avoid flicker */}
-              {authChecked && isLoggedIn ? 'Profil' : 'Prijava'}
+              {authChecked && isLoggedIn ? t('profile') : t('login')}
             </span>
           </Link>
 
@@ -128,7 +186,7 @@ export function HeaderClient({ header }: Props) {
           </div>
 
           {/* Mobile hamburger */}
-          <div className="block md:hidden">
+          <div className="block lg:hidden">
             <MobileMenu menu={menu} languages={header.languages} />
           </div>
         </div>

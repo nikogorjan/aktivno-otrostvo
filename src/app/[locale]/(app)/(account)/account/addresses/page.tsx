@@ -1,15 +1,23 @@
 import type { Metadata } from 'next'
 
-import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
-import { headers as getHeaders } from 'next/headers.js'
-import configPromise from '@payload-config'
-import { Order } from '@/payload-types'
-import { getPayload } from 'payload'
-import { redirect } from 'next/navigation'
 import { AddressListing } from '@/components/addresses/AddressListing'
 import { CreateAddressModal } from '@/components/addresses/CreateAddressModal'
+import type { Order } from '@/payload-types'
+import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
+import configPromise from '@payload-config'
+import { getTranslations } from 'next-intl/server'
+import { headers as getHeaders } from 'next/headers'
+import { redirect } from 'next/navigation'
+import { getPayload } from 'payload'
 
-export default async function AddressesPage() {
+type PageProps = {
+  params: Promise<{ locale: string }>
+}
+
+export default async function AddressesPage({ params }: PageProps) {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'AddressesPage' })
+
   const headers = await getHeaders()
   const payload = await getPayload({ config: configPromise })
   const { user } = await payload.auth({ headers })
@@ -18,7 +26,7 @@ export default async function AddressesPage() {
 
   if (!user) {
     redirect(
-      `/login?warning=${encodeURIComponent('Please login to access your account settings.')}`,
+      `/${locale}/login?warning=${encodeURIComponent(t('loginWarning'))}`,
     )
   }
 
@@ -38,32 +46,37 @@ export default async function AddressesPage() {
 
     orders = ordersResult?.docs || []
   } catch (error) {
-    // when deploying this template on Payload Cloud, this page needs to build before the APIs are live
-    // so swallow the error here and simply render the page with fallback data where necessary
-    // in production you may want to redirect to a 404  page or at least log the error somewhere
-    // console.error(error)
+    // swallow as before
   }
 
   return (
-    <>
-      <div className="border p-8 rounded-lg bg-primary-foreground">
-        <h1 className="text-3xl font-medium mb-8">Addresses</h1>
+    <div className="border p-8 rounded-lg bg-primary-foreground">
+      <h1 className="text-3xl font-medium mb-8">{t('title')}</h1>
 
-        <div className="mb-8">
-          <AddressListing />
-        </div>
-
-        <CreateAddressModal />
+      <div className="mb-8">
+        <AddressListing />
       </div>
-    </>
+
+      <CreateAddressModal />
+    </div>
   )
 }
 
-export const metadata: Metadata = {
-  description: 'Manage your addresses.',
-  openGraph: mergeOpenGraph({
-    title: 'Addresses',
-    url: '/account/addresses',
-  }),
-  title: 'Addresses',
+export async function generateMetadata(
+  { params }: PageProps,
+): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'AddressesPage' })
+
+  const title = t('metaTitle')
+  const description = t('metaDescription')
+
+  return {
+    title,
+    description,
+    openGraph: mergeOpenGraph({
+      title,
+      url: `/${locale}/account/addresses`,
+    }),
+  }
 }

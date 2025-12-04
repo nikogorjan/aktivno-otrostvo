@@ -1,11 +1,14 @@
 'use client'
 
+import { Link } from '@/i18n/navigation'
 import { useAuth } from '@/providers/Auth'
-import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import React, { Fragment, useEffect, useState } from 'react'
 
-export const LogoutPage: React.FC = (props) => {
+export const LogoutPage: React.FC = () => {
   const { logout } = useAuth()
+  const t = useTranslations('LogoutPageClient')
+
   const [success, setSuccess] = useState('')
   const [error, setError] = useState('')
 
@@ -13,29 +16,30 @@ export const LogoutPage: React.FC = (props) => {
     const performLogout = async () => {
       try {
         await logout()
-        setSuccess('Odjava uspešna.')
+        setSuccess(t('success'))
       } catch (_) {
-        setError('Si že odjavljen.')
+        setError(t('alreadyLoggedOut'))
       }
     }
 
     void performLogout()
-  }, [logout])
+  }, [logout, t])
+
+  const message = error || success
 
   return (
     <Fragment>
-      {(error || success) && (
+      {message && (
         <div className="prose dark:prose-invert">
-          <h1>{error || success}</h1>
+          <h1>{message}</h1>
           <p>
-            What would you like to do next?
+            {t('whatNext')}{' '}
             <Fragment>
-              {' '}
-              <Link href="/search">Click here</Link>
-              {` to shop.`}
+              <Link href="/search">{t('shopLinkText')}</Link>
+              {t('shopSuffix')}{' '}
             </Fragment>
-            {` To log back in, `}
-            <Link href="/login">click here</Link>.
+            {t('loginPrefix')}
+            <Link href="/login">{t('loginLinkText')}</Link>.
           </p>
         </div>
       )}

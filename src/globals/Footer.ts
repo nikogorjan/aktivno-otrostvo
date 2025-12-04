@@ -21,26 +21,33 @@ export const Footer: GlobalConfig = {
         {
           name: 'heading',
           type: 'text',
-          label: 'Heading',
+          label: 'Opomba',
           defaultValue: 'Ostani obveščena o vseh novicah',
+          localized: true,
         },
         {
           name: 'placeholder',
           type: 'text',
-          label: 'Email placeholder',
+          label: 'E-mail vnos',
           defaultValue: 'Email',
+          localized: true,
+
         },
         {
           name: 'buttonLabel',
           type: 'text',
-          label: 'Button label',
+          label: 'Napis na gumb',
           defaultValue: 'Prijava',
+          localized: true,
+
         },
         {
           name: 'legalNote',
           type: 'text',
-          label: 'Legal note under the form',
+          label: 'Sporočilo o pogojih poslovanja',
           defaultValue: 'S prijavo se strinjaš s pogoji poslovanja',
+          localized: true,
+
         },
       ],
     },
@@ -48,7 +55,8 @@ export const Footer: GlobalConfig = {
     {
       name: 'navItems',
       type: 'array',
-      label: 'Main navigation',
+      label: 'Navigacije',
+      localized: true,
       maxRows: 6,
       fields: [
         link({
@@ -60,7 +68,8 @@ export const Footer: GlobalConfig = {
     {
       name: 'programNavItems',
       type: 'array',
-      label: 'Program navigation',
+      label: 'Programi',
+      localized: true,
       maxRows: 10,
       fields: [
         link({
@@ -105,6 +114,8 @@ export const Footer: GlobalConfig = {
           type: 'text',
           label: 'Label',
           defaultValue: 'Pogoji poslovanja',
+          localized: true,
+
         },
         {
           name: 'url',

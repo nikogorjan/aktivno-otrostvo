@@ -33,6 +33,7 @@ export function MobileMenu({ menu, languages }: Props) {
   const [isOpen, setIsOpen] = useState(false)
 
   const closeMobileMenu = () => setIsOpen(false)
+  const currentLocale = (pathname.split('/')[1] || 'sl').toLowerCase()
 
   useEffect(() => {
     const handleResize = () => {
@@ -63,11 +64,32 @@ export function MobileMenu({ menu, languages }: Props) {
         <div className="py-4">
           {menu?.length ? (
             <ul className="flex w-full flex-col">
-              {menu.map((item) => (
-                <li className="py-2" key={item.id}>
-                  <CMSLink {...item.link} appearance="link" />
-                </li>
-              ))}
+              {menu.map((item) => {
+                const link = item.link
+                let url = link.url || '/'
+
+                const isExternal =
+                  url.startsWith('http://') ||
+                  url.startsWith('https://') ||
+                  url.startsWith('mailto:')
+
+                if (!isExternal) {
+                  if (!url.startsWith('/')) url = `/${url}`
+
+                  url =
+                    url === '/'
+                      ? `/${currentLocale}`
+                      : `/${currentLocale}${url}`
+                }
+
+                const localizedLink = { ...link, url }
+
+                return (
+                  <li className="py-2" key={item.id}>
+                    <CMSLink {...localizedLink} appearance="link" />
+                  </li>
+                )
+              })}
             </ul>
           ) : null}
         </div>

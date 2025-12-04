@@ -9,10 +9,13 @@ import type { DefaultDocumentIDType } from 'payload'
 import React from 'react'
 
 const BG_COLOR_MAP: Record<string, string> = {
-  modra: 'bg-modra',     // big pastel blue background
   roza: 'bg-roza',
+  oranzna: 'bg-oranzna',
   rumena: 'bg-rumena',
   zelena: 'bg-zelena',
+  vijolicna: 'bg-vijolicna',
+  modra: 'bg-modra',
+  mint: 'bg-mint',
 }
 
 export const VideoSectionBlock: React.FC<
@@ -24,7 +27,7 @@ export const VideoSectionBlock: React.FC<
   const bgClass = BG_COLOR_MAP[backgroundColor || 'modra'] ?? BG_COLOR_MAP.modra
 
   return (
-    <section className={cn('py-10 md:py-14 lg:py-20', className)}>
+    <section className={cn('py-10 md:py-14 lg:py-20 bg-[#FBFBFB]', className)}>
       {/* Top row: heading (left) + description + buttons (right) */}
       <div className="container">
         <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[1.1fr_1.1fr] lg:gap-12">
