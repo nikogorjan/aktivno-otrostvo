@@ -1,22 +1,22 @@
-
 import { AccountForm } from '@/components/forms/AccountForm'
 import { OrderItem } from '@/components/OrderItem'
 import { Button } from '@/components/ui/button'
+import { Link } from '@/i18n/navigation'
 import { Order } from '@/payload-types'
 import configPromise from '@payload-config'
 import { getTranslations } from 'next-intl/server'
 import { headers as getHeaders } from 'next/headers.js'
-import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { getPayload } from 'payload'
 
 type PageProps = {
-  params: {
+  params: Promise<{
     locale: string
-  }
+  }>
 }
 
-export default async function AccountPage({ params: { locale } }: PageProps) {
+export default async function AccountPage({ params }: PageProps) {
+  const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'AccountPage' })
 
   const headers = await getHeaders()
@@ -68,7 +68,7 @@ export default async function AccountPage({ params: { locale } }: PageProps) {
           <p>{t('recentOrdersText')}</p>
         </div>
 
-        {(!orders || !Array.isArray(orders) || orders?.length === 0) && (
+        {(!orders || !Array.isArray(orders) || orders.length === 0) && (
           <p className="mb-8">{t('noOrders')}</p>
         )}
 
@@ -83,7 +83,8 @@ export default async function AccountPage({ params: { locale } }: PageProps) {
         )}
 
         <Button asChild variant="default">
-          <Link href={`/${locale}/orders`}>{t('viewAllOrders')}</Link>
+          {/* i18n Link will prefix /sl or /en automatically */}
+          <Link href="/orders">{t('viewAllOrders')}</Link>
         </Button>
       </div>
     </>
