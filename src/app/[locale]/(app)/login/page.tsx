@@ -1,10 +1,9 @@
-// src/app/[locale]/(auth)/login/page.tsx
 import type { Metadata } from 'next'
 
 import { RenderParams } from '@/components/RenderParams'
-
 import { LoginForm } from '@/components/forms/LoginForm'
 import configPromise from '@payload-config'
+import { getTranslations } from 'next-intl/server'
 import { headers as getHeaders } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { getPayload } from 'payload'
@@ -20,6 +19,7 @@ type Props = {
 
 export default async function Login({ params }: Props) {
   const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'LoginPage' })
 
   const headers = await getHeaders()
   const payload = await getPayload({ config: configPromise })
@@ -27,7 +27,9 @@ export default async function Login({ params }: Props) {
 
   if (user) {
     redirect(
-      `/${locale}/account?warning=${encodeURIComponent('Si že prijavljen.')}`,
+      `/${locale}/account?warning=${encodeURIComponent(
+        t('alreadyLoggedIn'),
+      )}`,
     )
   }
 
@@ -36,12 +38,9 @@ export default async function Login({ params }: Props) {
       <div className="max-w-xl mx-auto my-12">
         <RenderParams />
 
-        <h1 className="mb-4 text-[1.8rem]">Prijava</h1>
-        <p className="mb-8">
-          {/* admin stays without locale, since it’s a separate app */}
-          
-        
-        </p>
+        <h1 className="mb-4 text-[1.8rem]">{t('title')}</h1>
+        <p className="mb-8">{t('subtitle')}</p>
+
         <Suspense fallback={<div />}>
           <LoginForm />
         </Suspense>
@@ -50,17 +49,20 @@ export default async function Login({ params }: Props) {
   )
 }
 
-// Locale-aware metadata
 export async function generateMetadata({
   params,
 }: Props): Promise<Metadata> {
   const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'LoginPage' })
+
+  const title = t('metaTitle')
+  const description = t('metaDescription')
 
   return {
-    title: 'Login',
-    description: 'Prijavi se ali ustvari račun.',
+    title,
+    description,
     openGraph: {
-      title: 'Login',
+      title,
       url: `/${locale}/login`,
     },
   }

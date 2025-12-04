@@ -103,5 +103,58 @@
     "shippingAddressLabel": "Shipping Address",
     "metaTitle": "Order {id}",
     "metaDescription": "Order details for order {id}."
+  },
+   "CreateAccountPage": {
+    "title": "Create account",
+    "alreadyLoggedIn": "You are already logged in.",
+    "metaTitle": "My account",
+    "metaDescription": "Create an account or log in to your existing account."
+  },
+  "ForgotPasswordPage": {
+    "metaTitle": "Forgot Password",
+    "metaDescription": "Enter your email address to recover your password."
+  },
+  "LoginPage": {
+    "title": "Login",
+    "subtitle": "Log in or create an account.",
+    "alreadyLoggedIn": "You are already logged in.",
+    "metaTitle": "Login",
+    "metaDescription": "Log in or create an account."
+  },
+  "LoginForm": {
+    "emailLabel": "Email",
+    "passwordLabel": "Password",
+    "emailRequired": "Email is required.",
+    "passwordRequired": "Please provide a password.",
+    "forgotIntro": "Forgot your password?",
+    "forgotLink": "Reset it",
+    "registerButton": "Register",
+    "processing": "Processing",
+    "continue": "Continue",
+    "errorInvalidCredentials": "There was an error with the credentials provided. Please try again."
+  },
+   "LogoutPage": {
+    "metaTitle": "Logout",
+    "metaDescription": "You have been logged out successfully."
+  },
+  "LogoutPageClient": {
+    "success": "You have been logged out successfully.",
+    "alreadyLoggedOut": "You are already logged out.",
+    "whatNext": "What would you like to do now?",
+    "shopLinkText": "Click here",
+    "shopSuffix": " to browse products.",
+    "loginPrefix": " To log back in, ",
+    "loginLinkText": "click here"
+  },
+   "ForgotPasswordForm": {
+    "title": "Forgot Password",
+    "intro": "Please enter your email below. You will receive an email with instructions on how to reset your password. To manage all users,",
+    "adminLinkText": "log in to the admin dashboard",
+    "emailLabel": "Email address",
+    "emailRequired": "Please provide your email.",
+    "submit": "Forgot Password",
+    "errorSendFailed": "There was a problem while attempting to send you a password reset email. Please try again.",
+    "successTitle": "Request submitted",
+    "successText": "Check your email for a link that will allow you to securely reset your password."
   }
 }

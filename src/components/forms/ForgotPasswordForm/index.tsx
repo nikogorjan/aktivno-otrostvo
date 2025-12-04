@@ -6,7 +6,7 @@ import { Message } from '@/components/Message'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import React, { Fragment, useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -15,6 +15,8 @@ type FormData = {
 }
 
 export const ForgotPasswordForm: React.FC = () => {
+  const t = useTranslations('ForgotPasswordForm')
+
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
 
@@ -24,68 +26,77 @@ export const ForgotPasswordForm: React.FC = () => {
     register,
   } = useForm<FormData>()
 
-  const onSubmit = useCallback(async (data: FormData) => {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/forgot-password`,
-      {
-        body: JSON.stringify(data),
-        headers: {
-          'Content-Type': 'application/json',
+  const onSubmit = useCallback(
+    async (data: FormData) => {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/forgot-password`,
+        {
+          body: JSON.stringify(data),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
         },
-        method: 'POST',
-      },
-    )
-
-    if (response.ok) {
-      setSuccess(true)
-      setError('')
-    } else {
-      setError(
-        'There was a problem while attempting to send you a password reset email. Please try again.',
       )
-    }
-  }, [])
+
+      if (response.ok) {
+        setSuccess(true)
+        setError('')
+      } else {
+        setError(t('errorSendFailed'))
+      }
+    },
+    [t],
+  )
 
   return (
     <Fragment>
       {!success && (
-        <React.Fragment>
-          <h1 className="text-xl mb-4">Forgot Password</h1>
+        <Fragment>
+          <h1 className="text-xl mb-4">{t('title')}</h1>
+
           <div className="prose dark:prose-invert mb-8">
             <p>
-              {`Please enter your email below. You will receive an email message with instructions on
-              how to reset your password. To manage your all users, `}
-              <Link href="/admin/collections/users">login to the admin dashboard</Link>.
+              {t('intro')}{' '}
+              {/* admin stays without locale, since it’s a separate app */}
+              <a href="/admin/collections/users">
+                {t('adminLinkText')}
+              </a>
+              .
             </p>
           </div>
+
           <form className="max-w-lg" onSubmit={handleSubmit(onSubmit)}>
             <Message className="mb-8" error={error} />
 
             <FormItem className="mb-8">
               <Label htmlFor="email" className="mb-2">
-                Email address
+                {t('emailLabel')}
               </Label>
               <Input
                 id="email"
-                {...register('email', { required: 'Please provide your email.' })}
                 type="email"
+                {...register('email', {
+                  required: t('emailRequired'),
+                })}
               />
               {errors.email && <FormError message={errors.email.message} />}
             </FormItem>
 
             <Button type="submit" variant="default">
-              Forgot Password
+              {t('submit')}
             </Button>
           </form>
-        </React.Fragment>
+        </Fragment>
       )}
+
       {success && (
-        <React.Fragment>
-          <h1 className="text-xl mb-4">Request submitted</h1>
+        <Fragment>
+          <h1 className="text-xl mb-4">{t('successTitle')}</h1>
           <div className="prose dark:prose-invert">
-            <p>Check your email for a link that will allow you to securely reset your password.</p>
+            <p>{t('successText')}</p>
           </div>
-        </React.Fragment>
+        </Fragment>
       )}
     </Fragment>
   )

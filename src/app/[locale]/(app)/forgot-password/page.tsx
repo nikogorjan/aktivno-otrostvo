@@ -1,9 +1,17 @@
 import type { Metadata } from 'next'
 
+import { ForgotPasswordForm } from '@/components/forms/ForgotPasswordForm'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
+import { getTranslations } from 'next-intl/server'
 import { Suspense } from 'react'
 
-import { ForgotPasswordForm } from '@/components/forms/ForgotPasswordForm'
+type Params = {
+  locale: string
+}
+
+type Props = {
+  params: Promise<Params>
+}
 
 export default async function ForgotPasswordPage() {
   return (
@@ -15,11 +23,24 @@ export default async function ForgotPasswordPage() {
   )
 }
 
-export const metadata: Metadata = {
-  description: 'Enter your email address to recover your password.',
-  openGraph: mergeOpenGraph({
-    title: 'Forgot Password',
-    url: '/forgot-password',
-  }),
-  title: 'Forgot Password',
+export async function generateMetadata({
+  params,
+}: Props): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({
+    locale,
+    namespace: 'ForgotPasswordPage',
+  })
+
+  const title = t('metaTitle')
+  const description = t('metaDescription')
+
+  return {
+    title,
+    description,
+    openGraph: mergeOpenGraph({
+      title,
+      url: `/${locale}/recover-password`,
+    }),
+  }
 }

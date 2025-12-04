@@ -1,6 +1,6 @@
-// app/[locale]/(auth)/logout/page.tsx
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import type { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 import { Suspense } from 'react'
 import { LogoutPage } from './LogoutPage'
 
@@ -13,8 +13,7 @@ type Props = {
 }
 
 export default async function Logout({ params }: Props) {
-  // we don't strictly need locale here, but this keeps types happy
-  await params
+  await params // keep types happy
 
   return (
     <div className="container max-w-lg my-16">
@@ -25,17 +24,23 @@ export default async function Logout({ params }: Props) {
   )
 }
 
-// locale-aware metadata
 export async function generateMetadata({
   params,
 }: Props): Promise<Metadata> {
   const { locale } = await params
+  const t = await getTranslations({
+    locale,
+    namespace: 'LogoutPage',
+  })
+
+  const title = t('metaTitle')
+  const description = t('metaDescription')
 
   return {
-    description: 'Odjava uspešna.',
-    title: 'Logout',
+    title,
+    description,
     openGraph: mergeOpenGraph({
-      title: 'Logout',
+      title,
       url: `/${locale}/logout`,
     }),
   }

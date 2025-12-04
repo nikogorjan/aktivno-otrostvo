@@ -102,5 +102,60 @@
     "shippingAddressLabel": "Dostavni naslov",
     "metaTitle": "Naročilo {id}",
     "metaDescription": "Podrobnosti naročila {id}."
+  },
+  "CreateAccountPage": {
+    "title": "Ustvari račun",
+    "alreadyLoggedIn": "Si že prijavljen.",
+    "metaTitle": "Moj račun",
+    "metaDescription": "Ustvari račun ali se prijavi v obstoječi račun."
+  },
+  "ForgotPasswordPage": {
+    "metaTitle": "Pozabljeno geslo",
+    "metaDescription": "Vnesi svoj e-poštni naslov za obnovitev gesla."
+  },
+  "LoginPage": {
+    "title": "Prijava",
+    "subtitle": "Prijavi se ali ustvari račun.",
+    "alreadyLoggedIn": "Si že prijavljen.",
+    "metaTitle": "Prijava",
+    "metaDescription": "Prijavi se ali ustvari račun."
+  },
+   "LoginForm": {
+    "emailLabel": "Email",
+    "passwordLabel": "Geslo",
+    "emailRequired": "Email je obvezen.",
+    "passwordRequired": "Prosimo, vnesi geslo.",
+    "forgotIntro": "Pozabljeno geslo?",
+    "forgotLink": "Ponastavi geslo",
+    "registerButton": "Registriraj",
+    "processing": "Obdelava",
+    "continue": "Nadaljuj",
+    "errorInvalidCredentials": "Prišlo je do napake z vnesenimi podatki. Poskusi znova."
+  },
+  "LogoutPage": {
+    "metaTitle": "Odjava",
+    "metaDescription": "Odjava uspešna."
+  },
+   "LogoutPageClient": {
+    "success": "Odjava uspešna.",
+    "alreadyLoggedOut": "Si že odjavljen.",
+    "whatNext": "Kaj želite storiti zdaj?",
+    "shopLinkText": "Klikni tukaj",
+    "shopSuffix": " za nakupovanje.",
+    "loginPrefix": " Za ponovno prijavo ",
+    "loginLinkText": "klikni tukaj"
+  },
+  
+  "ForgotPasswordForm": {
+    "title": "Pozabljeno geslo",
+    "intro": "Spodaj vnesi svoj e-poštni naslov. Poslali ti bomo sporočilo z navodili za ponastavitev gesla. Za upravljanje vseh uporabnikov",
+    "adminLinkText": "se prijavi v administratorsko nadzorno ploščo",
+    "emailLabel": "E-poštni naslov",
+    "emailRequired": "Prosimo, vnesi svoj e-poštni naslov.",
+    "submit": "Pozabljeno geslo",
+    "errorSendFailed": "Pri pošiljanju e-pošte za ponastavitev gesla je prišlo do težave. Poskusi znova.",
+    "successTitle": "Zahteva poslana",
+    "successText": "Preveri svojo e-pošto. Poslali smo ti povezavo za varno ponastavitev gesla."
   }
+
 }
