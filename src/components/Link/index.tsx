@@ -8,7 +8,7 @@ import { cn } from '@/utilities/cn'
 import { ArrowUpRight } from 'lucide-react'
 
 type CMSLinkBaseProps = {
-  appearance?: 'inline' | ButtonProps['variant']
+  appearance?: 'inline' | ButtonProps['variant']  // includes "nav"
   children?: React.ReactNode
   className?: string
   label?: string | null
@@ -22,7 +22,6 @@ type CMSLinkBaseProps = {
   url?: string | null
 }
 
-// 👇 inherit all anchor props EXCEPT "type" (because we already use our own)
 type CMSLinkType = CMSLinkBaseProps &
   Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'type'>
 
@@ -37,7 +36,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
     reference,
     size: sizeFromProps,
     url,
-    ...rest // 👈 grab the rest (onMouseEnter, etc.)
+    ...rest
   } = props
 
   const href =
@@ -50,25 +49,36 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
   const size = appearance === 'link' ? 'clear' : sizeFromProps
   const newTabProps = newTab ? { rel: 'noopener noreferrer', target: '_blank' } : {}
 
+  const showArrow =
+    appearance === 'default' || appearance === 'rumen' || appearance === 'siv'
+
+  // 🔹 For pure text links (e.g. in content, footer)
   if (appearance === 'inline') {
     return (
-      <Link className={cn(className)} href={href} {...newTabProps} {...rest}>
+      <Link
+        className={cn(className)}
+        href={href}
+        {...newTabProps}
+        {...rest}
+      >
         {label ?? children}
       </Link>
     )
   }
 
+  // 🔹 For button-like + nav variants -> use Button + Slot
   return (
     <Button asChild className={className} size={size} variant={appearance}>
       <Link
-        className="pl-2 pr-2"
+        // ✅ Only add extra padding for CTA buttons that show arrow
+        className={cn(showArrow && 'pl-4 pr-1.5')}
         href={href}
         {...newTabProps}
-        {...rest} // 👈 pass onMouseEnter etc. down to <a>
+        {...rest}
       >
         {label ?? children}
 
-        {(appearance === 'default' || appearance === 'rumen' || appearance === 'siv') && (
+        {showArrow && (
           <span className="ml-2 inline-flex items-center justify-center rounded-full bg-white text-neutral-dark size-9">
             <ArrowUpRight className="size-6" />
           </span>
