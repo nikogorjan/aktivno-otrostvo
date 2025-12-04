@@ -44,7 +44,7 @@ export const TabsSectionBlock: React.FC<TabsSectionBlockProps & { className?: st
   if (!items.length) return null
 
   return (
-    <section className={cn('py-6 md:py-12 xl:py-16', className)}>
+    <section className={cn('pb-6 md:pb-12 xl:pb-16 pt-10 md:pt-20 xl:pt-28', className)}>
       <div className="container">
         {heading && (
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">{heading}</h2>

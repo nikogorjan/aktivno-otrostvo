@@ -72,7 +72,7 @@ export const HomeHero: React.FC<HomeHeroProps> = (props) => {
             </div>
           )}
           <h3 className="text-sm md:text-base font-semibold leading-snug">{card.heading}</h3>
-        
+
         </div>
       </div>
     )
@@ -87,7 +87,7 @@ export const HomeHero: React.FC<HomeHeroProps> = (props) => {
   }
 
   return (
-<section className="relative bg-background py-12 md:py-16 lg:py-20 overflow-visible">
+    <section className="relative bg-background py-12 md:py-16 lg:py-20 overflow-visible">
       <div
         className="
           container 
@@ -96,29 +96,29 @@ export const HomeHero: React.FC<HomeHeroProps> = (props) => {
           gap-4 lg:grid-cols-[1.1fr_1.4fr] lg:gap-16
         "
       >
-      
+
 
         {/* LEFT: image */}
-      <div className="flex justify-center lg:h-full">
-  <div
-    className="
+        <div className="flex justify-center lg:h-full">
+          <div
+            className="
       relative w-full lg:max-w-[520px] overflow-visible rounded-xl
       aspect-square lg:aspect-auto lg:h-full
-      lg:origin-right lg:scale-[1.1]
-      xl:scale-[1.2]
-      2xl:scale-[1.25]
+      lg:origin-right lg:scale-[1.05]
+      xl:scale-[1.1]
+      2xl:scale-[1.15]
     "
-  >
-    {heroPhoto && (
-      <Media
-        resource={heroPhoto}
-        fill
-        priority
-        imgClassName="object-contain"
-      />
-    )}
-  </div>
-</div>
+          >
+            {heroPhoto && (
+              <Media
+                resource={heroPhoto}
+                fill
+                priority
+                imgClassName="object-contain"
+              />
+            )}
+          </div>
+        </div>
 
         {/* RIGHT: grid + title */}
         <div className="w-full h-full">
