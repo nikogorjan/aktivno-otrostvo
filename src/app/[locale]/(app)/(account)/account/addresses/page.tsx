@@ -1,22 +1,21 @@
-import type { Metadata } from 'next'
-
 import { AddressListing } from '@/components/addresses/AddressListing'
 import { CreateAddressModal } from '@/components/addresses/CreateAddressModal'
-import { Order } from '@/payload-types'
+import type { Order } from '@/payload-types'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import configPromise from '@payload-config'
+import type { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
-import { headers as getHeaders } from 'next/headers.js'
+import { headers as getHeaders } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { getPayload } from 'payload'
 
-type PageProps = {
+type Props = {
   params: {
     locale: string
   }
 }
 
-export default async function AddressesPage({ params: { locale } }: PageProps) {
+export default async function AddressesPage({ params: { locale } }: Props) {
   const t = await getTranslations({ locale, namespace: 'AddressesPage' })
 
   const headers = await getHeaders()
@@ -47,7 +46,7 @@ export default async function AddressesPage({ params: { locale } }: PageProps) {
 
     orders = ordersResult?.docs || []
   } catch (error) {
-    // swallow, as before
+    // swallow as before
   }
 
   return (
@@ -64,7 +63,7 @@ export default async function AddressesPage({ params: { locale } }: PageProps) {
 }
 
 export async function generateMetadata(
-  { params: { locale } }: PageProps,
+  { params: { locale } }: Props,
 ): Promise<Metadata> {
   const t = await getTranslations({ locale, namespace: 'AddressesPage' })
 
@@ -76,7 +75,7 @@ export async function generateMetadata(
     description,
     openGraph: mergeOpenGraph({
       title,
-      url: '/account/addresses',
+      url: `/${locale}/account/addresses`,
     }),
   }
 }
