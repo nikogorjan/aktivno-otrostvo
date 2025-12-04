@@ -1,21 +1,21 @@
+import type { Metadata } from 'next'
+
 import { AddressListing } from '@/components/addresses/AddressListing'
 import { CreateAddressModal } from '@/components/addresses/CreateAddressModal'
 import type { Order } from '@/payload-types'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import configPromise from '@payload-config'
-import type { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
 import { headers as getHeaders } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { getPayload } from 'payload'
 
-type Props = {
-  params: {
-    locale: string
-  }
+type PageProps = {
+  params: Promise<{ locale: string }>
 }
 
-export default async function AddressesPage({ params: { locale } }: Props) {
+export default async function AddressesPage({ params }: PageProps) {
+  const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'AddressesPage' })
 
   const headers = await getHeaders()
@@ -63,8 +63,9 @@ export default async function AddressesPage({ params: { locale } }: Props) {
 }
 
 export async function generateMetadata(
-  { params: { locale } }: Props,
+  { params }: PageProps,
 ): Promise<Metadata> {
+  const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'AddressesPage' })
 
   const title = t('metaTitle')

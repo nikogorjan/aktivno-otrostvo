@@ -8,12 +8,12 @@ type Params = {
   locale: string
 }
 
-type Props = {
-  params: Promise<Params>
+type PageProps = {
+  params: Promise<{ locale: string }>
 }
 
-export default async function Logout({ params }: Props) {
-  await params // keep types happy
+export default async function Logout({ params }: PageProps) {
+  const { locale } = await params
 
   return (
     <div className="container max-w-lg my-16">
@@ -24,9 +24,9 @@ export default async function Logout({ params }: Props) {
   )
 }
 
-export async function generateMetadata({
-  params,
-}: Props): Promise<Metadata> {
+export async function generateMetadata(
+  { params }: PageProps,
+): Promise<Metadata> {
   const { locale } = await params
   const t = await getTranslations({
     locale,

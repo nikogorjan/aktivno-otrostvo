@@ -10,12 +10,11 @@ import { redirect } from 'next/navigation'
 import { getPayload } from 'payload'
 
 type PageProps = {
-  params: {
-    locale: string
-  }
+  params: Promise<{ locale: string }>
 }
 
-export default async function Orders({ params: { locale } }: PageProps) {
+export default async function Orders({ params }: PageProps) {
+  const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'OrdersPage' })
 
   const headers = await getHeaders()
@@ -71,8 +70,9 @@ export default async function Orders({ params: { locale } }: PageProps) {
 }
 
 export async function generateMetadata(
-  { params: { locale } }: PageProps,
+  { params }: PageProps,
 ): Promise<Metadata> {
+  const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'OrdersPage' })
 
   const title = t('metaTitle')

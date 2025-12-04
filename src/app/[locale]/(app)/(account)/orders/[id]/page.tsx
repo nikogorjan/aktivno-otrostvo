@@ -23,8 +23,11 @@ type PageProps = {
   searchParams: Promise<{ email?: string }>
 }
 
-export default async function OrderPage({ params, searchParams }: PageProps) {
-  const { id, locale } = await params
+export default async function OrderPage({
+  params,
+  searchParams,
+}: PageProps) {
+  const { locale, id } = await params
   const { email = '' } = await searchParams
 
   const t = await getTranslations({ locale, namespace: 'OrderDetailPage' })
@@ -214,7 +217,7 @@ export default async function OrderPage({ params, searchParams }: PageProps) {
 export async function generateMetadata(
   { params }: PageProps,
 ): Promise<Metadata> {
-  const { id, locale } = await params
+  const { locale, id } = await params
   const t = await getTranslations({ locale, namespace: 'OrderDetailPage' })
 
   const title = t('metaTitle', { id })
