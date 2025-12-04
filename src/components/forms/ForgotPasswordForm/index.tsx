@@ -7,8 +7,10 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useTranslations } from 'next-intl'
+import Link from 'next/link'
 import React, { Fragment, useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
+
 
 type FormData = {
   email: string
@@ -59,9 +61,9 @@ export const ForgotPasswordForm: React.FC = () => {
             <p>
               {t('intro')}{' '}
               {/* admin stays without locale, since it’s a separate app */}
-              <a href="/admin/collections/users">
+              <Link href="/admin/collections/users" locale={false}>
                 {t('adminLinkText')}
-              </a>
+              </Link>
               .
             </p>
           </div>
