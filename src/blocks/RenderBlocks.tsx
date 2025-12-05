@@ -13,8 +13,10 @@ import type { Page } from '../payload-types'
 import { AboutUsSectionBlock } from './AboutUs/Component'
 import { CtaEmailBlock } from './CtaEmail/Component'
 import { FaqSectionBlock } from './Faq/Component'
+import { RoadmapSectionBlock } from './RoadmapBlock/Component'
 import { TabsSectionBlock } from './Tabs/Component'
 import { TestimonialsBlock } from './Testimonials/Components'
+import { ValuesSectionBlock } from './ValuesBlock/Components'
 import { VideoSectionBlock } from './VideoSection/Component'
 
 const blockComponents = {
@@ -31,7 +33,9 @@ const blockComponents = {
   faqSection: FaqSectionBlock,
   testimonials: TestimonialsBlock,
   ctaEmail: CtaEmailBlock,
-  videoSection: VideoSectionBlock
+  videoSection: VideoSectionBlock,
+  valuesSection: ValuesSectionBlock,
+  roadmapSection: RoadmapSectionBlock
 }
 
 export const RenderBlocks: React.FC<{

@@ -12,9 +12,11 @@ import { CtaEmail } from '@/blocks/CtaEmail/config'
 import { FaqSection } from '@/blocks/Faq/config'
 import { FormBlock } from '@/blocks/Form/config'
 import { MediaBlock } from '@/blocks/MediaBlock/config'
+import { RoadmapSection } from '@/blocks/RoadmapBlock/config'
 import { TabsSection } from '@/blocks/Tabs/config'
 import { Testimonials } from '@/blocks/Testimonials/config'
 import { ThreeItemGrid } from '@/blocks/ThreeItemGrid/config'
+import { ValuesSection } from '@/blocks/ValuesBlock/config'
 import { VideoSection } from '@/blocks/VideoSection/config'
 import { hero } from '@/fields/hero'
 import { generatePreviewPath } from '@/utilities/generatePreviewPath'
@@ -108,7 +110,9 @@ export const Pages: CollectionConfig = {
                 FaqSection,
                 Testimonials,
                 CtaEmail,
-                VideoSection
+                VideoSection,
+                ValuesSection,
+                RoadmapSection
               ],
               required: true,
             },
