@@ -2,6 +2,7 @@ import React from 'react'
 
 import type { Page } from '@/payload-types'
 
+import { AboutHero } from '@/heros/AboutHero'
 import { HighImpactHero } from '@/heros/HighImpact'
 import { HomeHero } from '@/heros/HomeHero'
 import { LowImpactHero } from '@/heros/LowImpact'
@@ -12,6 +13,7 @@ const heroes = {
   lowImpact: LowImpactHero,
   mediumImpact: MediumImpactHero,
   homeHero: HomeHero,
+  aboutHero: AboutHero
 }
 
 export const RenderHero: React.FC<Page['hero']> = (props) => {
