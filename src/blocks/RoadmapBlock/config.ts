@@ -1,9 +1,9 @@
 // src/blocks/RoadmapSection.ts
 import {
-    FixedToolbarFeature,
-    HeadingFeature,
-    InlineToolbarFeature,
-    lexicalEditor,
+  FixedToolbarFeature,
+  HeadingFeature,
+  InlineToolbarFeature,
+  lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 import type { Block } from 'payload'
 

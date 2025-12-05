@@ -8,6 +8,7 @@ import { Banner } from '@/blocks/Banner/config'
 import { CallToAction } from '@/blocks/CallToAction/config'
 import { Carousel } from '@/blocks/Carousel/config'
 import { Content } from '@/blocks/Content/config'
+import { CtaBackgroundSection } from '@/blocks/CtaBackgroundBlock/config'
 import { CtaEmail } from '@/blocks/CtaEmail/config'
 import { FaqSection } from '@/blocks/Faq/config'
 import { FormBlock } from '@/blocks/Form/config'
@@ -112,7 +113,8 @@ export const Pages: CollectionConfig = {
                 CtaEmail,
                 VideoSection,
                 ValuesSection,
-                RoadmapSection
+                RoadmapSection,
+                CtaBackgroundSection,
               ],
               required: true,
             },
