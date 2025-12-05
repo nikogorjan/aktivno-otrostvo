@@ -7,6 +7,7 @@ import { cn } from '@/utilities/cn'
 import { MotionValue, motion, useMotionValue, useScroll, useTransform } from 'framer-motion'
 import * as React from 'react'
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // --- LOCAL TYPES (match your block config) -----------------------------
 
 type RoadmapItem = {
@@ -80,8 +81,6 @@ export const RoadmapSectionBlock: React.FC<RoadmapSectionBlockProps> = ({
   items = [],
   className,
 }) => {
-  if (!items.length) return null
-
   const containerRef = React.useRef<HTMLDivElement | null>(null)
 
   const { scrollYProgress } = useScroll({
@@ -89,7 +88,10 @@ export const RoadmapSectionBlock: React.FC<RoadmapSectionBlockProps> = ({
     offset: ['start start', 'end 60%'],
   })
 
-  const scales = calculateScales(items.length, scrollYProgress)
+  const itemCount = items.length
+  const scales = calculateScales(itemCount || 1, scrollYProgress)
+
+  if (!itemCount) return null
 
   return (
     <section className={cn('py-12 md:py-20 lg:py-24', className)}>
