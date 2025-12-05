@@ -545,6 +545,7 @@ export interface Page {
     | VideoSectionBlock
     | ValuesSectionBlock
     | RoadmapSectionBlock
+    | CtaBackgroundSectionBlock
   )[];
   meta?: {
     title?: string | null;
@@ -1260,6 +1261,51 @@ export interface RoadmapSectionBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CtaBackgroundSectionBlock".
+ */
+export interface CtaBackgroundSectionBlock {
+  heading: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?: {
+            relationTo: 'pages';
+            value: string | Page;
+          } | null;
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline' | 'rumen' | 'siv') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  backgroundImage: string | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ctaBackgroundSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "variants".
  */
 export interface Variant {
@@ -1646,6 +1692,7 @@ export interface PagesSelect<T extends boolean = true> {
         videoSection?: T | VideoSectionBlockSelect<T>;
         valuesSection?: T | ValuesSectionBlockSelect<T>;
         roadmapSection?: T | RoadmapSectionBlockSelect<T>;
+        ctaBackgroundSection?: T | CtaBackgroundSectionBlockSelect<T>;
       };
   meta?:
     | T
@@ -1944,6 +1991,32 @@ export interface RoadmapSectionBlockSelect<T extends boolean = true> {
         image?: T;
         id?: T;
       };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CtaBackgroundSectionBlock_select".
+ */
+export interface CtaBackgroundSectionBlockSelect<T extends boolean = true> {
+  heading?: T;
+  description?: T;
+  links?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
+  backgroundImage?: T;
   id?: T;
   blockName?: T;
 }

@@ -11,6 +11,7 @@ import React, { Fragment } from 'react'
 
 import type { Page } from '../payload-types'
 import { AboutUsSectionBlock } from './AboutUs/Component'
+import { CtaBackgroundSectionBlock } from './CtaBackgroundBlock/Component'
 import { CtaEmailBlock } from './CtaEmail/Component'
 import { FaqSectionBlock } from './Faq/Component'
 import { RoadmapSectionBlock } from './RoadmapBlock/Component'
@@ -35,7 +36,8 @@ const blockComponents = {
   ctaEmail: CtaEmailBlock,
   videoSection: VideoSectionBlock,
   valuesSection: ValuesSectionBlock,
-  roadmapSection: RoadmapSectionBlock
+  roadmapSection: RoadmapSectionBlock,
+  ctaBackgroundSection: CtaBackgroundSectionBlock,
 }
 
 export const RenderBlocks: React.FC<{
