@@ -12,6 +12,7 @@ import { CtaEmail } from '@/blocks/CtaEmail/config'
 import { FaqSection } from '@/blocks/Faq/config'
 import { FormBlock } from '@/blocks/Form/config'
 import { MediaBlock } from '@/blocks/MediaBlock/config'
+import { RoadmapSection } from '@/blocks/RoadmapBlock/config'
 import { TabsSection } from '@/blocks/Tabs/config'
 import { Testimonials } from '@/blocks/Testimonials/config'
 import { ThreeItemGrid } from '@/blocks/ThreeItemGrid/config'
@@ -110,7 +111,8 @@ export const Pages: CollectionConfig = {
                 Testimonials,
                 CtaEmail,
                 VideoSection,
-                ValuesSection
+                ValuesSection,
+                RoadmapSection
               ],
               required: true,
             },

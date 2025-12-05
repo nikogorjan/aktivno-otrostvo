@@ -544,6 +544,7 @@ export interface Page {
     | CtaEmailBlock
     | VideoSectionBlock
     | ValuesSectionBlock
+    | RoadmapSectionBlock
   )[];
   meta?: {
     title?: string | null;
@@ -1213,6 +1214,52 @@ export interface ValuesSectionBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "RoadmapSectionBlock".
+ */
+export interface RoadmapSectionBlock {
+  heading: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  items: {
+    color?: ('roza' | 'modra' | 'rumena') | null;
+    title: string;
+    description?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    image: string | Media;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'roadmapSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "variants".
  */
 export interface Variant {
@@ -1598,6 +1645,7 @@ export interface PagesSelect<T extends boolean = true> {
         ctaEmail?: T | CtaEmailBlockSelect<T>;
         videoSection?: T | VideoSectionBlockSelect<T>;
         valuesSection?: T | ValuesSectionBlockSelect<T>;
+        roadmapSection?: T | RoadmapSectionBlockSelect<T>;
       };
   meta?:
     | T
@@ -1875,6 +1923,25 @@ export interface ValuesSectionBlockSelect<T extends boolean = true> {
         color?: T;
         title?: T;
         description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "RoadmapSectionBlock_select".
+ */
+export interface RoadmapSectionBlockSelect<T extends boolean = true> {
+  heading?: T;
+  description?: T;
+  items?:
+    | T
+    | {
+        color?: T;
+        title?: T;
+        description?: T;
+        image?: T;
         id?: T;
       };
   id?: T;
