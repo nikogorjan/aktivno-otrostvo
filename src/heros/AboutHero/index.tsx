@@ -33,7 +33,7 @@ export const AboutHero: React.FC<AboutHeroProps> = (props) => {
         about?.photo && typeof about.photo === 'object' ? about.photo : undefined
 
     return (
-        <section className="relative bg-background py-12 md:py-16 lg:py-20">
+        <section className="relative py-12 md:py-16 lg:py-20 bg-[#FBFBFB]">
             <div className="container grid grid-cols-1 gap-10 md:grid-cols-[1.1fr_1.2fr] items-center">
                 {/* LEFT: text */}
                 <div className="max-w-xl space-y-6">

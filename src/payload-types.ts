@@ -543,6 +543,7 @@ export interface Page {
     | TestimonialsBlock
     | CtaEmailBlock
     | VideoSectionBlock
+    | ValuesSectionBlock
   )[];
   meta?: {
     title?: string | null;
@@ -1166,6 +1167,52 @@ export interface VideoSectionBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ValuesSectionBlock".
+ */
+export interface ValuesSectionBlock {
+  heading: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  values: {
+    icon: string | Media;
+    color?: ('roza' | 'oranzna' | 'rumena' | 'zelena' | 'vijolicna' | 'modra' | 'mint') | null;
+    title: string;
+    description?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'valuesSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "variants".
  */
 export interface Variant {
@@ -1550,6 +1597,7 @@ export interface PagesSelect<T extends boolean = true> {
         testimonials?: T | TestimonialsBlockSelect<T>;
         ctaEmail?: T | CtaEmailBlockSelect<T>;
         videoSection?: T | VideoSectionBlockSelect<T>;
+        valuesSection?: T | ValuesSectionBlockSelect<T>;
       };
   meta?:
     | T
@@ -1810,6 +1858,25 @@ export interface VideoSectionBlockSelect<T extends boolean = true> {
   mediaTitle?: T;
   browserUrl?: T;
   media?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ValuesSectionBlock_select".
+ */
+export interface ValuesSectionBlockSelect<T extends boolean = true> {
+  heading?: T;
+  description?: T;
+  values?:
+    | T
+    | {
+        icon?: T;
+        color?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }
