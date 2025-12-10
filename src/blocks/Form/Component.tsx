@@ -18,7 +18,6 @@ import { fields } from './fields'
 // if not, install: pnpm add react-icons)
 import { CMSLink } from '@/components/Link'
 import { Facebook, Instagram, Mail, Phone } from 'lucide-react'
-import Image from 'next/image'
 
 export type Value = unknown
 
@@ -277,13 +276,13 @@ export const FormBlock: React.FC<
             )}
           </FormProvider>
         </div>
-        <Image
+        {/*<Image
           src="https://bloom42-media.s3.eu-central-1.amazonaws.com/yellowball.svg"
           width={160}
           height={160}
           alt=""
           className="pointer-events-none select-none absolute bottom-0 right-12 sm:right-12 w-40 h-40 opacity-90 z-[0]"
-        />
+        />*/}
       </div>
     </div>
   )
