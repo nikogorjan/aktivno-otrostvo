@@ -12,6 +12,7 @@ import { CtaBackgroundSection } from '@/blocks/CtaBackgroundBlock/config'
 import { CtaEmail } from '@/blocks/CtaEmail/config'
 import { FaqSection } from '@/blocks/Faq/config'
 import { FormBlock } from '@/blocks/Form/config'
+import { ImageTextSection } from '@/blocks/ImageTextBlock/config'
 import { MediaBlock } from '@/blocks/MediaBlock/config'
 import { RoadmapSection } from '@/blocks/RoadmapBlock/config'
 import { TabsSection } from '@/blocks/Tabs/config'
@@ -115,6 +116,7 @@ export const Pages: CollectionConfig = {
                 ValuesSection,
                 RoadmapSection,
                 CtaBackgroundSection,
+                ImageTextSection
               ],
               required: true,
             },
