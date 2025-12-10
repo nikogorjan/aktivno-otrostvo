@@ -741,8 +741,8 @@ export interface BannerBlock {
  */
 export interface FormBlock {
   form: string | Form;
-  enableIntro?: boolean | null;
-  introContent?: {
+  title: string;
+  description?: {
     root: {
       type: string;
       children: {
@@ -757,6 +757,14 @@ export interface FormBlock {
     };
     [k: string]: unknown;
   } | null;
+  contactInfo?: {
+    email?: string | null;
+    phone?: string | null;
+    facebookLabel?: string | null;
+    facebookUrl?: string | null;
+    instagramLabel?: string | null;
+    instagramUrl?: string | null;
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'formBlock';
@@ -1820,8 +1828,18 @@ export interface BannerBlockSelect<T extends boolean = true> {
  */
 export interface FormBlockSelect<T extends boolean = true> {
   form?: T;
-  enableIntro?: T;
-  introContent?: T;
+  title?: T;
+  description?: T;
+  contactInfo?:
+    | T
+    | {
+        email?: T;
+        phone?: T;
+        facebookLabel?: T;
+        facebookUrl?: T;
+        instagramLabel?: T;
+        instagramUrl?: T;
+      };
   id?: T;
   blockName?: T;
 }

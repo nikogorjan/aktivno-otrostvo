@@ -5,10 +5,10 @@ import { Label } from '@/components/ui/label'
 import { Textarea as TextAreaComponent } from '@/components/ui/textarea'
 import React from 'react'
 
-import { Width } from '../Width'
-import { capitaliseFirstLetter } from '@/utilities/capitaliseFirstLetter'
-import { FormItem } from '@/components/forms/FormItem'
 import { FormError } from '@/components/forms/FormError'
+import { FormItem } from '@/components/forms/FormItem'
+import { capitaliseFirstLetter } from '@/utilities/capitaliseFirstLetter'
+import { Width } from '../Width'
 
 export const Textarea: React.FC<
   TextField & {
@@ -39,6 +39,7 @@ export const Textarea: React.FC<
           defaultValue={defaultValue}
           id={name}
           rows={rows}
+          className='bg-white'
           {...register(name, {
             required: requiredFromProps
               ? `${capitaliseFirstLetter(label || name)} is required.`
