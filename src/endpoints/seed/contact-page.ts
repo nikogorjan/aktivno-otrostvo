@@ -1,14 +1,13 @@
 import type { Form } from '@/payload-types'
-
-import { RequiredDataFromCollectionSlug } from 'payload'
+import type { RequiredDataFromCollectionSlug } from 'payload'
 
 type ProductArgs = {
   contactForm: Form
 }
 
-export const contactPageData: (args: ProductArgs) => RequiredDataFromCollectionSlug<'pages'> = ({
-  contactForm,
-}) => {
+export const contactPageData: (
+  args: ProductArgs,
+) => RequiredDataFromCollectionSlug<'pages'> = ({ contactForm }) => {
   return {
     slug: 'contact',
     _status: 'published',
@@ -18,9 +17,12 @@ export const contactPageData: (args: ProductArgs) => RequiredDataFromCollectionS
     layout: [
       {
         blockType: 'formBlock',
-        enableIntro: true,
         form: contactForm,
-        introContent: {
+        // 👇 required by your new FormBlock config
+        title: 'Contact',
+
+        // 👇 this replaces the old `introContent`
+        description: {
           root: {
             type: 'root',
             children: [
@@ -50,6 +52,16 @@ export const contactPageData: (args: ProductArgs) => RequiredDataFromCollectionS
             version: 1,
           },
         },
+
+        // optional – only if you want to seed default contact info:
+        // contactInfo: {
+        //   email: 'info@example.com',
+        //   phone: '+386 40 000 000',
+        //   facebookLabel: 'Facebook',
+        //   facebookUrl: 'https://facebook.com/...',
+        //   instagramLabel: 'Instagram',
+        //   instagramUrl: 'https://instagram.com/...',
+        // },
       },
     ],
     title: 'Contact',
