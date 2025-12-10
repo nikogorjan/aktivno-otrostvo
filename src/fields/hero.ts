@@ -33,6 +33,7 @@ export const hero: Field = {
         { label: 'None', value: 'none' },
         { label: 'Home Hero', value: 'homeHero' },
         { label: 'O meni', value: 'aboutHero' },
+        { label: 'Storitve', value: 'servicesHero' },
         { label: 'High Impact', value: 'highImpact' },
         { label: 'Medium Impact', value: 'mediumImpact' },
         { label: 'Low Impact', value: 'lowImpact' },
@@ -157,6 +158,49 @@ export const hero: Field = {
       label: 'Prva sekcija',
       admin: {
         condition: (_, { type } = {}) => type === 'aboutHero',
+      },
+      fields: [
+        {
+          name: 'photo',
+          type: 'upload',
+          relationTo: 'media',
+          label: 'Naslovna slika',
+          required: true,
+        },
+        {
+          name: 'title',
+          type: 'text',
+          required: true,
+          localized: true,
+          label: 'Prvi naslov (e.g. "AKTIVNO OTROŠTVO")',
+
+        },
+        {
+          name: 'richText',
+          type: 'richText',
+          editor: rich(),
+          label: 'opis',
+          localized: true
+
+
+        },
+        linkGroup({
+          overrides: {
+            maxRows: 2,
+            label: 'Gumbi',
+            localized: true
+          },
+
+        }),
+      ],
+    },
+
+    {
+      name: 'Storitve',
+      type: 'group',
+      label: 'Prva sekcija',
+      admin: {
+        condition: (_, { type } = {}) => type === 'servicesHero',
       },
       fields: [
         {

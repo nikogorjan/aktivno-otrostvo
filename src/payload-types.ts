@@ -433,7 +433,7 @@ export interface Page {
   title: string;
   publishedOn?: string | null;
   hero: {
-    type: 'none' | 'homeHero' | 'aboutHero' | 'highImpact' | 'mediumImpact' | 'lowImpact';
+    type: 'none' | 'homeHero' | 'aboutHero' | 'servicesHero' | 'highImpact' | 'mediumImpact' | 'lowImpact';
     richText?: {
       root: {
         type: string;
@@ -527,6 +527,44 @@ export interface Page {
           }[]
         | null;
     };
+    Storitve?: {
+      photo: string | Media;
+      title: string;
+      richText?: {
+        root: {
+          type: string;
+          children: {
+            type: any;
+            version: number;
+            [k: string]: unknown;
+          }[];
+          direction: ('ltr' | 'rtl') | null;
+          format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+          indent: number;
+          version: number;
+        };
+        [k: string]: unknown;
+      } | null;
+      links?:
+        | {
+            link: {
+              type?: ('reference' | 'custom') | null;
+              newTab?: boolean | null;
+              reference?: {
+                relationTo: 'pages';
+                value: string | Page;
+              } | null;
+              url?: string | null;
+              label: string;
+              /**
+               * Choose how the link should be rendered.
+               */
+              appearance?: ('default' | 'outline' | 'rumen' | 'siv') | null;
+            };
+            id?: string | null;
+          }[]
+        | null;
+    };
   };
   layout: (
     | CallToActionBlock
@@ -546,6 +584,7 @@ export interface Page {
     | ValuesSectionBlock
     | RoadmapSectionBlock
     | CtaBackgroundSectionBlock
+    | ImageTextSectionBlock
   )[];
   meta?: {
     title?: string | null;
@@ -741,8 +780,8 @@ export interface BannerBlock {
  */
 export interface FormBlock {
   form: string | Form;
-  enableIntro?: boolean | null;
-  introContent?: {
+  title: string;
+  description?: {
     root: {
       type: string;
       children: {
@@ -757,6 +796,14 @@ export interface FormBlock {
     };
     [k: string]: unknown;
   } | null;
+  contactInfo?: {
+    email?: string | null;
+    phone?: string | null;
+    facebookLabel?: string | null;
+    facebookUrl?: string | null;
+    instagramLabel?: string | null;
+    instagramUrl?: string | null;
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'formBlock';
@@ -1306,6 +1353,40 @@ export interface CtaBackgroundSectionBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageTextSectionBlock".
+ */
+export interface ImageTextSectionBlock {
+  /**
+   * Izberi, ali bo slika na levi ali desni strani.
+   */
+  alignment: 'imageRight' | 'imageLeft';
+  heading: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  backgroundColor: 'roza' | 'oranzna' | 'rumena' | 'zelena' | 'vijolicna' | 'modra' | 'mint';
+  /**
+   * Slika, ki bo prikazana v barvnem okvirju.
+   */
+  media: string | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'imageTextSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "variants".
  */
 export interface Variant {
@@ -1672,6 +1753,28 @@ export interface PagesSelect<T extends boolean = true> {
                     id?: T;
                   };
             };
+        Storitve?:
+          | T
+          | {
+              photo?: T;
+              title?: T;
+              richText?: T;
+              links?:
+                | T
+                | {
+                    link?:
+                      | T
+                      | {
+                          type?: T;
+                          newTab?: T;
+                          reference?: T;
+                          url?: T;
+                          label?: T;
+                          appearance?: T;
+                        };
+                    id?: T;
+                  };
+            };
       };
   layout?:
     | T
@@ -1693,6 +1796,7 @@ export interface PagesSelect<T extends boolean = true> {
         valuesSection?: T | ValuesSectionBlockSelect<T>;
         roadmapSection?: T | RoadmapSectionBlockSelect<T>;
         ctaBackgroundSection?: T | CtaBackgroundSectionBlockSelect<T>;
+        imageTextSection?: T | ImageTextSectionBlockSelect<T>;
       };
   meta?:
     | T
@@ -1820,8 +1924,18 @@ export interface BannerBlockSelect<T extends boolean = true> {
  */
 export interface FormBlockSelect<T extends boolean = true> {
   form?: T;
-  enableIntro?: T;
-  introContent?: T;
+  title?: T;
+  description?: T;
+  contactInfo?:
+    | T
+    | {
+        email?: T;
+        phone?: T;
+        facebookLabel?: T;
+        facebookUrl?: T;
+        instagramLabel?: T;
+        instagramUrl?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -2017,6 +2131,19 @@ export interface CtaBackgroundSectionBlockSelect<T extends boolean = true> {
         id?: T;
       };
   backgroundImage?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageTextSectionBlock_select".
+ */
+export interface ImageTextSectionBlockSelect<T extends boolean = true> {
+  alignment?: T;
+  heading?: T;
+  description?: T;
+  backgroundColor?: T;
+  media?: T;
   id?: T;
   blockName?: T;
 }
