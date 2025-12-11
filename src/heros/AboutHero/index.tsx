@@ -38,7 +38,7 @@ export const AboutHero: React.FC<AboutHeroProps> = (props) => {
                 {/* LEFT: text */}
                 <div className="max-w-xl space-y-6">
                     {about?.title && (
-                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-[600] tracking-tight leading-tight">
+                        <h1 className="text-3xl md:text-4xl lg:text-5xl font-[600] tracking-tight leading-tight">
                             {about.title}
                         </h1>
                     )}
@@ -52,7 +52,7 @@ export const AboutHero: React.FC<AboutHeroProps> = (props) => {
                     {about?.links && (
                         <div className="pt-4">
                             {Array.isArray(about?.links) && about?.links.length > 0 && (
-                                <ul className="mt-6 md:mt-8 flex flex-wrap gap-3">
+                                <ul className="mt-0 md:mt-2 flex flex-wrap gap-3">
                                     {about?.links.map(({ link }, i) => (
                                         <li key={i}>
                                             <CMSLink {...link} />
@@ -66,7 +66,7 @@ export const AboutHero: React.FC<AboutHeroProps> = (props) => {
 
                 {/* RIGHT: photo */}
                 <div className="flex justify-center lg:justify-end">
-                    <div className="relative w-full md:max-w-[520px] aspect-square rounded-[12px] overflow-hidden">
+                    <div className="relative w-full md:max-w-[520px] aspect-[3/4] rounded-[12px] overflow-hidden">
                         {photo && (
                             <Media
                                 resource={photo}
