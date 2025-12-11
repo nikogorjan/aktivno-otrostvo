@@ -15,6 +15,7 @@ import { CtaBackgroundSectionBlock } from './CtaBackgroundBlock/Component'
 import { CtaEmailBlock } from './CtaEmail/Component'
 import { FaqSectionBlock } from './Faq/Component'
 import { ImageTextSectionBlock } from './ImageTextBlock/Component'
+import { ProgramGridSection } from './ProgramGridSection/Components'
 import { RoadmapSectionBlock } from './RoadmapBlock/Component'
 import { TabsSectionBlock } from './Tabs/Component'
 import { TestimonialsBlock } from './Testimonials/Components'
@@ -39,7 +40,8 @@ const blockComponents = {
   valuesSection: ValuesSectionBlock,
   roadmapSection: RoadmapSectionBlock,
   ctaBackgroundSection: CtaBackgroundSectionBlock,
-  imageTextSection: ImageTextSectionBlock
+  imageTextSection: ImageTextSectionBlock,
+  programGridSection: ProgramGridSection,
 }
 
 export const RenderBlocks: React.FC<{
