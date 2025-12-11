@@ -585,6 +585,7 @@ export interface Page {
     | RoadmapSectionBlock
     | CtaBackgroundSectionBlock
     | ImageTextSectionBlock
+    | ProgramGridSectionBlock
   )[];
   meta?: {
     title?: string | null;
@@ -1387,6 +1388,60 @@ export interface ImageTextSectionBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProgramGridSectionBlock".
+ */
+export interface ProgramGridSectionBlock {
+  /**
+   * Vsak element predstavlja eno kartico
+   */
+  programs?:
+    | {
+        media: string | Media;
+        title: string;
+        description?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        links?:
+          | {
+              link: {
+                type?: ('reference' | 'custom') | null;
+                newTab?: boolean | null;
+                reference?: {
+                  relationTo: 'pages';
+                  value: string | Page;
+                } | null;
+                url?: string | null;
+                label: string;
+                /**
+                 * Choose how the link should be rendered.
+                 */
+                appearance?: ('default' | 'outline' | 'rumen' | 'siv') | null;
+              };
+              id?: string | null;
+            }[]
+          | null;
+        backgroundColor: 'roza' | 'oranzna' | 'rumena' | 'zelena' | 'vijolicna' | 'modra' | 'mint';
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'programGridSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "variants".
  */
 export interface Variant {
@@ -1797,6 +1852,7 @@ export interface PagesSelect<T extends boolean = true> {
         roadmapSection?: T | RoadmapSectionBlockSelect<T>;
         ctaBackgroundSection?: T | CtaBackgroundSectionBlockSelect<T>;
         imageTextSection?: T | ImageTextSectionBlockSelect<T>;
+        programGridSection?: T | ProgramGridSectionBlockSelect<T>;
       };
   meta?:
     | T
@@ -2144,6 +2200,38 @@ export interface ImageTextSectionBlockSelect<T extends boolean = true> {
   description?: T;
   backgroundColor?: T;
   media?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProgramGridSectionBlock_select".
+ */
+export interface ProgramGridSectionBlockSelect<T extends boolean = true> {
+  programs?:
+    | T
+    | {
+        media?: T;
+        title?: T;
+        description?: T;
+        links?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                    appearance?: T;
+                  };
+              id?: T;
+            };
+        backgroundColor?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }

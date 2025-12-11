@@ -26,7 +26,7 @@ export const CtaBackgroundSectionBlock: React.FC<
       {/* Content */}
       <div className="container max-w-2xl text-center text-white">
         {heading && (
-          <h2 className="mb-4 text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight">
+          <h2 className="mb-4 text-3xl md:text-3xl lg:text-4xl font-semibold tracking-tight">
             {heading}
           </h2>
         )}
