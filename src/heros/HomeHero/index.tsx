@@ -67,7 +67,7 @@ export const HomeHero: React.FC<HomeHeroProps> = (props) => {
           `}
         >
           {card.icon && typeof card.icon === 'object' && (
-            <div className="mb-2 h-10 w-10 flex flex-col items-center justify-center">
+            <div className="mb-2 h-[50px] w-[50px] flex flex-col items-center justify-center">
               <Media resource={card.icon} imgClassName="object-contain" />
             </div>
           )}
