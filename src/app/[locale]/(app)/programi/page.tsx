@@ -99,7 +99,7 @@ export default async function ProgramsPage({ params }: PageProps) {
 
                                 {/* Title + Read more */}
                                 <div className="flex w-full items-center justify-between gap-4">
-                                    <h2 className="text-2xl md:text-3xl font-semibold">
+                                    <h2 className="text-xl md:text-3xl font-semibold">
                                         {program.title}
                                     </h2>
 
@@ -193,11 +193,12 @@ async function LessonCard({
 }) {
     const href = `/${locale}/programi/${programSlug}/${lesson.slug}`
     const comingSoon = lesson.comingSoon === 'yes'
+    const t = await getTranslations({ locale, namespace: 'Programs' })
 
     return (
         <Link
             href={href}
-            className="block w-full group rounded-xl bg-[#F8F8F8] p-2 ring-1 ring-black/5 overflow-hidden"
+            className="block w-full group rounded-xl bg-card p-2  overflow-hidden"
         >
             <div className="relative">
                 <div className="relative aspect-[16/10] bg-black/5 overflow-hidden rounded-[10px]">
@@ -233,7 +234,7 @@ async function LessonCard({
                 {comingSoon && (
                     <div className="absolute right-3 bottom-3">
                         <span className="inline-flex rounded-full bg-[#B7FF96] px-3 py-1 text-xs font-medium">
-                            Prihaja kmalu
+                             {t('comingSoon')}
                         </span>
                     </div>
                 )}
@@ -249,7 +250,7 @@ async function LessonCard({
                         <RichText data={lesson.description} enableGutter={false} />
                     </div>
                 )}
-                
+
             </div>
         </Link>
     )
