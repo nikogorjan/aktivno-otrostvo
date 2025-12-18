@@ -19,10 +19,12 @@ import { fileURLToPath } from 'url'
 import { Categories } from '@/collections/Categories'
 import { Media } from '@/collections/Media'
 import { Pages } from '@/collections/Pages'
+import { ProgramCategories } from '@/collections/ProgramCategories'
 import { Users } from '@/collections/Users'
 import { Footer } from '@/globals/Footer'
 import { Header } from '@/globals/Header'
 import { s3Storage } from '@payloadcms/storage-s3'
+import { Lessons } from './collections/Lessons'
 import { plugins } from './plugins'
 
 const filename = fileURLToPath(import.meta.url)
@@ -40,7 +42,7 @@ export default buildConfig({
     },
     user: Users.slug,
   },
-  collections: [Users, Pages, Categories, Media],
+  collections: [Users, Pages, Categories, Media, ProgramCategories, Lessons],
   localization: {
     locales: [
       {
