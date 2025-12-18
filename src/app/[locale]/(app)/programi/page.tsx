@@ -55,6 +55,8 @@ export default async function ProgramsPage({ params }: PageProps) {
     })
 
     const lessons = lessonsRes.docs as Lesson[]
+    const t = await getTranslations({ locale, namespace: 'Programs' })
+
 
     return (
         <main className="bg-[#FBFBFB]">
@@ -169,7 +171,7 @@ export default async function ProgramsPage({ params }: PageProps) {
                                 </>
                             ) : (
                                 <p className="text-sm text-muted-foreground">
-                                    Trenutno ni lekcij.
+                                     {t('noLessons')}
                                 </p>
                             )}
                         </section>

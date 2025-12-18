@@ -168,7 +168,19 @@
     "followMe": "Follow me",
     "missingLabel": "(missing label)"
   },
-  "Programs": {
-    "readMore": "Read more"
+   "Programs": {
+    "readMore": "Read more",
+    "noLessons": "There are no lessons right now.",
+    "comingSoon": "Coming soon"
+  },
+  "MobileMenu": {
+    "navigation": "Navigation",
+    "myAccount": "My account",
+    "orders": "Orders",
+    "locations": "Addresses",
+    "settings": "Settings",
+    "logout": "Logout",
+    "login": "Login",
+    "createAccount": "Create account"
   }
 }

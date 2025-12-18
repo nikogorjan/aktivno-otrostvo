@@ -162,8 +162,20 @@
     "followMe": "Sledi mi",
     "missingLabel": "(manjkajoča oznaka)"
   },
-   "Programs": {
-    "readMore": "Preberi več"
+    "Programs": {
+    "readMore": "Preberi več",
+    "noLessons": "Trenutno ni lekcij.",
+    "comingSoon": "Prihaja kmalu"
+  },
+  "MobileMenu": {
+    "navigation": "Navigacija",
+    "myAccount": "Moj račun",
+    "orders": "Nakupi",
+    "locations": "Lokacija",
+    "settings": "Nastavitve",
+    "logout": "Odjava",
+    "login": "Prijava",
+    "createAccount": "Ustvari račun"
   }
 
 }

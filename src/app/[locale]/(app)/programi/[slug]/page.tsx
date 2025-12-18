@@ -8,6 +8,7 @@ import { RichText } from '@/components/RichText'
 import { CarouselWithIndicators } from '@/components/ui/carousel-indicators'
 import type { Lesson, ProgramCategory } from '@/payload-types'
 import { cn } from '@/utilities/cn'
+import { getTranslations } from 'next-intl/server'
 
 type Locale = 'sl' | 'en'
 
@@ -81,57 +82,57 @@ export default async function ProgramPage({ params }: PageProps) {
 
                 {/* Lessons grid */}
                 {lessons.length > 0 && (
-  <div className="mt-10 md:mt-12">
-    {/* ================= MOBILE ================= */}
-    <div className="lg:hidden">
-      {lessons.length > 1 ? (
-        <CarouselWithIndicators itemClassName="basis-[85%]">
-          {lessons.map((lesson) => (
-            <LessonCard
-              key={lesson.id}
-              locale={locale}
-              programSlug={programSlugValue(program, locale)}
-              lesson={lesson}
-            />
-          ))}
-        </CarouselWithIndicators>
-      ) : (
-        <LessonCard
-          locale={locale}
-          programSlug={programSlugValue(program, locale)}
-          lesson={lessons[0]}
-        />
-      )}
-    </div>
+                    <div className="mt-10 md:mt-12">
+                        {/* ================= MOBILE ================= */}
+                        <div className="lg:hidden">
+                            {lessons.length > 1 ? (
+                                <CarouselWithIndicators itemClassName="basis-[85%]">
+                                    {lessons.map((lesson) => (
+                                        <LessonCard
+                                            key={lesson.id}
+                                            locale={locale}
+                                            programSlug={programSlugValue(program, locale)}
+                                            lesson={lesson}
+                                        />
+                                    ))}
+                                </CarouselWithIndicators>
+                            ) : (
+                                <LessonCard
+                                    locale={locale}
+                                    programSlug={programSlugValue(program, locale)}
+                                    lesson={lessons[0]}
+                                />
+                            )}
+                        </div>
 
-    {/* ================= DESKTOP ================= */}
-    <div className="hidden lg:block">
-      {lessons.length > 3 ? (
-        <CarouselWithIndicators itemClassName="basis-1/3">
-          {lessons.map((lesson) => (
-            <LessonCard
-              key={lesson.id}
-              locale={locale}
-              programSlug={programSlugValue(program, locale)}
-              lesson={lesson}
-            />
-          ))}
-        </CarouselWithIndicators>
-      ) : (
-        <div className="grid grid-cols-3 gap-6">
-          {lessons.map((lesson) => (
-            <LessonCard
-              key={lesson.id}
-              locale={locale}
-              programSlug={programSlugValue(program, locale)}
-              lesson={lesson}
-            />
-          ))}
-        </div>
-      )}
-    </div>
-  </div>
-)}
+                        {/* ================= DESKTOP ================= */}
+                        <div className="hidden lg:block">
+                            {lessons.length > 3 ? (
+                                <CarouselWithIndicators itemClassName="basis-1/3">
+                                    {lessons.map((lesson) => (
+                                        <LessonCard
+                                            key={lesson.id}
+                                            locale={locale}
+                                            programSlug={programSlugValue(program, locale)}
+                                            lesson={lesson}
+                                        />
+                                    ))}
+                                </CarouselWithIndicators>
+                            ) : (
+                                <div className="grid grid-cols-3 gap-6">
+                                    {lessons.map((lesson) => (
+                                        <LessonCard
+                                            key={lesson.id}
+                                            locale={locale}
+                                            programSlug={programSlugValue(program, locale)}
+                                            lesson={lesson}
+                                        />
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )}
             </section>
         </main>
     )
@@ -148,7 +149,7 @@ function programSlugValue(program: any, locale: Locale) {
     return typeof raw === 'string' ? raw : raw?.[locale] ?? raw?.sl
 }
 
-function LessonCard({
+async function LessonCard({
     locale,
     programSlug,
     lesson,
@@ -160,13 +161,14 @@ function LessonCard({
     const href = `/${locale}/programi/${programSlug}/${lesson.slug}`
 
     const comingSoon = lesson.comingSoon === 'yes'
+    const t = await getTranslations({ locale, namespace: 'Programs' })
 
     return (
-        
+
         <Link
-  href={href}
-  className="block w-full group rounded-xl bg-[#F8F8F8] p-2 ring-1 ring-black/5 overflow-hidden"
->
+            href={href}
+            className="block w-full group rounded-xl bg-[#F8F8F8] p-2 ring-1 ring-black/5 overflow-hidden"
+        >
             <div className="relative">
                 <div className="relative aspect-[16/10] bg-black/5 overflow-hidden rounded-[10px]">
                     {lesson.media && typeof lesson.media === 'object' && (
@@ -203,7 +205,7 @@ function LessonCard({
                 {comingSoon && (
                     <div className="absolute right-3 bottom-3">
                         <span className="inline-flex items-center rounded-full bg-[#B7FF96] px-3 py-1 text-xs font-medium text-black/80">
-                            Prihaja kmalu
+                            {t('comingSoon')}
                         </span>
                     </div>
                 )}
@@ -217,45 +219,45 @@ function LessonCard({
 }
 
 const queryProgramBySlug = async ({ slug, locale }: { slug: string; locale: Locale }) => {
-  const payload = await getPayload({ config: configPromise })
+    const payload = await getPayload({ config: configPromise })
 
-  const result = await payload.find({
-    collection: 'programCategories',
-    limit: 1,
-    pagination: false,
-    locale,
-    where: {
-      slug: {
-        equals: slug,
-      },
-    },
-    depth: 2,
-  })
+    const result = await payload.find({
+        collection: 'programCategories',
+        limit: 1,
+        pagination: false,
+        locale,
+        where: {
+            slug: {
+                equals: slug,
+            },
+        },
+        depth: 2,
+    })
 
-  return (result.docs?.[0] as ProgramCategory | undefined) || null
+    return (result.docs?.[0] as ProgramCategory | undefined) || null
 }
 
 const queryLessonsByProgram = async ({
-  programId,
-  locale,
-}: {
-  programId: string
-  locale: Locale
-}) => {
-  const payload = await getPayload({ config: configPromise })
-
-  const result = await payload.find({
-    collection: 'lessons',
-    pagination: false,
+    programId,
     locale,
-    depth: 2,
-    limit: 100,
-    where: {
-      program: {
-        equals: programId,
-      },
-    },
-  })
+}: {
+    programId: string
+    locale: Locale
+}) => {
+    const payload = await getPayload({ config: configPromise })
 
-  return (result.docs as Lesson[]) || []
+    const result = await payload.find({
+        collection: 'lessons',
+        pagination: false,
+        locale,
+        depth: 2,
+        limit: 100,
+        where: {
+            program: {
+                equals: programId,
+            },
+        },
+    })
+
+    return (result.docs as Lesson[]) || []
 }
