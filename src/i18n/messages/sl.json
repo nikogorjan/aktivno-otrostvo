@@ -176,6 +176,29 @@
     "logout": "Odjava",
     "login": "Prijava",
     "createAccount": "Ustvari račun"
+  },
+   "CreateAccountForm": {
+    "adminLinkText": "Prijavi se v portal.",
+    "emailLabel": "Email",
+    "passwordLabel": "Novo geslo",
+    "passwordConfirmLabel": "Potrdi geslo",
+    "submit": "Ustvari račun",
+    "processing": "Obdelava",
+    "alreadyHaveAccount": "Že imaš račun? ",
+    "loginLinkText": "Prijava",
+
+    "errors": {
+      "emailRequired": "Email je obvezen.",
+      "passwordRequired": "Geslo je obvezno.",
+      "passwordConfirmRequired": "Ponovno vnesite geslo.",
+      "passwordMismatch": "Geslo se ne ujema",
+      "createAccountFailed": "Pri ustvarjanju računa je prišlo do napake.",
+      "invalidCredentials": "Prišlo je do napake z vnesenimi podatki. Poskusi znova."
+    },
+
+    "success": {
+      "accountCreated": "Račun je bil uspešno ustvarjen."
+    }
   }
 
 }

@@ -182,5 +182,28 @@
     "logout": "Logout",
     "login": "Login",
     "createAccount": "Create account"
+  },
+   "CreateAccountForm": {
+    "adminLinkText": "Log in to the admin portal.",
+    "emailLabel": "Email",
+    "passwordLabel": "New password",
+    "passwordConfirmLabel": "Confirm password",
+    "submit": "Create account",
+    "processing": "Processing",
+    "alreadyHaveAccount": "Already have an account? ",
+    "loginLinkText": "Login",
+
+    "errors": {
+      "emailRequired": "Email is required.",
+      "passwordRequired": "Password is required.",
+      "passwordConfirmRequired": "Please confirm your password.",
+      "passwordMismatch": "Passwords do not match",
+      "createAccountFailed": "There was an error creating the account.",
+      "invalidCredentials": "There was an error with the credentials provided. Please try again."
+    },
+
+    "success": {
+      "accountCreated": "Account created successfully."
+    }
   }
 }
