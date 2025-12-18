@@ -34,6 +34,8 @@ export function MobileMenu({ menu, languages }: Props) {
 
   const closeMobileMenu = () => setIsOpen(false)
   const currentLocale = (pathname.split('/')[1] || 'sl').toLowerCase()
+  const hasLocalePrefix = (url: string) =>
+    url.startsWith('/sl') || url.startsWith('/en')
 
   useEffect(() => {
     const handleResize = () => {
@@ -75,11 +77,6 @@ export function MobileMenu({ menu, languages }: Props) {
 
                 if (!isExternal) {
                   if (!url.startsWith('/')) url = `/${url}`
-
-                  url =
-                    url === '/'
-                      ? `/${currentLocale}`
-                      : `/${currentLocale}${url}`
                 }
 
                 const localizedLink = { ...link, url }
