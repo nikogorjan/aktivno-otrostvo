@@ -167,7 +167,7 @@ async function LessonCard({
 
         <Link
             href={href}
-            className="block w-full group rounded-xl bg-[#F8F8F8] p-2 ring-1 ring-black/5 overflow-hidden"
+            className="block w-full group rounded-xl bg-card p-2  overflow-hidden"
         >
             <div className="relative">
                 <div className="relative aspect-[16/10] bg-black/5 overflow-hidden rounded-[10px]">
@@ -213,6 +213,13 @@ async function LessonCard({
 
             <div className="p-5">
                 <p className="text-base font-semibold leading-snug">{lesson.title}</p>
+                {lesson.description && (
+                    <div className="mt-2 text-sm text-muted-foreground line-clamp-3">
+                        <RichText data={lesson.description} enableGutter={false} />
+                    </div>
+                )}
+
+
             </div>
         </Link>
     )
