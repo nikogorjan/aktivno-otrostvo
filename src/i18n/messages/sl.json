@@ -41,11 +41,9 @@
     "metaTitle": "Naslovi",
     "metaDescription": "Upravljajte svoje naslove."
   },
-
   "AddressListing": {
     "noAddresses": "Ni shranjenih naslovov."
   },
-
   "CreateAddressModal": {
     "buttonText": "Dodaj nov naslov",
     "modalTitle": "Dodaj nov naslov",
@@ -53,7 +51,6 @@
     "editButtonText": "Uredi",
     "editModalTitle": "Uredi naslov"
   },
-
   "AddressForm": {
     "titleLabel": "Naziv",
     "titlePlaceholder": "Naziv",
@@ -76,7 +73,6 @@
     "countryPlaceholder": "Država",
     "submit": "Shrani naslov"
   },
-  
   "AccountNav": {
     "settings": "Nastavitve",
     "addresses": "Lokacije",
@@ -90,7 +86,6 @@
     "metaTitle": "Naročila",
     "metaDescription": "Vaša naročila."
   },
-
   "OrderDetailPage": {
     "allOrders": "Vsa naročila",
     "orderNumber": "Naročilo #{id}",
@@ -145,7 +140,6 @@
     "loginPrefix": " Za ponovno prijavo ",
     "loginLinkText": "klikni tukaj"
   },
-  
   "ForgotPasswordForm": {
     "title": "Pozabljeno geslo",
     "intro": "Spodaj vnesi svoj e-poštni naslov. Poslali ti bomo sporočilo z navodili za ponastavitev gesla. Za upravljanje vseh uporabnikov",
