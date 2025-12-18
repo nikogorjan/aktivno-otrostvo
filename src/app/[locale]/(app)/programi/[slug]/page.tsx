@@ -218,6 +218,8 @@ async function LessonCard({
                         <RichText data={lesson.description} enableGutter={false} />
                     </div>
                 )}
+
+                
             </div>
         </Link>
     )

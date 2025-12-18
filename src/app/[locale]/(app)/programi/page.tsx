@@ -244,11 +244,12 @@ async function LessonCard({
                     {lesson.title}
                 </p>
 
-                {lesson.description && (
+                 {lesson.description && (
                     <div className="mt-2 text-sm text-muted-foreground line-clamp-3">
                         <RichText data={lesson.description} enableGutter={false} />
                     </div>
                 )}
+                
             </div>
         </Link>
     )
