@@ -1622,6 +1622,10 @@ export interface ProgramCategory {
     };
     [k: string]: unknown;
   } | null;
+  /**
+   * Nižja številka = prej prikazano
+   */
+  order?: number | null;
   lessons?: {
     docs?: (string | Lesson)[];
     hasNextPage?: boolean;
@@ -2363,6 +2367,7 @@ export interface ProgramCategoriesSelect<T extends boolean = true> {
   icon?: T;
   media?: T;
   description?: T;
+  order?: T;
   lessons?: T;
   updatedAt?: T;
   createdAt?: T;

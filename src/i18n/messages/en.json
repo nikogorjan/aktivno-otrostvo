@@ -167,5 +167,8 @@
     "navigation": "Navigation",
     "followMe": "Follow me",
     "missingLabel": "(missing label)"
+  },
+  "Programs": {
+    "readMore": "Read more"
   }
 }

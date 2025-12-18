@@ -75,12 +75,22 @@ export const ProgramCategories: CollectionConfig = {
             label: 'opis',
             localized: true
         },
-         {
+        {
+            name: 'order',
+            label: 'Vrstni red',
+            type: 'number',
+            defaultValue: 0,
+            admin: {
+                position: 'sidebar',
+                description: 'Nižja številka = prej prikazano',
+            },
+        },
+        {
             name: 'lessons',
             label: 'Lekcije',
             type: 'join',
             collection: 'lessons',
-            on: 'program', 
+            on: 'program',
             admin: {
                 allowCreate: false,
                 defaultColumns: ['title', 'comingSoon'],

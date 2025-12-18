@@ -5,6 +5,7 @@ import { getPayload } from 'payload'
 
 import { Media } from '@/components/Media'
 import { RichText } from '@/components/RichText'
+import { CarouselWithIndicators } from '@/components/ui/carousel-indicators'
 import type { Lesson, ProgramCategory } from '@/payload-types'
 import { cn } from '@/utilities/cn'
 
@@ -80,19 +81,57 @@ export default async function ProgramPage({ params }: PageProps) {
 
                 {/* Lessons grid */}
                 {lessons.length > 0 && (
-                    <div className="mt-10 md:mt-12">
-                        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-                            {lessons.map((lesson) => (
-                                <LessonCard
-                                    key={lesson.id}
-                                    locale={locale}
-                                    programSlug={programSlugValue(program, locale)}
-                                    lesson={lesson}
-                                />
-                            ))}
-                        </div>
-                    </div>
-                )}
+  <div className="mt-10 md:mt-12">
+    {/* ================= MOBILE ================= */}
+    <div className="lg:hidden">
+      {lessons.length > 1 ? (
+        <CarouselWithIndicators itemClassName="basis-[85%]">
+          {lessons.map((lesson) => (
+            <LessonCard
+              key={lesson.id}
+              locale={locale}
+              programSlug={programSlugValue(program, locale)}
+              lesson={lesson}
+            />
+          ))}
+        </CarouselWithIndicators>
+      ) : (
+        <LessonCard
+          locale={locale}
+          programSlug={programSlugValue(program, locale)}
+          lesson={lessons[0]}
+        />
+      )}
+    </div>
+
+    {/* ================= DESKTOP ================= */}
+    <div className="hidden lg:block">
+      {lessons.length > 3 ? (
+        <CarouselWithIndicators itemClassName="basis-1/3">
+          {lessons.map((lesson) => (
+            <LessonCard
+              key={lesson.id}
+              locale={locale}
+              programSlug={programSlugValue(program, locale)}
+              lesson={lesson}
+            />
+          ))}
+        </CarouselWithIndicators>
+      ) : (
+        <div className="grid grid-cols-3 gap-6">
+          {lessons.map((lesson) => (
+            <LessonCard
+              key={lesson.id}
+              locale={locale}
+              programSlug={programSlugValue(program, locale)}
+              lesson={lesson}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  </div>
+)}
             </section>
         </main>
     )
@@ -125,9 +164,9 @@ function LessonCard({
     return (
         
         <Link
-            href={href}
-            className="group rounded-xl bg-[#F8F8F8] p-2 ring-1 ring-black/5 overflow-hidden"
-        >
+  href={href}
+  className="block w-full group rounded-xl bg-[#F8F8F8] p-2 ring-1 ring-black/5 overflow-hidden"
+>
             <div className="relative">
                 <div className="relative aspect-[16/10] bg-black/5 overflow-hidden rounded-[10px]">
                     {lesson.media && typeof lesson.media === 'object' && (
