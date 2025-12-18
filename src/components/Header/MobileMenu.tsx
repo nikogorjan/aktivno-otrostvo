@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/sheet'
 import { useAuth } from '@/providers/Auth'
 import { MenuIcon } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -34,6 +35,8 @@ export function MobileMenu({ menu, languages }: Props) {
 
   const closeMobileMenu = () => setIsOpen(false)
   const currentLocale = (pathname.split('/')[1] || 'sl').toLowerCase()
+  const hasLocalePrefix = (url: string) =>
+    url.startsWith('/sl') || url.startsWith('/en')
 
   useEffect(() => {
     const handleResize = () => {
@@ -49,6 +52,9 @@ export function MobileMenu({ menu, languages }: Props) {
     setIsOpen(false)
   }, [pathname, searchParams])
 
+  const t = useTranslations('MobileMenu')
+
+
   return (
     <Sheet onOpenChange={setIsOpen} open={isOpen}>
       <SheetTrigger className="relative flex h-11 w-11 items-center justify-center rounded-md text-black transition-colors dark:bg-black dark:text-white">
@@ -57,7 +63,7 @@ export function MobileMenu({ menu, languages }: Props) {
 
       <SheetContent side="left" className="px-4">
         <SheetHeader className="px-0 pt-4 pb-0">
-          <SheetTitle>Navigacija</SheetTitle>
+          <SheetTitle>{t('navigation')}</SheetTitle>
           <SheetDescription />
         </SheetHeader>
 
@@ -75,11 +81,6 @@ export function MobileMenu({ menu, languages }: Props) {
 
                 if (!isExternal) {
                   if (!url.startsWith('/')) url = `/${url}`
-
-                  url =
-                    url === '/'
-                      ? `/${currentLocale}`
-                      : `/${currentLocale}${url}`
                 }
 
                 const localizedLink = { ...link, url }
@@ -101,35 +102,36 @@ export function MobileMenu({ menu, languages }: Props) {
 
         {user ? (
           <div className="mt-4">
-            <h2 className="text-xl mb-4">Moj račun</h2>
+            <h2 className="text-xl mb-4">{t('navigation')}</h2>
+
             <hr className="my-2" />
             <ul className="flex flex-col gap-2">
               <li>
-                <Link href="/orders">Nakupi</Link>
+                <Link href="/orders">{t('orders')}</Link>
               </li>
               <li>
-                <Link href="/account/addresses">Lokacija</Link>
+                <Link href="/account/addresses">{t('locations')}</Link>
               </li>
               <li>
-                <Link href="/account">Nastavitve</Link>
+                <Link href="/account">{t('settings')}</Link>
               </li>
               <li className="mt-6">
                 <Button asChild variant="outline">
-                  <Link href="/logout">Odjava</Link>
+                  <Link href="/logout">{t('logout')}</Link>
                 </Button>
               </li>
             </ul>
           </div>
         ) : (
           <div>
-            <h2 className="text-xl mb-4">Moj račun</h2>
+            <h2 className="text-xl mb-4">{t('myAccount')}</h2>
             <div className="flex flex-col items-center gap-2 mt-4">
               <Button asChild className="w-full" variant="outline">
-                <Link href="/login">Prijava</Link>
+                <Link href="/login">{t('login')}</Link>
               </Button>
 
               <Button asChild className="w-full">
-                <Link href="/create-account">Ustvari račun</Link>
+                <Link href="/create-account">{t('createAccount')}</Link>
               </Button>
             </div>
           </div>

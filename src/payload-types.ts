@@ -1622,6 +1622,10 @@ export interface ProgramCategory {
     };
     [k: string]: unknown;
   } | null;
+  /**
+   * Nižja številka = prej prikazano
+   */
+  order?: number | null;
   lessons?: {
     docs?: (string | Lesson)[];
     hasNextPage?: boolean;
@@ -1660,6 +1664,10 @@ export interface Lesson {
     [k: string]: unknown;
   } | null;
   comingSoon: 'no' | 'yes';
+  /**
+   * Nižja številka = prej prikazano
+   */
+  order?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -2363,6 +2371,7 @@ export interface ProgramCategoriesSelect<T extends boolean = true> {
   icon?: T;
   media?: T;
   description?: T;
+  order?: T;
   lessons?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -2379,6 +2388,7 @@ export interface LessonsSelect<T extends boolean = true> {
   media?: T;
   description?: T;
   comingSoon?: T;
+  order?: T;
   updatedAt?: T;
   createdAt?: T;
 }
