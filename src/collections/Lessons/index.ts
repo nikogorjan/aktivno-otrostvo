@@ -64,7 +64,7 @@ export const Lessons: CollectionConfig = {
             editor: rich(),
             localized: true,
         },
-       
+
         {
             name: 'comingSoon',
             label: 'Kmalu na voljo',
@@ -77,6 +77,16 @@ export const Lessons: CollectionConfig = {
             ],
             admin: {
                 position: 'sidebar',
+            },
+        },
+        {
+            name: 'order',
+            label: 'Vrstni red',
+            type: 'number',
+            defaultValue: 0,
+            admin: {
+                position: 'sidebar',
+                description: 'Nižja številka = prej prikazano',
             },
         },
     ],

@@ -1664,6 +1664,10 @@ export interface Lesson {
     [k: string]: unknown;
   } | null;
   comingSoon: 'no' | 'yes';
+  /**
+   * Nižja številka = prej prikazano
+   */
+  order?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -2384,6 +2388,7 @@ export interface LessonsSelect<T extends boolean = true> {
   media?: T;
   description?: T;
   comingSoon?: T;
+  order?: T;
   updatedAt?: T;
   createdAt?: T;
 }
