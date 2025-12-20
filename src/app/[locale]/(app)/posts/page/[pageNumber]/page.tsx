@@ -1,25 +1,29 @@
+// src/app/[locale]/(app)/posts/page/[pageNumber]/page.tsx
+import configPromise from '@payload-config'
+import { notFound } from 'next/navigation'
 import type { Metadata } from 'next/types'
+import { getPayload } from 'payload'
 
 import { CollectionArchive } from '@/components/CollectionArchive'
 import { PageRange } from '@/components/PageRange'
 import { Pagination } from '@/components/Pagination'
 import PageClient from './page.client'
 
-import type { Locale, LocalePageProps } from '@/types/locale'
-import configPromise from '@payload-config'
-import { notFound } from 'next/navigation'
-import { getPayload } from 'payload'
+type Locale = 'sl' | 'en'
+const LOCALES: Locale[] = ['sl', 'en']
 
 export const revalidate = 600
 
-type Args = LocalePageProps<{ pageNumber: string }>
+type Args = {
+  params: { locale: Locale; pageNumber: string }
+}
 
 export default async function Page({ params }: Args) {
-  const { locale, pageNumber } = await params
+  const { locale, pageNumber } = params
   const payload = await getPayload({ config: configPromise })
 
   const sanitizedPageNumber = Number(pageNumber)
-  if (!Number.isInteger(sanitizedPageNumber)) notFound()
+  if (!Number.isInteger(sanitizedPageNumber) || sanitizedPageNumber < 1) notFound()
 
   const posts = await payload.find({
     collection: 'posts',
@@ -30,6 +34,8 @@ export default async function Page({ params }: Args) {
     page: sanitizedPageNumber,
     overrideAccess: false,
   })
+
+  if (sanitizedPageNumber > (posts.totalPages || 1)) notFound()
 
   return (
     <div className="px-[5%] pb-16 pt-32 md:pb-24 md:pt-32 lg:pb-28 lg:pt-36 bg-scheme1Background">
@@ -50,15 +56,10 @@ export default async function Page({ params }: Args) {
         </div>
 
         <div className="container mb-8">
-          <PageRange
-            collection="posts"
-            currentPage={posts.page}
-            limit={12}
-            totalDocs={posts.totalDocs}
-          />
+          <PageRange collection="posts" currentPage={posts.page} limit={12} totalDocs={posts.totalDocs} />
         </div>
 
-        <CollectionArchive posts={posts.docs} />
+        <CollectionArchive locale={locale} posts={posts.docs} />
 
         <div className="container">
           {posts.page && posts.totalPages > 1 && (
@@ -71,25 +72,28 @@ export default async function Page({ params }: Args) {
 }
 
 export async function generateMetadata({ params }: Args): Promise<Metadata> {
-  const { pageNumber } = await params
-  return {
-    title: `Payload Website Template Posts Page ${pageNumber || ''}`,
-  }
+  const { pageNumber } = params
+  return { title: `Posts – Page ${pageNumber}` }
 }
 
-export async function generateStaticParams({ params }: { params: { locale: Locale } }) {
-  const { locale } = params
+export async function generateStaticParams(): Promise<Array<{ locale: Locale; pageNumber: string }>> {
   const payload = await getPayload({ config: configPromise })
 
-  const { totalDocs } = await payload.count({
-    collection: 'posts',
-    locale,
-    overrideAccess: false,
-  })
+  const allParams: Array<{ locale: Locale; pageNumber: string }> = []
 
-  const totalPages = Math.ceil(totalDocs / 12)
+  for (const locale of LOCALES) {
+    const { totalDocs } = await payload.count({
+      collection: 'posts',
+      locale,
+      overrideAccess: false,
+    })
 
-  return Array.from({ length: totalPages }, (_, i) => ({
-    pageNumber: String(i + 1),
-  }))
+    const totalPages = Math.max(1, Math.ceil(totalDocs / 12))
+
+    for (let i = 1; i <= totalPages; i++) {
+      allParams.push({ locale, pageNumber: String(i) })
+    }
+  }
+
+  return allParams
 }
