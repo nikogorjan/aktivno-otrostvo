@@ -82,13 +82,13 @@ const cmsHref = slug ? `/${relationTo}/${slug}` : `/${relationTo}`
         <div className="flex h-full flex-col items-start justify-center p-6 md:p-8">
           {/* ✅ Minimalist tagline */}
           {categoryTaglines.length > 0 && (
-            <div className="mb-3 flex flex-wrap gap-2">
+            <div className="mb-4 flex flex-wrap gap-2">
               {categoryTaglines.map((tagline) => (
                 <span
                   key={tagline}
                   className="
           inline-flex items-center
-          rounded-[4px]
+          rounded-[6px]
           border border-foreground/20
           bg-foreground/5
           px-3 py-1
