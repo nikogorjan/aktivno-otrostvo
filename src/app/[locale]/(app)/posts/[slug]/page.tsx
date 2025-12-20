@@ -1,4 +1,9 @@
+import configPromise from '@payload-config'
 import type { Metadata } from 'next'
+import { draftMode } from 'next/headers'
+import { notFound } from 'next/navigation'
+import { getPayload } from 'payload'
+import { cache } from 'react'
 
 import { RelatedPosts } from '@/blocks/RelatedPosts/Component'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
@@ -6,36 +11,44 @@ import { RichText } from '@/components/RichText'
 import PageClient from './page.client'
 
 import { PostHero } from '@/heros/PostHero'
+import type { Locale, LocalePageProps } from '@/types/locale'
 import { generateMeta } from '@/utilities/generateMeta'
 
-import type { Locale, LocalePageProps } from '@/types/locale'
-import configPromise from '@payload-config'
-import { draftMode } from 'next/headers'
-import { notFound } from 'next/navigation'
-import { getPayload } from 'payload'
-import { cache } from 'react'
+const LOCALES: Locale[] = ['sl', 'en']
 
-export async function generateStaticParams({ params }: { params: { locale: Locale } }) {
-  const { locale } = params
+/**
+ * IMPORTANT:
+ * Next expects generateStaticParams signature compatible with params being strings.
+ * Also for routes with [locale] + [slug], you should return BOTH locale+slug pairs.
+ */
+export async function generateStaticParams(): Promise<Array<{ locale: string; slug: string }>> {
   const payload = await getPayload({ config: configPromise })
 
-  const posts = await payload.find({
-    collection: 'posts',
-    locale,
-    draft: false,
-    limit: 1000,
-    pagination: false,
-    select: { slug: true },
-  })
+  const params: Array<{ locale: string; slug: string }> = []
 
-  return posts.docs.map(({ slug }) => ({ slug }))
+  for (const locale of LOCALES) {
+    const res = await payload.find({
+      collection: 'posts',
+      locale,
+      draft: false,
+      limit: 1000,
+      pagination: false,
+      select: { slug: true },
+    })
+
+    for (const doc of res.docs) {
+      if (doc.slug) params.push({ locale, slug: doc.slug })
+    }
+  }
+
+  return params
 }
 
-type Args = LocalePageProps<{ slug?: string }>
+type Args = LocalePageProps<{ slug: string }>
 
 export default async function Post({ params }: Args) {
   const { isEnabled: draft } = await draftMode()
-  const { locale, slug = '' } = await params
+  const { locale, slug } = await params
 
   const post = await queryPostBySlug({ slug, locale })
   if (!post) return notFound()
@@ -67,7 +80,7 @@ export default async function Post({ params }: Args) {
 }
 
 export async function generateMetadata({ params }: Args): Promise<Metadata> {
-  const { locale, slug = '' } = await params
+  const { locale, slug } = await params
   const post = await queryPostBySlug({ slug, locale })
   return generateMeta({ doc: post })
 }
