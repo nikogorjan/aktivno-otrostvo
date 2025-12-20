@@ -30,7 +30,9 @@ export const Card: React.FC<{
   const sanitizedDescription = descToUse?.replace(/\s/g, ' ')
 
   // ✅ Locale-aware URL
+    // ✅ Locale-aware URL
   const href = slug ? `/${locale}/${relationTo}/${slug}` : `/${locale}/${relationTo}`
+const cmsHref = slug ? `/${relationTo}/${slug}` : `/${relationTo}`
 
   // ✅ Minimalist primary category tagline (first resolved category)
   const primaryCategory =
@@ -103,7 +105,8 @@ export const Card: React.FC<{
         )}
 
         <div className="mt-4">
-          <CMSLink type="custom" url={href} appearance="link" label="Preberi več" />
+          <CMSLink type="custom" url={cmsHref} appearance="link" label="Preberi več" />
+
         </div>
       </div>
     </article>

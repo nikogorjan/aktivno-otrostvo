@@ -39,7 +39,7 @@ export default async function Page({ params }: PageProps) {
   const [featuredPost] = posts.docs
 
   return (
-    <div className="px-[5%] pb-16 pt-32 md:pb-24 md:pt-32 lg:pb-28 lg:pt-36 bg-scheme1Background">
+    <div className="px-[5%] pb-12 pt-12 md:pb-14 md:pt-14 lg:pb-16 lg:pt-16 bg-scheme1Background">
       <div className="container">
         <PageClient />
 

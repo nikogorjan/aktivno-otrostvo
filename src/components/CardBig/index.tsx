@@ -31,6 +31,7 @@ export const CardBig: React.FC<{
 
   // ✅ Locale-aware URL
   const href = slug ? `/${locale}/${relationTo}/${slug}` : `/${locale}/${relationTo}`
+const cmsHref = slug ? `/${relationTo}/${slug}` : `/${relationTo}`
 
   // ✅ Minimalist primary category tagline (first resolved category)
   const primaryCategory =
@@ -114,7 +115,8 @@ export const CardBig: React.FC<{
           )}
 
           <div className="mt-5">
-            <CMSLink type="custom" url={href} appearance="link" label="Preberi več" />
+           <CMSLink type="custom" url={cmsHref} appearance="link" label="Preberi več" />
+
           </div>
         </div>
       </div>
