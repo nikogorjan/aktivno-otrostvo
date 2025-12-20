@@ -3,7 +3,6 @@
 import { cn } from '@/utilities/cn'
 import Link from 'next/link'
 import type React from 'react'
-import { Fragment } from 'react'
 
 import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
@@ -20,22 +19,40 @@ export const CardBig: React.FC<{
   relationTo?: 'posts'
   showCategories?: boolean
   title?: string
-}> = ({ locale, className, doc, relationTo = 'posts', showCategories, title: titleFromProps }) => {
+}> = ({ locale, className, doc, relationTo = 'posts', showCategories = true, title: titleFromProps }) => {
   const { slug, categories, meta, title, heroImage, excerpt } = doc || {}
   const { description, image: metaImage } = meta || {}
 
   const imageToUse = metaImage ?? heroImage
-  const hasCategories = categories && Array.isArray(categories) && categories.length > 0
+
   const titleToUse = titleFromProps || title
   const descToUse = excerpt || description
   const sanitizedDescription = descToUse?.replace(/\s/g, ' ')
-  const href = `/${relationTo}/${slug}`
 
+  // ✅ Locale-aware URL
+  const href = slug ? `/${locale}/${relationTo}/${slug}` : `/${locale}/${relationTo}`
+
+  // ✅ Minimalist primary category tagline (first resolved category)
+  const primaryCategory =
+    showCategories && categories
+      ? categories.find((c): c is Exclude<typeof c, string> => typeof c === 'object' && c !== null)
+      : undefined
+
+  console.log(primaryCategory);
+
+  const categoryTaglines =
+    showCategories && categories
+      ? categories
+        .filter((c): c is Exclude<typeof c, string> => typeof c === 'object' && c !== null)
+        .map((c) => c.title)
+        .filter(Boolean)
+        .slice(0, 3) // choose how many to show
+      : []
 
   return (
     <article
       className={cn(
-        'overflow-hidden bg-card border border-border rounded-[12px] rb-12 mb-12 md:mb-16',
+        'overflow-hidden bg-card border border-border rounded-[10px] rb-12 mb-12 md:mb-16',
         className,
       )}
     >
@@ -62,21 +79,25 @@ export const CardBig: React.FC<{
 
         {/* Content */}
         <div className="flex h-full flex-col items-start justify-center p-6 md:p-8">
-          {showCategories && hasCategories && (
-            <div className="uppercase text-sm mb-4 text-muted-foreground">
-              {categories?.map((category, index) => {
-                if (typeof category === 'object' && category !== null) {
-                  const categoryTitle = category.title || 'Untitled category'
-                  const isLast = index === categories.length - 1
-                  return (
-                    <Fragment key={category.id}>
-                      {categoryTitle}
-                      {!isLast && ', '}
-                    </Fragment>
-                  )
-                }
-                return null
-              })}
+          {/* ✅ Minimalist tagline */}
+          {categoryTaglines.length > 0 && (
+            <div className="mb-3 flex flex-wrap gap-2">
+              {categoryTaglines.map((tagline) => (
+                <span
+                  key={tagline}
+                  className="
+          inline-flex items-center
+          rounded-[4px]
+          border border-foreground/20
+          bg-foreground/5
+          px-3 py-1
+          text-[11px] font-semibold uppercase tracking-wide
+          text-foreground/80
+        "
+                >
+                  {tagline}
+                </span>
+              ))}
             </div>
           )}
 

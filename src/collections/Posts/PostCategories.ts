@@ -4,25 +4,16 @@ import { slugField } from 'payload'
 
 export const PostCategories: CollectionConfig = {
   slug: 'postCategories',
-  labels: {
-        singular: 'Kategorija blog objave',
-        plural: 'Kategorije blog objav',
-    },
-  access: {
-    read: () => true,
+  access: { read: () => true },
+  admin: { useAsTitle: 'title' },
+
+  defaultPopulate: {
+    title: true,
+    slug: true,
   },
-  admin: {
-    useAsTitle: 'title',
-  },
+
   fields: [
-    {
-      name: 'title',
-      type: 'text',
-      required: true,
-      localized: true
-    },
-    slugField({
-      position: undefined,
-    }),
+    { name: 'title', type: 'text', required: true, localized: true },
+    slugField({ position: undefined }),
   ],
 }

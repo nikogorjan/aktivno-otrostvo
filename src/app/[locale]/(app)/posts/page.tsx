@@ -28,21 +28,13 @@ export default async function Page({ params }: PageProps) {
   const payload = await getPayload({ config: configPromise })
 
   const posts = await payload.find({
-    collection: 'posts',
-    locale,
-    depth: 1,
-    limit: 12,
-    sort: '-publishedAt',
-    select: {
-      title: true,
-      slug: true,
-      categories: true,
-      meta: true,
-      heroImage: true,
-      excerpt: true,
-      publishedAt: true,
-    },
-  })
+  collection: 'posts',
+  locale,
+  depth: 1, // this is what populates relationship docs
+  limit: 12,
+  sort: '-publishedAt',
+})
+
 
   const [featuredPost] = posts.docs
 
@@ -53,9 +45,8 @@ export default async function Page({ params }: PageProps) {
 
         {/* Header */}
         <div className="rb-12 mb-12 w-full max-w-2xl md:mb-18 lg:mb-20">
-          <p className="mb-3 font-semibold md:mb-4 font-karla">Dogodki</p>
-          <h1 className="font-bebas mb-5 text-6xl md:mb-6 md:text-9xl lg:text-10xl">
-            Srce dobrodelnosti
+          <h1 className="font-bebas mb-5 text-4xl md:mb-6 md:text-5xl lg:text-6xl">
+            Latest posts
           </h1>
           <p className="font-karla text-base md:text-lg text-muted-foreground max-w-2xl">
             Vsak dogodek nosi zgodbo o solidarnosti. Delimo trenutke, ideje in uspehe, ki kažejo,
