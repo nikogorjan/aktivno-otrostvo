@@ -117,8 +117,13 @@ export default async function Page({ params, searchParams }: PageProps) {
         </div>
 
         {/* Layout: Sidebar | 1px separator | Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1px_8fr] gap-8">
-          {/* Sidebar (fixed width like before) */}
+        <div className="
+  grid
+  grid-cols-1
+  sm:grid-cols-[1fr]
+  xl:grid-cols-[1.5fr_1px_8fr]
+  gap-8
+">          {/* Sidebar (fixed width like before) */}
           <aside className="lg:sticky lg:top-28 self-start">
             <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
               <Tags className="h-4 w-4" />
@@ -131,7 +136,7 @@ export default async function Page({ params, searchParams }: PageProps) {
                 locale={locale}
                 categories={categoriesRes.docs}
                 activeSlug={activeCategorySlug}
-                className="flex flex-col items-start gap-2"
+                className="flex flex-row items-start gap-2"
               />
             </div>
           </aside>
@@ -211,7 +216,7 @@ export default async function Page({ params, searchParams }: PageProps) {
 
             {/* Archive grid (2 columns on large) */}
             <div className="mt-8">
-              <CollectionArchive locale={locale} posts={posts.docs} columns={2} />
+              <CollectionArchive locale={locale} posts={posts.docs} columns={3} />
             </div>
 
             {/* Pagination */}
