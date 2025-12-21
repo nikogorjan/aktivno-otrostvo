@@ -14,18 +14,23 @@ const LOCALES: Locale[] = ['sl', 'en']
 
 export const revalidate = 600
 
-type Args = {
-  params: { locale: Locale; pageNumber: string }
-  searchParams?: { category?: string }
+type PageProps = {
+  params: Promise<{ locale: Locale; pageNumber: string }>
+  searchParams?: Promise<{ category?: string }>
 }
 
-export default async function Page({ params, searchParams }: Args) {
-  const { locale, pageNumber } = params
-  const activeCategory = searchParams?.category
+export default async function Page({ params, searchParams }: PageProps) {
+  const { locale, pageNumber } = await params
+  const resolvedSearchParams = searchParams ? await searchParams : undefined
+  const activeCategorySlug = resolvedSearchParams?.category
+
   const payload = await getPayload({ config: configPromise })
 
   const sanitizedPageNumber = Number(pageNumber)
-  if (!Number.isInteger(sanitizedPageNumber) || sanitizedPageNumber < 1) notFound()
+  if (!Number.isInteger(sanitizedPageNumber) || sanitizedPageNumber < 2) {
+    // page 1 is /posts, this route should be /posts/page/2+
+    notFound()
+  }
 
   // All categories (for filter UI)
   const categoriesRes = await payload.find({
@@ -36,6 +41,19 @@ export default async function Page({ params, searchParams }: Args) {
     pagination: false,
   })
 
+  // Resolve category slug -> id (reliable relationship filtering)
+  let categoryId: string | undefined
+  if (activeCategorySlug) {
+    const catRes = await payload.find({
+      collection: 'postCategories',
+      locale,
+      limit: 1,
+      pagination: false,
+      where: { slug: { equals: activeCategorySlug } },
+    })
+    categoryId = catRes.docs?.[0]?.id
+  }
+
   const posts = await payload.find({
     collection: 'posts',
     locale,
@@ -44,15 +62,7 @@ export default async function Page({ params, searchParams }: Args) {
     sort: '-publishedAt',
     page: sanitizedPageNumber,
     overrideAccess: false,
-    ...(activeCategory
-      ? {
-          where: {
-            categories: {
-              slug: { equals: activeCategory },
-            },
-          },
-        }
-      : {}),
+    ...(categoryId ? { where: { categories: { equals: categoryId } } } : {}),
   })
 
   // If user requests a page number beyond results, 404
@@ -89,7 +99,7 @@ export default async function Page({ params, searchParams }: Args) {
             <CategoryFilter
               locale={locale}
               categories={categoriesRes.docs}
-              activeSlug={activeCategory}
+              activeSlug={activeCategorySlug}
             />
           </div>
 
@@ -104,7 +114,7 @@ export default async function Page({ params, searchParams }: Args) {
               locale={locale}
               page={posts.page}
               totalPages={posts.totalPages}
-              category={activeCategory}
+              category={activeCategorySlug}
             />
           )}
         </div>
@@ -113,8 +123,8 @@ export default async function Page({ params, searchParams }: Args) {
   )
 }
 
-export async function generateMetadata({ params }: Args): Promise<Metadata> {
-  const { pageNumber } = params
+export async function generateMetadata({ params }: { params: Promise<{ pageNumber: string }> }): Promise<Metadata> {
+  const { pageNumber } = await params
   return { title: `Posts – Page ${pageNumber}` }
 }
 
@@ -134,8 +144,8 @@ export async function generateStaticParams(): Promise<Array<{ locale: Locale; pa
 
     const totalPages = Math.max(1, Math.ceil(totalDocs / 12))
 
+    // start from page 2 because page 1 is /posts
     for (let i = 2; i <= totalPages; i++) {
-      // start from page 2 because page 1 is /posts
       allParams.push({ locale, pageNumber: String(i) })
     }
   }
