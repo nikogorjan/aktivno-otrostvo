@@ -1,19 +1,22 @@
-import type { Product, ArchiveBlock as ArchiveBlockProps } from '@/payload-types'
+import type { ArchiveBlock as ArchiveBlockProps, Product } from '@/payload-types'
 
 import configPromise from '@payload-config'
 import { DefaultDocumentIDType, getPayload } from 'payload'
 import React from 'react'
-import { RichText } from '@/components/RichText'
 
 import { CollectionArchive } from '@/components/CollectionArchive'
+import { RichText } from '@/components/RichText'
+
+type Locale = 'sl' | 'en'
 
 export const ArchiveBlock: React.FC<
   ArchiveBlockProps & {
     id?: DefaultDocumentIDType
     className?: string
+    locale: Locale
   }
 > = async (props) => {
-  const { id, categories, introContent, limit: limitFromProps, populateBy, selectedDocs } = props
+  const { id, categories, introContent, limit: limitFromProps, populateBy, selectedDocs, locale } = props
 
   const limit = limitFromProps || 3
 
@@ -23,8 +26,8 @@ export const ArchiveBlock: React.FC<
     const payload = await getPayload({ config: configPromise })
 
     const flattenedCategories = categories?.map((category) => {
-      if (typeof category === 'object') return category.id
-      else return category
+      if (typeof category === 'object' && category) return category.id
+      return category
     })
 
     const fetchedProducts = await payload.find({
@@ -45,9 +48,9 @@ export const ArchiveBlock: React.FC<
     posts = fetchedProducts.docs
   } else {
     if (selectedDocs?.length) {
-      const filteredSelectedPosts = selectedDocs.map((post) => {
-        if (typeof post.value === 'object') return post.value
-      }) as Product[]
+      const filteredSelectedPosts = selectedDocs
+        .map((post) => (typeof post.value === 'object' && post.value ? post.value : undefined))
+        .filter(Boolean) as Product[]
 
       posts = filteredSelectedPosts
     }
@@ -60,7 +63,9 @@ export const ArchiveBlock: React.FC<
           <RichText className="ml-0 max-w-[48rem]" data={introContent} enableGutter={false} />
         </div>
       )}
-      <CollectionArchive posts={posts} />
+
+      {/* ✅ now locale is provided */}
+      <CollectionArchive locale={locale} posts={posts as any} />
     </div>
   )
 }
