@@ -7,7 +7,6 @@ import { CategoryFilter } from '@/components/CategoryFilter'
 import { CollectionArchive } from '@/components/CollectionArchive'
 import { PageRange } from '@/components/PageRange'
 import { Pagination } from '@/components/Pagination'
-import PageClient from './page.client'
 
 type Locale = 'sl' | 'en'
 const LOCALES: Locale[] = ['sl', 'en']
@@ -71,7 +70,6 @@ export default async function Page({ params, searchParams }: PageProps) {
   return (
     <div className="px-[5%] pb-16 pt-32 md:pb-24 md:pt-32 lg:pb-28 lg:pt-36 bg-scheme1Background">
       <div className="container">
-        <PageClient />
 
         <div className="rb-12 mb-12 w-full max-w-lg md:mb-18 lg:mb-20">
           <div className="w-full max-w-lg">

@@ -9,7 +9,6 @@ import { CollectionArchive } from '@/components/CollectionArchive'
 import { PageRange } from '@/components/PageRange'
 import { Pagination } from '@/components/Pagination'
 import { TrendingPostItem } from '@/components/TrendingPostItem'
-import PageClient from './page.client'
 
 import { Flame, Sparkles, Tags } from 'lucide-react'
 
@@ -107,7 +106,6 @@ export default async function Page({ params, searchParams }: PageProps) {
   return (
     <div className="px-[5%] pb-10 pt-10 md:pb-12 md:pt-12 lg:pb-16 lg:pt-16 bg-scheme1Background">
       <div className="container px-0">
-        <PageClient />
 
         {/* Title */}
         <div className="mb-10">
