@@ -1,3 +1,4 @@
+// src/components/CategoryFilter.tsx
 'use client'
 
 import { cn } from '@/utilities/cn'
@@ -28,12 +29,9 @@ export const CategoryFilter: React.FC<{
     if (!slug) next.delete('category')
     else next.set('category', slug)
 
-      console.log('clicked', slug)
-
     const query = next.toString()
     router.push(`/${locale}/posts${query ? `?${query}` : ''}`)
   }
-
 
   return (
     <div className={cn('flex flex-wrap gap-2', className)}>
@@ -42,7 +40,7 @@ export const CategoryFilter: React.FC<{
         type="button"
         onClick={() => goToCategory(undefined)}
         className={cn(
-          'rounded-[6px] border px-3 py-1 text-[11px] font-semibold uppercase tracking-wide transition',
+          'rounded-[6px] border px-3 py-1 text-[11px] font-semibold uppercase tracking-wide transition cursor-pointer',
           !activeSlug
             ? 'border-foreground/30 bg-foreground/10 text-foreground'
             : 'border-border bg-transparent text-muted-foreground hover:bg-muted/60 hover:text-foreground',
@@ -61,7 +59,7 @@ export const CategoryFilter: React.FC<{
             type="button"
             onClick={() => goToCategory(slug)}
             className={cn(
-              'rounded-[6px] border px-3 py-1 text-[11px] font-semibold uppercase tracking-wide transition',
+              'rounded-[6px] border px-3 py-1 text-[11px] font-semibold uppercase tracking-wide transition cursor-pointer',
               isActive
                 ? 'border-foreground/30 bg-foreground/10 text-foreground'
                 : 'border-border bg-transparent text-muted-foreground hover:bg-muted/60 hover:text-foreground',

@@ -1,3 +1,4 @@
+// src/app/[locale]/(app)/posts/page.tsx
 import configPromise from '@payload-config'
 import type { Metadata } from 'next/types'
 import { getPayload } from 'payload'
@@ -33,6 +34,7 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   const { locale } = resolvedParams
   const activeCategorySlug = resolvedSearchParams?.category
+  const shouldShowHero = !activeCategorySlug
 
   const payload = await getPayload({ config: configPromise })
 
@@ -63,35 +65,33 @@ export default async function Page({ params, searchParams }: PageProps) {
   }
 
   /* ------------------------------------------------------------------ */
-  /* Spotlight (featured)                                                */
+  /* Spotlight + Trending (ONLY when no category filter)                  */
   /* ------------------------------------------------------------------ */
-  const spotlightRes = await payload.find({
-    collection: 'posts',
-    locale,
-    depth: 1,
-    limit: 1,
-    sort: 'featuredRank',
-    where: {
-      isFeatured: { equals: true },
-      ...(categoryId ? { categories: { equals: categoryId } } : {}),
-    },
-  })
-  const spotlightPost = spotlightRes.docs?.[0]
+  const spotlightPost = shouldShowHero
+    ? (
+        await payload.find({
+          collection: 'posts',
+          locale,
+          depth: 1,
+          limit: 1,
+          sort: 'featuredRank',
+          where: { isFeatured: { equals: true } },
+        })
+      ).docs?.[0]
+    : undefined
 
-  /* ------------------------------------------------------------------ */
-  /* Trending list                                                       */
-  /* ------------------------------------------------------------------ */
-  const trendingRes = await payload.find({
-    collection: 'posts',
-    locale,
-    depth: 1,
-    limit: 4,
-    sort: 'trendingRank',
-    where: {
-      isTrending: { equals: true },
-      ...(categoryId ? { categories: { equals: categoryId } } : {}),
-    },
-  })
+  const trendingDocs = shouldShowHero
+    ? (
+        await payload.find({
+          collection: 'posts',
+          locale,
+          depth: 1,
+          limit: 4,
+          sort: 'trendingRank',
+          where: { isTrending: { equals: true } },
+        })
+      ).docs
+    : []
 
   /* ------------------------------------------------------------------ */
   /* Archive grid                                                        */
@@ -106,24 +106,22 @@ export default async function Page({ params, searchParams }: PageProps) {
   })
 
   return (
-    <div className="px-[5%] pb-16 pt-28 md:pb-24 md:pt-28 lg:pb-28 lg:pt-32 bg-scheme1Background">
+    <div className="px-[5%] pb-10 pt-10 md:pb-12 md:pt-12 lg:pb-16 lg:pt-16 bg-scheme1Background">
       <div className="container px-0">
         <PageClient />
 
         {/* Title */}
         <div className="mb-10">
-          <h1 className="font-bebas text-6xl md:text-8xl lg:text-9xl leading-none">All Articles</h1>
+          <h1 className="font-bebas text-4xl md:text-5xl lg:text-6xl leading-none">All Articles</h1>
+           <p className="mt-2 max-w-[720px] text-base md:text-lg text-muted-foreground line-clamp-3">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
+            </p>
           <div className="mt-6 h-px w-full bg-border/40" />
         </div>
 
         {/* Layout: Sidebar | 1px separator | Content */}
-        <div className="
-  grid
-  grid-cols-1
-  sm:grid-cols-[1fr]
-  xl:grid-cols-[1.5fr_1px_8fr]
-  gap-8
-">          {/* Sidebar (fixed width like before) */}
+        <div className="grid grid-cols-1 xl:grid-cols-[1.5fr_1px_8fr] gap-8">
+          {/* Sidebar */}
           <aside className="lg:sticky lg:top-28 self-start">
             <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
               <Tags className="h-4 w-4" />
@@ -131,7 +129,6 @@ export default async function Page({ params, searchParams }: PageProps) {
             </div>
 
             <div className="mt-4">
-              {/* NOTE: for a sidebar list feel, keep it vertical */}
               <CategoryFilter
                 locale={locale}
                 categories={categoriesRes.docs}
@@ -141,68 +138,71 @@ export default async function Page({ params, searchParams }: PageProps) {
             </div>
           </aside>
 
-          {/* ✅ Vertical separator between sidebar and right content */}
-          <div className="hidden lg:flex items-stretch justify-center">
-            <div className="w-px bg-border/40 self-stretch hidden" />
+          {/* Separator between sidebar and content (only on xl because grid has 3 tracks there) */}
+          <div className="hidden xl:flex items-stretch justify-center">
+            <div className="w-px bg-border/40 self-stretch" />
           </div>
 
-          {/* Right content */}
+          {/* Content */}
           <section>
-            {/* Top: Spotlight | 1px separator | Trending (equal widths) */}
-            <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_1px_minmax(320px,460px)] gap-8 items-stretch">
-
-              {/* Spotlight */}
-              <div>
-                <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
-                  <Sparkles className="h-4 w-4" />
-                  Spotlight
-                </div>
-
-                <div className="mt-4 mb-4">
-                  {spotlightPost ? (
-                    <CardBig
-                      locale={locale}
-                      doc={spotlightPost}
-                      relationTo="posts"
-                      showCategories
-                      className="mb-0"
-                    />
-                  ) : (
-                    <div className="rounded-[12px] border border-border bg-card p-6 text-sm text-muted-foreground">
-                      No featured post yet.
+            {/* Hero (only when NOT filtering) */}
+            {shouldShowHero && (
+              <>
+                <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_1px_minmax(320px,460px)] gap-8 items-stretch">
+                  {/* Spotlight */}
+                  <div>
+                    <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
+                      <Sparkles className="h-4 w-4" />
+                      Spotlight
                     </div>
-                  )}
-                </div>
-              </div>
 
-              {/* ✅ Vertical separator between spotlight and trending */}
-              <div className="hidden lg:flex items-stretch justify-center">
-                <div className="w-px bg-border/40 self-stretch" />
-              </div>
+                    <div className="mt-4 mb-4">
+                      {spotlightPost ? (
+                        <CardBig
+                          locale={locale}
+                          doc={spotlightPost}
+                          relationTo="posts"
+                          showCategories
+                          className="mb-0"
+                        />
+                      ) : (
+                        <div className="rounded-[12px] border border-border bg-card p-6 text-sm text-muted-foreground">
+                          No featured post yet.
+                        </div>
+                      )}
+                    </div>
+                  </div>
 
-              {/* Trending */}
-              <div>
-                <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
-                  <Flame className="h-4 w-4" />
-                  Trending
-                </div>
+                  {/* Separator between spotlight and trending */}
+                  <div className="hidden lg:flex items-stretch justify-center">
+                    <div className="w-px bg-border/40 self-stretch" />
+                  </div>
 
-                <div className="mt-4 rounded-[12px] p-4">
-                  <div className="flex flex-col gap-4">
-                    {trendingRes.docs.length > 0 ? (
-                      trendingRes.docs.map((doc) => (
-                        <TrendingPostItem key={doc.id} locale={locale} doc={doc} />
-                      ))
-                    ) : (
-                      <p className="text-sm text-muted-foreground">No trending posts yet.</p>
-                    )}
+                  {/* Trending */}
+                  <div>
+                    <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
+                      <Flame className="h-4 w-4" />
+                      Trending
+                    </div>
+
+                    <div className="mt-4 rounded-[12px] p-4">
+                      <div className="flex flex-col gap-4">
+                        {trendingDocs.length > 0 ? (
+                          trendingDocs.map((doc) => (
+                            <TrendingPostItem key={doc.id} locale={locale} doc={doc} />
+                          ))
+                        ) : (
+                          <p className="text-sm text-muted-foreground">No trending posts yet.</p>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
 
-            {/* Horizontal separator between top and archive */}
-            <div className="mt-10 mb-10 h-px w-full bg-border/40" />
+                {/* Horizontal separator between hero and archive */}
+                <div className="mt-10 mb-10 h-px w-full bg-border/40" />
+              </>
+            )}
 
             {/* Archive header */}
             <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
