@@ -17,8 +17,8 @@ type Locale = 'sl' | 'en'
 const LOCALES: Locale[] = ['sl', 'en']
 
 type PageProps = {
-  params: { locale: Locale } | Promise<{ locale: Locale }>
-  searchParams?: { category?: string } | Promise<{ category?: string }>
+  params: Promise<{ locale: Locale }>
+  searchParams?: Promise<{ category?: string }>
 }
 
 export const revalidate = 600
@@ -29,10 +29,9 @@ export async function generateStaticParams(): Promise<Array<{ locale: Locale }>>
 }
 
 export default async function Page({ params, searchParams }: PageProps) {
-  const resolvedParams = await params
+  const { locale } = await params
   const resolvedSearchParams = searchParams ? await searchParams : undefined
 
-  const { locale } = resolvedParams
   const activeCategorySlug = resolvedSearchParams?.category
   const shouldShowHero = !activeCategorySlug
 
@@ -113,9 +112,12 @@ export default async function Page({ params, searchParams }: PageProps) {
         {/* Title */}
         <div className="mb-10">
           <h1 className="font-bebas text-4xl md:text-5xl lg:text-6xl leading-none">All Articles</h1>
-           <p className="mt-2 max-w-[720px] text-base md:text-lg text-muted-foreground line-clamp-3">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
-            </p>
+
+          <p className="mt-2 max-w-[720px] text-base md:text-lg text-muted-foreground line-clamp-3">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+            ut labore et dolore magna aliqua. Ut enim ad minim veniam.
+          </p>
+
           <div className="mt-6 h-px w-full bg-border/40" />
         </div>
 
@@ -214,7 +216,7 @@ export default async function Page({ params, searchParams }: PageProps) {
               />
             </div>
 
-            {/* Archive grid (2 columns on large) */}
+            {/* Archive grid */}
             <div className="mt-8">
               <CollectionArchive locale={locale} posts={posts.docs} columns={3} />
             </div>
