@@ -1737,6 +1737,10 @@ export interface Post {
   };
   publishedAt?: string | null;
   authors?: (string | User)[] | null;
+  isFeatured?: boolean | null;
+  featuredRank?: number | null;
+  isTrending?: boolean | null;
+  trendingRank?: number | null;
   populatedAuthors?:
     | {
         id?: string | null;
@@ -2608,6 +2612,10 @@ export interface PostsSelect<T extends boolean = true> {
       };
   publishedAt?: T;
   authors?: T;
+  isFeatured?: T;
+  featuredRank?: T;
+  isTrending?: T;
+  trendingRank?: T;
   populatedAuthors?:
     | T
     | {

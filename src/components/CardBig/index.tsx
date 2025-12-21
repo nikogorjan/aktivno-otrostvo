@@ -53,16 +53,16 @@ const cmsHref = slug ? `/${relationTo}/${slug}` : `/${relationTo}`
   return (
     <article
       className={cn(
-        'overflow-hidden bg-card border border-border rounded-[10px] rb-12 mb-12 md:mb-16',
+        'overflow-hidden  rb-12 mb-12',
         className,
       )}
     >
-      <div className="grid grid-cols-1 items-stretch md:grid-cols-2">
+      <div className="flex flex-col">
         {/* Image */}
-        <div className="relative">
+        <div className="relative rounded-[10px] aspect-[16/9]">
           {imageToUse && typeof imageToUse !== 'string' ? (
-            <Link href={href} className="block h-full w-full overflow-hidden">
-              <div className="relative aspect-[16/10] md:aspect-auto md:h-full bg-black/5">
+            <Link href={href} className="block h-full w-full overflow-hidden rounded-[10px] aspect-[16/9]">
+              <div className="relative aspect-[16/9] md:aspect-auto md:h-full bg-black/5 rounded-[10px]">
                 <Media
                   resource={imageToUse}
                   imgClassName="h-full w-full object-cover"
@@ -79,7 +79,7 @@ const cmsHref = slug ? `/${relationTo}/${slug}` : `/${relationTo}`
         </div>
 
         {/* Content */}
-        <div className="flex h-full flex-col items-start justify-center p-6 md:p-8">
+        <div className="flex h-full flex-col items-start justify-center pt-6 md:pt-8">
           {/* ✅ Minimalist tagline */}
           {categoryTaglines.length > 0 && (
             <div className="mb-4 flex flex-wrap gap-2">
@@ -109,7 +109,7 @@ const cmsHref = slug ? `/${relationTo}/${slug}` : `/${relationTo}`
           )}
 
           {sanitizedDescription && (
-            <p className="mt-2 font-karla text-base md:text-lg text-muted-foreground line-clamp-3">
+            <p className="mt-2  text-base md:text-lg text-muted-foreground line-clamp-3">
               {sanitizedDescription}
             </p>
           )}

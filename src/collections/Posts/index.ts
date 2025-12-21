@@ -200,6 +200,34 @@ export const Posts: CollectionConfig<'posts'> = {
             hasMany: true,
             relationTo: 'users',
         },
+        {
+            name: 'isFeatured',
+            type: 'checkbox',
+            label: 'Featured (Spotlight)',
+            defaultValue: false,
+            admin: { position: 'sidebar' },
+        },
+        {
+            name: 'featuredRank',
+            type: 'number',
+            label: 'Featured rank (lower = higher)',
+            defaultValue: 100,
+            admin: { position: 'sidebar', condition: (_, siblingData) => Boolean(siblingData?.isFeatured) },
+        },
+        {
+            name: 'isTrending',
+            type: 'checkbox',
+            label: 'Trending',
+            defaultValue: false,
+            admin: { position: 'sidebar' },
+        },
+        {
+            name: 'trendingRank',
+            type: 'number',
+            label: 'Trending rank (lower = higher)',
+            defaultValue: 100,
+            admin: { position: 'sidebar', condition: (_, siblingData) => Boolean(siblingData?.isTrending) },
+        },
         // This field is only used to populate the user data via the `populateAuthors` hook
         // This is because the `user` collection has access control locked to protect user privacy
         // GraphQL will also not return mutated user data that differs from the underlying schema

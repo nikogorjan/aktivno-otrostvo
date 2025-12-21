@@ -7,7 +7,10 @@ import { CategoryFilter } from '@/components/CategoryFilter'
 import { CollectionArchive } from '@/components/CollectionArchive'
 import { PageRange } from '@/components/PageRange'
 import { Pagination } from '@/components/Pagination'
+import { TrendingPostItem } from '@/components/TrendingPostItem'
 import PageClient from './page.client'
+
+import { Flame, Sparkles, Tags } from 'lucide-react'
 
 type Locale = 'sl' | 'en'
 const LOCALES: Locale[] = ['sl', 'en']
@@ -18,7 +21,7 @@ type PageProps = {
 }
 
 export const revalidate = 600
-export const dynamic = 'force-dynamic' // ✅ IMPORTANT for query-string filtering
+export const dynamic = 'force-dynamic'
 
 export async function generateStaticParams(): Promise<Array<{ locale: Locale }>> {
   return LOCALES.map((locale) => ({ locale }))
@@ -34,7 +37,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   const payload = await getPayload({ config: configPromise })
 
   /* ------------------------------------------------------------------ */
-  /* 1) Fetch ALL categories for filter UI                               */
+  /* Categories (sidebar)                                                */
   /* ------------------------------------------------------------------ */
   const categoriesRes = await payload.find({
     collection: 'postCategories',
@@ -45,26 +48,53 @@ export default async function Page({ params, searchParams }: PageProps) {
   })
 
   /* ------------------------------------------------------------------ */
-  /* 2) Resolve category slug -> category ID (CRITICAL FIX)              */
+  /* Resolve category slug -> ID (reliable filtering)                     */
   /* ------------------------------------------------------------------ */
   let categoryId: string | undefined
-
   if (activeCategorySlug) {
     const catRes = await payload.find({
       collection: 'postCategories',
       locale,
       limit: 1,
       pagination: false,
-      where: {
-        slug: { equals: activeCategorySlug },
-      },
+      where: { slug: { equals: activeCategorySlug } },
     })
-
     categoryId = catRes.docs?.[0]?.id
   }
 
   /* ------------------------------------------------------------------ */
-  /* 3) Fetch posts (filtered by category ID if selected)                */
+  /* Spotlight (featured)                                                */
+  /* ------------------------------------------------------------------ */
+  const spotlightRes = await payload.find({
+    collection: 'posts',
+    locale,
+    depth: 1,
+    limit: 1,
+    sort: 'featuredRank',
+    where: {
+      isFeatured: { equals: true },
+      ...(categoryId ? { categories: { equals: categoryId } } : {}),
+    },
+  })
+  const spotlightPost = spotlightRes.docs?.[0]
+
+  /* ------------------------------------------------------------------ */
+  /* Trending list                                                       */
+  /* ------------------------------------------------------------------ */
+  const trendingRes = await payload.find({
+    collection: 'posts',
+    locale,
+    depth: 1,
+    limit: 4,
+    sort: 'trendingRank',
+    where: {
+      isTrending: { equals: true },
+      ...(categoryId ? { categories: { equals: categoryId } } : {}),
+    },
+  })
+
+  /* ------------------------------------------------------------------ */
+  /* Archive grid                                                        */
   /* ------------------------------------------------------------------ */
   const posts = await payload.find({
     collection: 'posts',
@@ -72,78 +102,130 @@ export default async function Page({ params, searchParams }: PageProps) {
     depth: 1,
     limit: 12,
     sort: '-publishedAt',
-    ...(categoryId
-      ? {
-          where: {
-            categories: { equals: categoryId },
-          },
-        }
-      : {}),
+    ...(categoryId ? { where: { categories: { equals: categoryId } } } : {}),
   })
 
-  const [featuredPost] = posts.docs
-
   return (
-    <div className="px-[5%] pb-12 pt-12 md:pb-16 md:pt-16 lg:pb-20 lg:pt-20 bg-scheme1Background">
-      <div className="container">
+    <div className="px-[5%] pb-16 pt-28 md:pb-24 md:pt-28 lg:pb-28 lg:pt-32 bg-scheme1Background">
+      <div className="container px-0">
         <PageClient />
 
-        {/* Header */}
-        <div className="rb-12 mb-12 w-full max-w-2xl md:mb-18 lg:mb-20">
-          <h1 className="font-bebas mb-5 text-4xl md:mb-6 md:text-5xl lg:text-6xl">
-            Zadnje objave
-          </h1>
-
-          <p className="font-karla text-base md:text-lg text-muted-foreground max-w-2xl">
-            Vsak dogodek nosi zgodbo o solidarnosti. Delimo trenutke, ideje in uspehe, ki kažejo,
-            kako lahko majhna dejanja ustvarijo velik učinek.
-          </p>
+        {/* Title */}
+        <div className="mb-10">
+          <h1 className="font-bebas text-6xl md:text-8xl lg:text-9xl leading-none">All Articles</h1>
+          <div className="mt-6 h-px w-full bg-border/40" />
         </div>
 
-        {/* Featured ONLY when no category filter */}
-        {!activeCategorySlug && featuredPost && (
-          <div className="flex flex-col justify-start">
-            <CardBig
-              locale={locale}
-              className="h-full"
-              doc={featuredPost}
-              relationTo="posts"
-              showCategories
-            />
-          </div>
-        )}
+        {/* Layout: Sidebar | 1px separator | Content */}
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1px_8fr] gap-8">
+          {/* Sidebar (fixed width like before) */}
+          <aside className="lg:sticky lg:top-28 self-start">
+            <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
+              <Tags className="h-4 w-4" />
+              Categories
+            </div>
 
-        {/* Range + Filter + Grid */}
-        <div className="mt-8">
-          <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
-            <PageRange
-              collection="posts"
-              currentPage={posts.page}
-              limit={12}
-              totalDocs={posts.totalDocs}
-            />
+            <div className="mt-4">
+              {/* NOTE: for a sidebar list feel, keep it vertical */}
+              <CategoryFilter
+                locale={locale}
+                categories={categoriesRes.docs}
+                activeSlug={activeCategorySlug}
+                className="flex flex-col items-start gap-2"
+              />
+            </div>
+          </aside>
 
-            <CategoryFilter
-              locale={locale}
-              categories={categoriesRes.docs}
-              activeSlug={activeCategorySlug}
-            />
+          {/* ✅ Vertical separator between sidebar and right content */}
+          <div className="hidden lg:flex items-stretch justify-center">
+            <div className="w-px bg-border/40 self-stretch hidden" />
           </div>
 
-          <div className="mt-8">
-            <CollectionArchive locale={locale} posts={posts.docs} />
-          </div>
-        </div>
+          {/* Right content */}
+          <section>
+            {/* Top: Spotlight | 1px separator | Trending (equal widths) */}
+            <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_1px_minmax(320px,460px)] gap-8 items-stretch">
 
-        <div className="container">
-          {posts.totalPages > 1 && posts.page && (
-            <Pagination
-              locale={locale}
-              page={posts.page}
-              totalPages={posts.totalPages}
-              category={activeCategorySlug}
-            />
-          )}
+              {/* Spotlight */}
+              <div>
+                <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
+                  <Sparkles className="h-4 w-4" />
+                  Spotlight
+                </div>
+
+                <div className="mt-4 mb-4">
+                  {spotlightPost ? (
+                    <CardBig
+                      locale={locale}
+                      doc={spotlightPost}
+                      relationTo="posts"
+                      showCategories
+                      className="mb-0"
+                    />
+                  ) : (
+                    <div className="rounded-[12px] border border-border bg-card p-6 text-sm text-muted-foreground">
+                      No featured post yet.
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* ✅ Vertical separator between spotlight and trending */}
+              <div className="hidden lg:flex items-stretch justify-center">
+                <div className="w-px bg-border/40 self-stretch" />
+              </div>
+
+              {/* Trending */}
+              <div>
+                <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
+                  <Flame className="h-4 w-4" />
+                  Trending
+                </div>
+
+                <div className="mt-4 rounded-[12px] p-4">
+                  <div className="flex flex-col gap-4">
+                    {trendingRes.docs.length > 0 ? (
+                      trendingRes.docs.map((doc) => (
+                        <TrendingPostItem key={doc.id} locale={locale} doc={doc} />
+                      ))
+                    ) : (
+                      <p className="text-sm text-muted-foreground">No trending posts yet.</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Horizontal separator between top and archive */}
+            <div className="mt-10 mb-10 h-px w-full bg-border/40" />
+
+            {/* Archive header */}
+            <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+              <PageRange
+                collection="posts"
+                currentPage={posts.page}
+                limit={12}
+                totalDocs={posts.totalDocs}
+              />
+            </div>
+
+            {/* Archive grid (2 columns on large) */}
+            <div className="mt-8">
+              <CollectionArchive locale={locale} posts={posts.docs} columns={2} />
+            </div>
+
+            {/* Pagination */}
+            <div className="container">
+              {posts.totalPages > 1 && posts.page && (
+                <Pagination
+                  locale={locale}
+                  page={posts.page}
+                  totalPages={posts.totalPages}
+                  category={activeCategorySlug}
+                />
+              )}
+            </div>
+          </section>
         </div>
       </div>
     </div>
@@ -151,5 +233,5 @@ export default async function Page({ params, searchParams }: PageProps) {
 }
 
 export function generateMetadata(): Metadata {
-  return { title: 'Dogodki Rotary Martjanci' }
+  return { title: 'All Articles' }
 }

@@ -55,15 +55,15 @@ const cmsHref = slug ? `/${relationTo}/${slug}` : `/${relationTo}`
   return (
     <article
       className={cn(
-        'h-full rounded-[10px] border border-border bg-card overflow-hidden flex flex-col',
+        'h-full rounded-[10px] overflow-hidden flex flex-col',
         className,
       )}
     >
       {/* Image */}
-      <Link href={href} className="block">
-        <div className="relative aspect-[16/10] bg-black/5">
+      <Link href={href} className="block aspect-[16/9] rounded-[10px]">
+        <div className="relative aspect-[16/9] rounded-[10px] bg-black/5">
           {imageToUse && typeof imageToUse !== 'string' ? (
-            <Media resource={imageToUse} imgClassName="h-full w-full object-cover" />
+            <Media resource={imageToUse} imgClassName="h-full w-full object-cover aspect-[16/9] rounded-[10px]" />
           ) : (
             <div className="h-full w-full flex items-center justify-center text-sm text-muted-foreground">
               No image
@@ -73,7 +73,7 @@ const cmsHref = slug ? `/${relationTo}/${slug}` : `/${relationTo}`
       </Link>
 
       {/* Content */}
-      <div className="p-5 flex flex-col flex-1">
+      <div className="py-6 lg:py-8 flex flex-col flex-1">
         {/* ✅ Minimalist tagline */}
         {categoryTaglines.length > 0 && (
           <div className="mb-4 flex flex-wrap gap-2">
@@ -99,7 +99,7 @@ const cmsHref = slug ? `/${relationTo}/${slug}` : `/${relationTo}`
         {titleToUse && <h3 className="font-bebas font-normal text-2xl leading-tight">{titleToUse}</h3>}
 
         {sanitizedDescription && (
-          <p className="mt-2 text-sm md:text-base text-muted-foreground line-clamp-3 font-karla">
+          <p className="mt-2 text-sm md:text-base text-muted-foreground line-clamp-3 ">
             {sanitizedDescription}
           </p>
         )}

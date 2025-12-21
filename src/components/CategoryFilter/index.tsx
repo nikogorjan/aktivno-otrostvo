@@ -29,12 +29,10 @@ export const CategoryFilter: React.FC<{
     else next.set('category', slug)
 
       console.log('clicked', slug)
-      
+
     const query = next.toString()
     router.push(`/${locale}/posts${query ? `?${query}` : ''}`)
   }
-
-
 
 
   return (
