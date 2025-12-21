@@ -3,18 +3,21 @@ import clsx from 'clsx'
 import React from 'react'
 
 import type { Post } from '@/payload-types'
+import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 
-import { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 import { Card } from '../../components/Card'
 
+type Locale = 'sl' | 'en'
+
 export type RelatedPostsProps = {
+  locale: Locale
   className?: string
   docs?: Post[]
   introContent?: SerializedEditorState
 }
 
 export const RelatedPosts: React.FC<RelatedPostsProps> = (props) => {
-  const { className, docs, introContent } = props
+  const { className, docs, introContent, locale } = props
 
   return (
     <div className={clsx('lg:container', className)}>
@@ -24,7 +27,15 @@ export const RelatedPosts: React.FC<RelatedPostsProps> = (props) => {
         {docs?.map((doc, index) => {
           if (typeof doc === 'string') return null
 
-          return <Card key={index} doc={doc} relationTo="posts" showCategories />
+          return (
+            <Card
+              key={index}
+              locale={locale}
+              doc={doc}
+              relationTo="posts"
+              showCategories
+            />
+          )
         })}
       </div>
     </div>

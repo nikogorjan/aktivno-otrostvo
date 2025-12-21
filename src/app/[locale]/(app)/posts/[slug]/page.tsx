@@ -67,6 +67,7 @@ export default async function Post({ params }: Args) {
 
           {post.relatedPosts && post.relatedPosts.length > 0 && (
             <RelatedPosts
+              locale={locale}
               className="mt-12 max-w-[52rem] lg:grid lg:grid-cols-subgrid col-start-1 col-span-3 grid-rows-[2fr]"
               docs={post.relatedPosts.filter(
                 (p): p is Exclude<typeof p, string> => typeof p === 'object' && p !== null,
