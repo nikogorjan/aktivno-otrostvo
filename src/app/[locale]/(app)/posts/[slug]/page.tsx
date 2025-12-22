@@ -59,7 +59,7 @@ export default async function Post({ params }: Args) {
 
       {draft && <LivePreviewListener />}
 
-      <PostHero post={post} />
+      <PostHero post={post} locale={locale} />
 
       <div className="flex flex-col items-center gap-4 pt-8 px-[5%]">
         <div className="container">

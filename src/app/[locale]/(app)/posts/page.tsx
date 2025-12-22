@@ -1,5 +1,6 @@
 // src/app/[locale]/(app)/posts/page.tsx
 import configPromise from '@payload-config'
+import { getTranslations } from 'next-intl/server'
 import type { Metadata } from 'next/types'
 import { getPayload } from 'payload'
 
@@ -31,14 +32,14 @@ export async function generateStaticParams(): Promise<Array<{ locale: Locale }>>
 
 export default async function Page({ params, searchParams }: PageProps) {
   const { locale } = await params
-  const resolvedSearchParams = searchParams ? await searchParams : undefined
+  const t = await getTranslations({ locale, namespace: 'Blog' })
 
+  const resolvedSearchParams = searchParams ? await searchParams : undefined
   const activeCategorySlug = resolvedSearchParams?.category
   const shouldShowHero = !activeCategorySlug
 
   const payload = await getPayload({ config: configPromise })
 
-  // Categories (sidebar)
   const categoriesRes = await payload.find({
     collection: 'postCategories',
     locale,
@@ -47,7 +48,6 @@ export default async function Page({ params, searchParams }: PageProps) {
     pagination: false,
   })
 
-  // Resolve category slug -> ID (reliable filtering)
   let categoryId: string | undefined
   if (activeCategorySlug) {
     const catRes = await payload.find({
@@ -60,7 +60,6 @@ export default async function Page({ params, searchParams }: PageProps) {
     categoryId = catRes.docs?.[0]?.id
   }
 
-  // Spotlight + Trending (ONLY when no category filter)
   const spotlightPost = shouldShowHero
     ? (
         await payload.find({
@@ -87,7 +86,6 @@ export default async function Page({ params, searchParams }: PageProps) {
       ).docs
     : []
 
-  // Archive grid (6 per page)
   const posts = await payload.find({
     collection: 'posts',
     locale,
@@ -102,23 +100,22 @@ export default async function Page({ params, searchParams }: PageProps) {
       <div className="container px-0">
         {/* Title */}
         <div className="mb-10">
-          <h1 className="font-bebas text-4xl md:text-5xl lg:text-6xl leading-none">All Articles</h1>
+          <h1 className="font-bebas text-4xl md:text-5xl lg:text-6xl leading-none">{t('title')}</h1>
 
           <p className="mt-2 max-w-[720px] text-base md:text-lg text-muted-foreground line-clamp-3">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-            ut labore et dolore magna aliqua. Ut enim ad minim veniam.
+            {t('description')}
           </p>
 
           <div className="mt-6 h-px w-full bg-border/40" />
         </div>
 
-        {/* Layout: Sidebar | 1px separator | Content */}
+        {/* Layout */}
         <div className="grid grid-cols-1 xl:grid-cols-[1.5fr_1px_8fr] gap-8">
           {/* Sidebar */}
           <aside className="lg:sticky lg:top-28 self-start">
             <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
               <Tags className="h-4 w-4" />
-              Categories
+              {t('categoriesLabel')}
             </div>
 
             <div className="mt-4">
@@ -146,7 +143,7 @@ export default async function Page({ params, searchParams }: PageProps) {
                   <div>
                     <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
                       <Sparkles className="h-4 w-4" />
-                      Spotlight
+                      {t('spotlightLabel')}
                     </div>
 
                     <div className="mt-4 mb-4">
@@ -160,13 +157,13 @@ export default async function Page({ params, searchParams }: PageProps) {
                         />
                       ) : (
                         <div className="rounded-[12px] border border-border bg-card p-6 text-sm text-muted-foreground">
-                          No featured post yet.
+                          {t('noFeatured')}
                         </div>
                       )}
                     </div>
                   </div>
 
-                  {/* Separator between spotlight and trending */}
+                  {/* Separator */}
                   <div className="hidden lg:flex items-stretch justify-center">
                     <div className="w-px bg-border/40 self-stretch" />
                   </div>
@@ -175,7 +172,7 @@ export default async function Page({ params, searchParams }: PageProps) {
                   <div>
                     <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
                       <Flame className="h-4 w-4" />
-                      Trending
+                      {t('trendingLabel')}
                     </div>
 
                     <div className="mt-4 rounded-[12px] p-4">
@@ -185,7 +182,7 @@ export default async function Page({ params, searchParams }: PageProps) {
                             <TrendingPostItem key={doc.id} locale={locale} doc={doc} />
                           ))
                         ) : (
-                          <p className="text-sm text-muted-foreground">No trending posts yet.</p>
+                          <p className="text-sm text-muted-foreground">{t('noTrending')}</p>
                         )}
                       </div>
                     </div>
@@ -203,6 +200,7 @@ export default async function Page({ params, searchParams }: PageProps) {
                 currentPage={posts.page}
                 limit={PER_PAGE}
                 totalDocs={posts.totalDocs}
+                locale={locale}
               />
             </div>
 
@@ -230,5 +228,6 @@ export default async function Page({ params, searchParams }: PageProps) {
 }
 
 export function generateMetadata(): Metadata {
+  // keep static or switch to generateMetadata({params}) if you want localized meta
   return { title: 'All Articles' }
 }

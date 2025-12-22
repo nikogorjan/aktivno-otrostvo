@@ -13,7 +13,7 @@
     "metaTitle": "Račun",
     "metaDescription": "Ustvarite račun ali se prijavite v obstoječi račun."
   },
-   "AccountForm": {
+  "AccountForm": {
     "changeDetailsIntro": "Spodaj lahko spremenite podatke svojega računa ali",
     "clickHere": "kliknite tukaj",
     "toChangePassword": "če želite spremeniti geslo.",
@@ -35,7 +35,7 @@
     "toastUpdateError": "Pri posodabljanju računa je prišlo do napake.",
     "mustBeLoggedIn": "Za ogled te strani se morate prijaviti."
   },
-   "AddressesPage": {
+  "AddressesPage": {
     "loginWarning": "Za dostop do nastavitev računa se prosim prijavite.",
     "title": "Naslovi",
     "metaTitle": "Naslovi",
@@ -79,7 +79,7 @@
     "orders": "Naročila",
     "logout": "Odjava"
   },
-    "OrdersPage": {
+  "OrdersPage": {
     "loginWarning": "Za dostop do svojih naročil se prosim prijavite.",
     "title": "Naročila",
     "noOrders": "Nimate še nobenega naročila.",
@@ -115,7 +115,7 @@
     "metaTitle": "Prijava",
     "metaDescription": "Prijavi se ali ustvari račun."
   },
-   "LoginForm": {
+  "LoginForm": {
     "emailLabel": "Email",
     "passwordLabel": "Geslo",
     "emailRequired": "Email je obvezen.",
@@ -131,7 +131,7 @@
     "metaTitle": "Odjava",
     "metaDescription": "Odjava uspešna."
   },
-   "LogoutPageClient": {
+  "LogoutPageClient": {
     "success": "Odjava uspešna.",
     "alreadyLoggedOut": "Si že odjavljen.",
     "whatNext": "Kaj želite storiti zdaj?",
@@ -151,18 +151,18 @@
     "successTitle": "Zahteva poslana",
     "successText": "Preveri svojo e-pošto. Poslali smo ti povezavo za varno ponastavitev gesla."
   },
-    "Footer": {
+  "Footer": {
     "madeInSlovenia": "Izdelano v Sloveniji",
     "allRightsReserved": "Vse pravice pridržane.",
     "termsFallback": "Pogoji poslovanja"
   },
-   "FooterMenu": {
+  "FooterMenu": {
     "allPrograms": "Vsi programi",
     "navigation": "Navigacije",
     "followMe": "Sledi mi",
     "missingLabel": "(manjkajoča oznaka)"
   },
-    "Programs": {
+  "Programs": {
     "readMore": "Preberi več",
     "noLessons": "Trenutno ni lekcij.",
     "comingSoon": "Prihaja kmalu"
@@ -177,7 +177,7 @@
     "login": "Prijava",
     "createAccount": "Ustvari račun"
   },
-   "CreateAccountForm": {
+  "CreateAccountForm": {
     "adminLinkText": "Prijavi se v portal.",
     "emailLabel": "Email",
     "passwordLabel": "Novo geslo",
@@ -186,7 +186,6 @@
     "processing": "Obdelava",
     "alreadyHaveAccount": "Že imaš račun? ",
     "loginLinkText": "Prijava",
-
     "errors": {
       "emailRequired": "Email je obvezen.",
       "passwordRequired": "Geslo je obvezno.",
@@ -195,10 +194,30 @@
       "createAccountFailed": "Pri ustvarjanju računa je prišlo do napake.",
       "invalidCredentials": "Prišlo je do napake z vnesenimi podatki. Poskusi znova."
     },
-
     "success": {
       "accountCreated": "Račun je bil uspešno ustvarjen."
     }
+  },
+  "Blog": {
+    "title": "Vse objave",
+    "description": "Odkrij nasvete, ideje in zgodbe, ki te podpirajo pri vsakodnevnih izzivih. Objave so razporejene po temah, da hitreje najdeš vsebino, ki jo trenutno najbolj potrebuješ.",
+    "categoriesLabel": "Kategorije",
+    "spotlightLabel": "Izpostavljeno",
+    "trendingLabel": "Najbolj brano",
+    "noFeatured": "Trenutno še ni izpostavljene objave.",
+    "noTrending": "Trenutno še ni najbolj branih objav."
+  },
+  "PageRange": {
+    "noResults": "Iskanje ni vrnilo rezultatov.",
+    "showing": "Prikazanih {start}{range} od {total} {label}",
+    "rangeSeparator": " - "
+  },
+  "PostHero": {
+    "authorLabel": "Avtor",
+    "publishedLabel": "Objavljeno",
+    "untitledCategory": "Neimenovana"
+  },
+  "Pagination": {
+    "metaTitlePaged": "Vse objave – Stran {page}"
   }
-
 }

@@ -13,7 +13,7 @@
     "metaTitle": "Account",
     "metaDescription": "Create an account or log in to your existing account."
   },
-    "AccountForm": {
+  "AccountForm": {
     "changeDetailsIntro": "Change your account details below, or",
     "clickHere": "click here",
     "toChangePassword": "to change your password.",
@@ -41,19 +41,16 @@
     "metaTitle": "Addresses",
     "metaDescription": "Manage your addresses."
   },
-
   "AddressListing": {
     "noAddresses": "No addresses found."
   },
-
-   "CreateAddressModal": {
+  "CreateAddressModal": {
     "buttonText": "Add a new address",
     "modalTitle": "Add a new address",
     "description": "This address will be connected to your account.",
     "editButtonText": "Edit",
     "editModalTitle": "Edit address"
   },
-
   "AddressForm": {
     "titleLabel": "Title",
     "titlePlaceholder": "Title",
@@ -67,31 +64,28 @@
     "stateLabel": "State",
     "postalCodeLabel": "Zip Code*",
     "countryLabel": "Country*",
-
     "firstNameRequired": "First name is required.",
     "lastNameRequired": "Last name is required.",
     "addressLine1Required": "Address line 1 is required.",
     "cityRequired": "City is required.",
     "postalCodeRequired": "Postal code is required.",
     "countryRequired": "Country is required.",
-
     "countryPlaceholder": "Country",
     "submit": "Save address"
   },
-   "AccountNav": {
+  "AccountNav": {
     "settings": "Settings",
     "addresses": "Addresses",
     "orders": "Orders",
     "logout": "Logout"
   },
-   "OrdersPage": {
+  "OrdersPage": {
     "loginWarning": "Please login to access your orders.",
     "title": "Orders",
     "noOrders": "You have no orders.",
     "metaTitle": "Orders",
     "metaDescription": "Your orders."
   },
-
   "OrderDetailPage": {
     "allOrders": "All orders",
     "orderNumber": "Order #{id}",
@@ -104,7 +98,7 @@
     "metaTitle": "Order {id}",
     "metaDescription": "Order details for order {id}."
   },
-   "CreateAccountPage": {
+  "CreateAccountPage": {
     "title": "Create account",
     "alreadyLoggedIn": "You are already logged in.",
     "metaTitle": "My account",
@@ -133,7 +127,7 @@
     "continue": "Continue",
     "errorInvalidCredentials": "There was an error with the credentials provided. Please try again."
   },
-   "LogoutPage": {
+  "LogoutPage": {
     "metaTitle": "Logout",
     "metaDescription": "You have been logged out successfully."
   },
@@ -146,7 +140,7 @@
     "loginPrefix": " To log back in, ",
     "loginLinkText": "click here"
   },
-   "ForgotPasswordForm": {
+  "ForgotPasswordForm": {
     "title": "Forgot Password",
     "intro": "Please enter your email below. You will receive an email with instructions on how to reset your password. To manage all users,",
     "adminLinkText": "log in to the admin dashboard",
@@ -162,13 +156,13 @@
     "allRightsReserved": "All rights reserved.",
     "termsFallback": "Terms & Conditions"
   },
-   "FooterMenu": {
+  "FooterMenu": {
     "allPrograms": "All programs",
     "navigation": "Navigation",
     "followMe": "Follow me",
     "missingLabel": "(missing label)"
   },
-   "Programs": {
+  "Programs": {
     "readMore": "Read more",
     "noLessons": "There are no lessons right now.",
     "comingSoon": "Coming soon"
@@ -183,7 +177,7 @@
     "login": "Login",
     "createAccount": "Create account"
   },
-   "CreateAccountForm": {
+  "CreateAccountForm": {
     "adminLinkText": "Log in to the admin portal.",
     "emailLabel": "Email",
     "passwordLabel": "New password",
@@ -192,7 +186,6 @@
     "processing": "Processing",
     "alreadyHaveAccount": "Already have an account? ",
     "loginLinkText": "Login",
-
     "errors": {
       "emailRequired": "Email is required.",
       "passwordRequired": "Password is required.",
@@ -201,9 +194,30 @@
       "createAccountFailed": "There was an error creating the account.",
       "invalidCredentials": "There was an error with the credentials provided. Please try again."
     },
-
     "success": {
       "accountCreated": "Account created successfully."
     }
+  },
+  "Blog": {
+    "title": "All Articles",
+    "description": "Explore practical tips, ideas, and stories that support you in everyday life. Posts are grouped by topics so you can quickly find the content that matters most right now.",
+    "categoriesLabel": "Categories",
+    "spotlightLabel": "Spotlight",
+    "trendingLabel": "Trending",
+    "noFeatured": "There’s no featured post yet.",
+    "noTrending": "There are no trending posts yet."
+  },
+  "PageRange": {
+    "noResults": "Search produced no results.",
+    "showing": "Showing {start}{range} of {total} {label}",
+    "rangeSeparator": " - "
+  },
+  "PostHero": {
+    "authorLabel": "Author",
+    "publishedLabel": "Published",
+    "untitledCategory": "Untitled"
+  },
+  "Pagination": {
+    "metaTitlePaged": "All Articles – Page {page}"
   }
 }

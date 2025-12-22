@@ -1,5 +1,6 @@
 // src/app/[locale]/(app)/posts/page/[pageNumber]/page.tsx
 import configPromise from '@payload-config'
+import { getTranslations } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next/types'
 import { getPayload } from 'payload'
@@ -26,17 +27,16 @@ type PageProps = {
 
 export default async function Page({ params, searchParams }: PageProps) {
   const { locale, pageNumber } = await params
+  const t = await getTranslations({ locale, namespace: 'Blog' })
+
   const resolvedSearchParams = searchParams ? await searchParams : undefined
   const activeCategorySlug = resolvedSearchParams?.category
 
   const sanitizedPageNumber = Number(pageNumber)
-
-  // Page 1 is /posts (this route is only /posts/page/2+)
   if (!Number.isInteger(sanitizedPageNumber) || sanitizedPageNumber < 2) notFound()
 
   const payload = await getPayload({ config: configPromise })
 
-  // Categories (sidebar)
   const categoriesRes = await payload.find({
     collection: 'postCategories',
     locale,
@@ -45,7 +45,6 @@ export default async function Page({ params, searchParams }: PageProps) {
     pagination: false,
   })
 
-  // Resolve category slug -> ID
   let categoryId: string | undefined
   if (activeCategorySlug) {
     const catRes = await payload.find({
@@ -58,7 +57,6 @@ export default async function Page({ params, searchParams }: PageProps) {
     categoryId = catRes.docs?.[0]?.id
   }
 
-  // Posts (6 per page)
   const posts = await payload.find({
     collection: 'posts',
     locale,
@@ -76,11 +74,10 @@ export default async function Page({ params, searchParams }: PageProps) {
       <div className="container px-0">
         {/* Title */}
         <div className="mb-10">
-          <h1 className="font-bebas text-4xl md:text-5xl lg:text-6xl leading-none">All Articles</h1>
+          <h1 className="font-bebas text-4xl md:text-5xl lg:text-6xl leading-none">{t('title')}</h1>
 
           <p className="mt-2 max-w-[720px] text-base md:text-lg text-muted-foreground line-clamp-3">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-            ut labore et dolore magna aliqua. Ut enim ad minim veniam.
+            {t('description')}
           </p>
 
           <div className="mt-6 h-px w-full bg-border/40" />
@@ -92,7 +89,7 @@ export default async function Page({ params, searchParams }: PageProps) {
           <aside className="lg:sticky lg:top-28 self-start">
             <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
               <Tags className="h-4 w-4" />
-              Categories
+              {t('categoriesLabel')}
             </div>
 
             <div className="mt-4">
@@ -118,6 +115,7 @@ export default async function Page({ params, searchParams }: PageProps) {
                 currentPage={posts.page}
                 limit={PER_PAGE}
                 totalDocs={posts.totalDocs}
+                locale={locale}
               />
             </div>
 
@@ -147,8 +145,10 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: Locale; pageNumber: string }>
 }): Promise<Metadata> {
-  const { pageNumber } = await params
-  return { title: `All Articles – Page ${pageNumber}` }
+  const { locale, pageNumber } = await params
+  const t = await getTranslations({ locale, namespace: 'Pagination' })
+
+  return { title: t('metaTitlePaged', { page: pageNumber }) }
 }
 
 export async function generateStaticParams(): Promise<Array<{ locale: Locale; pageNumber: string }>> {

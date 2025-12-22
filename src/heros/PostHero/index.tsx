@@ -1,4 +1,5 @@
 import type { Post, PostCategory } from '@/payload-types'
+import { getTranslations } from 'next-intl/server'
 import React from 'react'
 
 import { Media } from '@/components/Media'
@@ -6,8 +7,10 @@ import { formatAuthors } from '@/utilities/formatAuthors'
 import { formatDateTime } from '@/utilities/formatDateTime'
 
 type ResolvedCategory = Pick<PostCategory, 'id' | 'title'>
+type Locale = 'sl' | 'en'
 
-export const PostHero: React.FC<{ post: Post }> = ({ post }) => {
+export const PostHero: React.FC<{ post: Post; locale: Locale }> = async ({ post, locale }) => {
+  const t = await getTranslations({ locale, namespace: 'PostHero' })
   const { categories, heroImage, populatedAuthors, publishedAt, title } = post
 
   const hasAuthors =
@@ -31,7 +34,7 @@ export const PostHero: React.FC<{ post: Post }> = ({ post }) => {
                   key={cat.id}
                   className="inline-flex items-center rounded-[6px] border border-border bg-card px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-foreground/80"
                 >
-                  {cat.title || 'Untitled'}
+                  {cat.title || t('untitledCategory')}
                 </span>
               ))}
             </div>
@@ -44,14 +47,14 @@ export const PostHero: React.FC<{ post: Post }> = ({ post }) => {
           <div className="mb-6 flex flex-col gap-4 md:flex-row md:gap-12 text-sm text-muted-foreground">
             {hasAuthors && (
               <div>
-                <p className="uppercase text-xs text-muted-foreground/80">Author</p>
+                <p className="uppercase text-xs text-muted-foreground/80">{t('authorLabel')}</p>
                 <p className="text-foreground">{formatAuthors(populatedAuthors)}</p>
               </div>
             )}
 
             {publishedAt && (
               <div>
-                <p className="uppercase text-xs text-muted-foreground/80">Published</p>
+                <p className="uppercase text-xs text-muted-foreground/80">{t('publishedLabel')}</p>
                 <time dateTime={publishedAt} className="text-foreground">
                   {formatDateTime({ date: publishedAt })}
                 </time>
