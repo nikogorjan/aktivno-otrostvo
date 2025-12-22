@@ -60,17 +60,23 @@ const cmsHref = slug ? `/${relationTo}/${slug}` : `/${relationTo}`
       )}
     >
       {/* Image */}
-      <Link href={href} className="block aspect-[16/9] rounded-[10px]">
-        <div className="relative aspect-[16/9] rounded-[10px] bg-black/5">
-          {imageToUse && typeof imageToUse !== 'string' ? (
-            <Media resource={imageToUse} imgClassName="h-full w-full object-cover aspect-[16/9] rounded-[10px]" />
-          ) : (
-            <div className="h-full w-full flex items-center justify-center text-sm text-muted-foreground">
-              No image
-            </div>
-          )}
-        </div>
-      </Link>
+      <Link href={href} className="block">
+  <div className="relative aspect-[16/9] overflow-hidden rounded-[10px] bg-black/5">
+    {imageToUse && typeof imageToUse !== 'string' ? (
+      <Media
+        fill
+        resource={imageToUse}
+        className="absolute inset-0"
+        imgClassName="h-full w-full object-cover"
+        size="(min-width: 768px) 50vw, 100vw"
+      />
+    ) : (
+      <div className="absolute inset-0 flex items-center justify-center text-sm text-muted-foreground">
+        No image
+      </div>
+    )}
+  </div>
+</Link>
 
       {/* Content */}
       <div className="py-6 lg:py-8 flex flex-col flex-1">

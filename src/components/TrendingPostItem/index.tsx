@@ -18,15 +18,21 @@ export const TrendingPostItem: React.FC<{
   const href = `/${locale}/posts/${doc.slug}`
 
   return (
-    <Link href={href} className={cn('group flex gap-3 items-center justify-center', className)}>
+    <Link href={href} className={cn('group flex gap-3 items-center', className)}>
       <div className="relative h-24 w-32 shrink-0 overflow-hidden rounded-[6px] bg-black/5 border border-border">
         {imageToUse && typeof imageToUse !== 'string' ? (
-          <Media resource={imageToUse} imgClassName="h-full w-full object-cover" />
+          <Media
+            fill
+            resource={imageToUse}
+            className="absolute inset-0"
+            imgClassName="h-full w-full object-cover"
+            size="128px"
+          />
         ) : null}
       </div>
 
       <div className="min-w-0">
-        <p className="text-xl md:text-2xl text-foreground leading-snug group-hover:underline">
+        <p className="text-xl md:text-2xl text-foreground leading-snug group-hover:underline line-clamp-2">
           {doc.title}
         </p>
       </div>

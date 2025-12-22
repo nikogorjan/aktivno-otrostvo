@@ -1,9 +1,9 @@
 import type { StaticImageData } from 'next/image'
 
-import { cn } from '@/utilities/cn'
-import React from 'react'
 import { RichText } from '@/components/RichText'
 import type { MediaBlock as MediaBlockProps } from '@/payload-types'
+import { cn } from '@/utilities/cn'
+import React from 'react'
 
 import { Media } from '../../components/Media'
 
@@ -43,7 +43,7 @@ export const MediaBlock: React.FC<
       )}
     >
       <Media
-        imgClassName={cn('border border-border rounded-[0.8rem]', imgClassName)}
+        imgClassName={cn('rounded-[10px]', imgClassName)}
         resource={media}
         src={staticImage}
       />

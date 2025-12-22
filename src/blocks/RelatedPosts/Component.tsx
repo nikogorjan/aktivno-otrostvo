@@ -18,6 +18,8 @@ export type RelatedPostsProps = {
 
 export const RelatedPosts: React.FC<RelatedPostsProps> = (props) => {
   const { className, docs, introContent, locale } = props
+  console.log('RELATED FIRST:', docs?.[0]?.heroImage, docs?.[0]?.meta?.image)
+  console.log('RELATED FIRST KEYS:', docs?.[0] ? Object.keys(docs[0] as any) : null)
 
   return (
     <div className={clsx('lg:container', className)}>

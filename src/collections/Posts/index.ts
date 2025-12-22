@@ -33,15 +33,17 @@ export const Posts: CollectionConfig<'posts'> = {
     // This config controls what's populated by default when a post is referenced
     // https://payloadcms.com/docs/queries/select#defaultpopulate-collection-config-property
     // Type safe if the collection slug generic is passed to `CollectionConfig` - `CollectionConfig<'posts'>
-    defaultPopulate: {
-        title: true,
-        slug: true,
-        categories: true,
-        meta: {
-            image: true,
-            description: true,
-        },
-    },
+   defaultPopulate: {
+  title: true,
+  slug: true,
+  categories: true,
+  heroImage: true, // ✅ add (this fixes "No image")
+  excerpt: true,   // ✅ add (cards use it)
+  meta: {
+    image: true,
+    description: true,
+  },
+},
     admin: {
         defaultColumns: ['title', 'slug', 'updatedAt'],
         livePreview: {
