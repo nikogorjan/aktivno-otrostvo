@@ -15,6 +15,8 @@ import { Flame, Sparkles, Tags } from 'lucide-react'
 type Locale = 'sl' | 'en'
 const LOCALES: Locale[] = ['sl', 'en']
 
+const PER_PAGE = 6
+
 type PageProps = {
   params: Promise<{ locale: Locale }>
   searchParams?: Promise<{ category?: string }>
@@ -36,9 +38,7 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   const payload = await getPayload({ config: configPromise })
 
-  /* ------------------------------------------------------------------ */
-  /* Categories (sidebar)                                                */
-  /* ------------------------------------------------------------------ */
+  // Categories (sidebar)
   const categoriesRes = await payload.find({
     collection: 'postCategories',
     locale,
@@ -47,9 +47,7 @@ export default async function Page({ params, searchParams }: PageProps) {
     pagination: false,
   })
 
-  /* ------------------------------------------------------------------ */
-  /* Resolve category slug -> ID (reliable filtering)                     */
-  /* ------------------------------------------------------------------ */
+  // Resolve category slug -> ID (reliable filtering)
   let categoryId: string | undefined
   if (activeCategorySlug) {
     const catRes = await payload.find({
@@ -62,9 +60,7 @@ export default async function Page({ params, searchParams }: PageProps) {
     categoryId = catRes.docs?.[0]?.id
   }
 
-  /* ------------------------------------------------------------------ */
-  /* Spotlight + Trending (ONLY when no category filter)                  */
-  /* ------------------------------------------------------------------ */
+  // Spotlight + Trending (ONLY when no category filter)
   const spotlightPost = shouldShowHero
     ? (
         await payload.find({
@@ -91,14 +87,12 @@ export default async function Page({ params, searchParams }: PageProps) {
       ).docs
     : []
 
-  /* ------------------------------------------------------------------ */
-  /* Archive grid                                                        */
-  /* ------------------------------------------------------------------ */
+  // Archive grid (6 per page)
   const posts = await payload.find({
     collection: 'posts',
     locale,
     depth: 1,
-    limit: 12,
+    limit: PER_PAGE,
     sort: '-publishedAt',
     ...(categoryId ? { where: { categories: { equals: categoryId } } } : {}),
   })
@@ -106,7 +100,6 @@ export default async function Page({ params, searchParams }: PageProps) {
   return (
     <div className="px-[5%] pb-10 pt-10 md:pb-12 md:pt-12 lg:pb-16 lg:pt-16 bg-scheme1Background">
       <div className="container px-0">
-
         {/* Title */}
         <div className="mb-10">
           <h1 className="font-bebas text-4xl md:text-5xl lg:text-6xl leading-none">All Articles</h1>
@@ -138,7 +131,7 @@ export default async function Page({ params, searchParams }: PageProps) {
             </div>
           </aside>
 
-          {/* Separator between sidebar and content (only on xl because grid has 3 tracks there) */}
+          {/* Separator */}
           <div className="hidden xl:flex items-stretch justify-center">
             <div className="w-px bg-border/40 self-stretch" />
           </div>
@@ -199,7 +192,6 @@ export default async function Page({ params, searchParams }: PageProps) {
                   </div>
                 </div>
 
-                {/* Horizontal separator between hero and archive */}
                 <div className="mt-10 mb-10 h-px w-full bg-border/40" />
               </>
             )}
@@ -209,7 +201,7 @@ export default async function Page({ params, searchParams }: PageProps) {
               <PageRange
                 collection="posts"
                 currentPage={posts.page}
-                limit={12}
+                limit={PER_PAGE}
                 totalDocs={posts.totalDocs}
               />
             </div>

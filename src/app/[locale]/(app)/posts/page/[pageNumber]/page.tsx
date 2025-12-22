@@ -1,3 +1,4 @@
+// src/app/[locale]/(app)/posts/page/[pageNumber]/page.tsx
 import configPromise from '@payload-config'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next/types'
@@ -8,10 +9,15 @@ import { CollectionArchive } from '@/components/CollectionArchive'
 import { PageRange } from '@/components/PageRange'
 import { Pagination } from '@/components/Pagination'
 
+import { Tags } from 'lucide-react'
+
 type Locale = 'sl' | 'en'
 const LOCALES: Locale[] = ['sl', 'en']
 
 export const revalidate = 600
+export const dynamic = 'force-dynamic'
+
+const PER_PAGE = 6
 
 type PageProps = {
   params: Promise<{ locale: Locale; pageNumber: string }>
@@ -23,15 +29,14 @@ export default async function Page({ params, searchParams }: PageProps) {
   const resolvedSearchParams = searchParams ? await searchParams : undefined
   const activeCategorySlug = resolvedSearchParams?.category
 
+  const sanitizedPageNumber = Number(pageNumber)
+
+  // Page 1 is /posts (this route is only /posts/page/2+)
+  if (!Number.isInteger(sanitizedPageNumber) || sanitizedPageNumber < 2) notFound()
+
   const payload = await getPayload({ config: configPromise })
 
-  const sanitizedPageNumber = Number(pageNumber)
-  if (!Number.isInteger(sanitizedPageNumber) || sanitizedPageNumber < 2) {
-    // page 1 is /posts, this route should be /posts/page/2+
-    notFound()
-  }
-
-  // All categories (for filter UI)
+  // Categories (sidebar)
   const categoriesRes = await payload.find({
     collection: 'postCategories',
     locale,
@@ -40,7 +45,7 @@ export default async function Page({ params, searchParams }: PageProps) {
     pagination: false,
   })
 
-  // Resolve category slug -> id (reliable relationship filtering)
+  // Resolve category slug -> ID
   let categoryId: string | undefined
   if (activeCategorySlug) {
     const catRes = await payload.find({
@@ -53,81 +58,99 @@ export default async function Page({ params, searchParams }: PageProps) {
     categoryId = catRes.docs?.[0]?.id
   }
 
+  // Posts (6 per page)
   const posts = await payload.find({
     collection: 'posts',
     locale,
     depth: 1,
-    limit: 12,
-    sort: '-publishedAt',
+    limit: PER_PAGE,
     page: sanitizedPageNumber,
-    overrideAccess: false,
+    sort: '-publishedAt',
     ...(categoryId ? { where: { categories: { equals: categoryId } } } : {}),
   })
 
-  // If user requests a page number beyond results, 404
   if (posts.totalPages && sanitizedPageNumber > posts.totalPages) notFound()
 
   return (
-    <div className="px-[5%] pb-16 pt-32 md:pb-24 md:pt-32 lg:pb-28 lg:pt-36 bg-scheme1Background">
-      <div className="container">
+    <div className="px-[5%] pb-10 pt-10 md:pb-12 md:pt-12 lg:pb-16 lg:pt-16 bg-scheme1Background">
+      <div className="container px-0">
+        {/* Title */}
+        <div className="mb-10">
+          <h1 className="font-bebas text-4xl md:text-5xl lg:text-6xl leading-none">All Articles</h1>
 
-        <div className="rb-12 mb-12 w-full max-w-lg md:mb-18 lg:mb-20">
-          <div className="w-full max-w-lg">
-            <p className="mb-3 font-semibold md:mb-4 font-karla">Dogodki</p>
-            <h1 className="font-bebas mb-5 text-6xl md:mb-6 md:text-9xl lg:text-10xl">
-              Srce dobrodelnosti
-            </h1>
-            <p className="font-karla md:text-md">
-              Vsak dogodek nosi zgodbo o solidarnosti. Delimo trenutke, ideje in uspehe, ki kažejo,
-              kako lahko majhna dejanja ustvarijo velik učinek.
-            </p>
-          </div>
+          <p className="mt-2 max-w-[720px] text-base md:text-lg text-muted-foreground line-clamp-3">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+            ut labore et dolore magna aliqua. Ut enim ad minim veniam.
+          </p>
+
+          <div className="mt-6 h-px w-full bg-border/40" />
         </div>
 
-        {/* Range + Filter + Grid (together, near cards) */}
-        <div className="mt-2">
-          <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
-            <PageRange
-              collection="posts"
-              currentPage={posts.page}
-              limit={12}
-              totalDocs={posts.totalDocs}
-            />
+        {/* Layout */}
+        <div className="grid grid-cols-1 xl:grid-cols-[1.5fr_1px_8fr] gap-8">
+          {/* Sidebar */}
+          <aside className="lg:sticky lg:top-28 self-start">
+            <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
+              <Tags className="h-4 w-4" />
+              Categories
+            </div>
 
-            <CategoryFilter
-              locale={locale}
-              categories={categoriesRes.docs}
-              activeSlug={activeCategorySlug}
-            />
+            <div className="mt-4">
+              <CategoryFilter
+                locale={locale}
+                categories={categoriesRes.docs}
+                activeSlug={activeCategorySlug}
+                className="flex flex-row items-start gap-2"
+              />
+            </div>
+          </aside>
+
+          {/* Separator */}
+          <div className="hidden xl:flex items-stretch justify-center">
+            <div className="w-px bg-border/40 self-stretch" />
           </div>
 
-          <div className="mt-8">
-            <CollectionArchive locale={locale} posts={posts.docs} />
-          </div>
-        </div>
+          {/* Content */}
+          <section>
+            <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+              <PageRange
+                collection="posts"
+                currentPage={posts.page}
+                limit={PER_PAGE}
+                totalDocs={posts.totalDocs}
+              />
+            </div>
 
-        <div className="container">
-          {posts.page && posts.totalPages > 1 && (
-            <Pagination
-              locale={locale}
-              page={posts.page}
-              totalPages={posts.totalPages}
-              category={activeCategorySlug}
-            />
-          )}
+            <div className="mt-8">
+              <CollectionArchive locale={locale} posts={posts.docs} columns={3} />
+            </div>
+
+            <div className="container">
+              {posts.totalPages > 1 && posts.page && (
+                <Pagination
+                  locale={locale}
+                  page={posts.page}
+                  totalPages={posts.totalPages}
+                  category={activeCategorySlug}
+                />
+              )}
+            </div>
+          </section>
         </div>
       </div>
     </div>
   )
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ pageNumber: string }> }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: Locale; pageNumber: string }>
+}): Promise<Metadata> {
   const { pageNumber } = await params
-  return { title: `Posts – Page ${pageNumber}` }
+  return { title: `All Articles – Page ${pageNumber}` }
 }
 
-// NOTE: With filtering via query-string (?category=...), we do NOT pre-generate params for every category.
-// We only pre-generate normal pages for each locale.
 export async function generateStaticParams(): Promise<Array<{ locale: Locale; pageNumber: string }>> {
   const payload = await getPayload({ config: configPromise })
 
@@ -140,9 +163,8 @@ export async function generateStaticParams(): Promise<Array<{ locale: Locale; pa
       overrideAccess: false,
     })
 
-    const totalPages = Math.max(1, Math.ceil(totalDocs / 12))
+    const totalPages = Math.max(1, Math.ceil(totalDocs / PER_PAGE))
 
-    // start from page 2 because page 1 is /posts
     for (let i = 2; i <= totalPages; i++) {
       allParams.push({ locale, pageNumber: String(i) })
     }
