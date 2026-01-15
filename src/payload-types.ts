@@ -1166,6 +1166,7 @@ export interface TestimonialsBlock {
  * via the `definition` "CtaEmailBlock".
  */
 export interface CtaEmailBlock {
+  form: string | Form;
   image: string | Media;
   heading: string;
   description?: string | null;
@@ -2375,6 +2376,7 @@ export interface TestimonialsBlockSelect<T extends boolean = true> {
  * via the `definition` "CtaEmailBlock_select".
  */
 export interface CtaEmailBlockSelect<T extends boolean = true> {
+  form?: T;
   image?: T;
   heading?: T;
   description?: T;

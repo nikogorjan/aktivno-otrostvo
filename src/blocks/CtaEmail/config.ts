@@ -5,6 +5,15 @@ export const CtaEmail: Block = {
   interfaceName: 'CtaEmailBlock',
   labels: { singular: 'CTA Email', plural: 'CTA Email Sections' },
   fields: [
+    // ✅ pick a form (Payload Forms plugin)
+    {
+      name: 'form',
+      type: 'relationship',
+      relationTo: 'forms',
+      required: true,
+      label: 'Obrazec (Forms plugin)',
+    },
+
     {
       name: 'image',
       label: 'Slika',
@@ -74,7 +83,9 @@ export const CtaEmail: Block = {
       type: 'text',
       label: 'Honeypot field name (optional)',
     },
-        {
+
+    // ✅ keep MailerLite config as you already have it
+    {
       name: 'mailerLite',
       label: 'MailerLite',
       type: 'group',

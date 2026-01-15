@@ -1,12 +1,12 @@
-// src/blocks/FormBlock/Component.tsx
 'use client'
 
 import type { Form as FormType } from '@payloadcms/plugin-form-builder/types'
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 import { DefaultDocumentIDType } from 'payload'
 
+import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import { RichText } from '@/components/RichText'
@@ -14,8 +14,6 @@ import { getClientSideURL } from '@/utilities/getURL'
 import { buildInitialFormState } from './buildInitialFormState'
 import { fields } from './fields'
 
-// material icons (you may already have react-icons installed;
-// if not, install: pnpm add react-icons)
 import { CMSLink } from '@/components/Link'
 import { Facebook, Instagram, Mail, Phone } from 'lucide-react'
 
@@ -52,16 +50,20 @@ export const FormBlock: React.FC<
     id?: DefaultDocumentIDType
   }
 > = (props) => {
+  const t = useTranslations('FormBlock')
+
   const {
     form: formFromProps,
-    form: { id: formID, confirmationMessage, confirmationType, redirect, submitButtonLabel } = {},
+    form: { id: formID, confirmationType, redirect, submitButtonLabel } = {},
     title,
     description,
     contactInfo,
   } = props
 
+  const defaultValues = useMemo(() => buildInitialFormState(formFromProps.fields), [formFromProps.fields])
+
   const formMethods = useForm({
-    defaultValues: buildInitialFormState(formFromProps.fields),
+    defaultValues,
   })
 
   const {
@@ -69,26 +71,29 @@ export const FormBlock: React.FC<
     formState: { errors },
     handleSubmit,
     register,
+    reset,
   } = formMethods
 
   const [isLoading, setIsLoading] = useState(false)
-  const [hasSubmitted, setHasSubmitted] = useState<boolean>()
-  const [error, setError] = useState<{ message: string; status?: string } | undefined>()
   const router = useRouter()
+
+  const [toast, setToast] = useState<string | null>(null)
+  const [errorText, setErrorText] = useState<string | null>(null)
 
   const onSubmit = useCallback(
     (data: Data) => {
       let loadingTimerID: ReturnType<typeof setTimeout>
 
       const submitForm = async () => {
-        setError(undefined)
+        setErrorText(null)
+        setToast(null)
 
         const dataToSend = Object.entries(data).map(([name, value]) => ({
           field: name,
           value,
         }))
 
-        // delay loading indicator by 1s
+        // delay loading indicator by 1s (keep your behavior)
         loadingTimerID = setTimeout(() => {
           setIsLoading(true)
         }, 1000)
@@ -99,46 +104,40 @@ export const FormBlock: React.FC<
               form: formID,
               submissionData: dataToSend,
             }),
-            headers: {
-              'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             method: 'POST',
           })
 
-          const res = await req.json()
+          const res = await req.json().catch(() => ({}))
 
           clearTimeout(loadingTimerID)
+          setIsLoading(false)
 
           if (req.status >= 400) {
-            setIsLoading(false)
-
-            setError({
-              message: res.errors?.[0]?.message || 'Prišlo je do napake.',
-              status: res.status,
-            })
-
+            setErrorText(res.errors?.[0]?.message || t('errors.generic'))
             return
           }
 
-          setIsLoading(false)
-          setHasSubmitted(true)
+          // ✅ success toast under the form (CTA style)
+          setToast(t('toasts.success'))
+
+          // ✅ reset fields so they can submit again immediately
+          reset(defaultValues)
 
           if (confirmationType === 'redirect' && redirect) {
             const { url } = redirect
             if (url) router.push(url)
           }
         } catch (err) {
-          console.warn(err)
+          clearTimeout(loadingTimerID)
           setIsLoading(false)
-          setError({
-            message: 'Nekaj je šlo narobe.',
-          })
+          setErrorText(t('errors.generic'))
         }
       }
 
       void submitForm()
     },
-    [router, formID, redirect, confirmationType],
+    [formID, confirmationType, redirect, router, reset, defaultValues, t],
   )
 
   return (
@@ -146,17 +145,12 @@ export const FormBlock: React.FC<
       <div className="relative rounded-xl bg-kournikova-light px-8 py-8 lg:px-16 lg:py-16 grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] items-start">
         {/* LEFT SIDE – text + contact info */}
         <div className="space-y-6">
-          {/* Naslov */}
           <h2 className="text-5xl lg:text-6xl font-semibold tracking-tight">
-            {title || 'Kontaktirajte nas'}
+            {title || t('left.fallbackTitle')}
           </h2>
 
-          {/* Opis */}
-          {description && (
-            <RichText data={description} enableGutter={false} className="text-xl" />
-          )}
+          {description && <RichText data={description} enableGutter={false} className="text-xl" />}
 
-          {/* Kontaktni podatki */}
           {contactInfo && (
             <div className="space-y-4 text-base">
               {contactInfo.email && (
@@ -164,7 +158,10 @@ export const FormBlock: React.FC<
                   <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/70">
                     <Mail />
                   </span>
-                  <a href={`mailto:${contactInfo.email}`} className="underline-offset-2 hover:underline text-xl">
+                  <a
+                    href={`mailto:${contactInfo.email}`}
+                    className="underline-offset-2 hover:underline text-xl"
+                  >
                     {contactInfo.email}
                   </a>
                 </div>
@@ -192,7 +189,7 @@ export const FormBlock: React.FC<
                     rel="noreferrer"
                     className="underline-offset-2 hover:underline text-xl"
                   >
-                    {contactInfo.facebookLabel || 'Facebook'}
+                    {contactInfo.facebookLabel || t('left.facebookFallback')}
                   </a>
                 </div>
               )}
@@ -208,7 +205,7 @@ export const FormBlock: React.FC<
                     rel="noreferrer"
                     className="underline-offset-2 hover:underline text-xl"
                   >
-                    {contactInfo.instagramLabel || 'Instagram'}
+                    {contactInfo.instagramLabel || t('left.instagramFallback')}
                   </a>
                 </div>
               )}
@@ -219,70 +216,53 @@ export const FormBlock: React.FC<
         {/* RIGHT SIDE – form */}
         <div className="rounded-[10px] md:py-6">
           <FormProvider {...formMethods}>
-            {!isLoading && hasSubmitted && confirmationType === 'message' && (
-              <RichText data={confirmationMessage} />
-            )}
+            <form
+              id={formID}
+              onSubmit={handleSubmit(onSubmit)}
+              className="space-y-6 [&_input]:h-12 [&_input]:text-base [&_textarea]:min-h-[140px] [&_textarea]:text-base"
+            >
+              <div className="space-y-6">
+                {formFromProps?.fields?.map((field, index) => {
+                  const Field: React.FC<any> | undefined = fields?.[field.blockType as keyof typeof fields]
+                  if (!Field) return null
 
-            {isLoading && !hasSubmitted && <p>Nalaganje, prosimo počakajte…</p>}
-
-            {error && (
-              <div className="mb-4 text-sm text-red-700">
-                {`${error.status || '500'}: ${error.message || ''}`}
+                  return (
+                    <div key={index}>
+                      <Field
+                        form={formFromProps}
+                        {...field}
+                        {...formMethods}
+                        control={control}
+                        errors={errors}
+                        register={register}
+                        disabled={isLoading}
+                      />
+                    </div>
+                  )
+                })}
               </div>
-            )}
 
-            {!hasSubmitted && (
-              <form id={formID} onSubmit={handleSubmit(onSubmit)} className="space-y-6 [&_input]:h-12 [&_input]:text-base [&_textarea]:min-h-[140px] [&_textarea]:text-base">
-                <div className="space-y-6">
-                  {formFromProps?.fields?.map((field, index) => {
-                    const Field: React.FC<any> | undefined =
-                      fields?.[field.blockType as keyof typeof fields]
+              <CMSLink
+                type="custom"
+                url="#"
+                appearance="rumen"
+                className="inline-flex w-auto max-w-max self-start mt-2 flex items-center gap-1 sm:mt-0"
+                onClick={(e) => {
+                  e.preventDefault()
+                  if (!formID) return
+                  const formEl = document.getElementById(String(formID)) as HTMLFormElement | null
+                  formEl?.requestSubmit()
+                }}
+              >
+                {isLoading ? t('button.loading') : submitButtonLabel || t('button.default')}
+              </CMSLink>
+            </form>
 
-                    if (!Field) return null
-
-                    return (
-                      <div key={index}>
-                        <Field
-                          form={formFromProps}
-                          {...field}
-                          {...formMethods}
-                          control={control}
-                          errors={errors}
-                          register={register}
-                        />
-                      </div>
-                    )
-                  })}
-                </div>
-
-                <CMSLink
-                  type="custom"
-                  url="#"
-                  appearance="rumen"
-                  className="inline-flex w-auto max-w-max self-start mt-2 flex items-center gap-1 sm:mt-0"
-
-                  onClick={(e) => {
-                    e.preventDefault()
-
-                    if (!formID) return
-
-                    const formEl = document.getElementById(String(formID)) as HTMLFormElement | null
-                    formEl?.requestSubmit()
-                  }}
-                >
-                  {submitButtonLabel || 'Pošlji'}
-                </CMSLink>
-              </form>
-            )}
+            {/* ✅ CTA-style messages under the form (same “place” + vibe as CTA email) */}
+            {toast && <div className="my-2 text-md text-foreground font-semibold">{toast}</div>}
+            {errorText && <p className="my-2 text-xs text-red-600">{errorText}</p>}
           </FormProvider>
         </div>
-        {/*<Image
-          src="https://bloom42-media.s3.eu-central-1.amazonaws.com/yellowball.svg"
-          width={160}
-          height={160}
-          alt=""
-          className="pointer-events-none select-none absolute bottom-0 right-12 sm:right-12 w-40 h-40 opacity-90 z-[0]"
-        />*/}
       </div>
     </div>
   )

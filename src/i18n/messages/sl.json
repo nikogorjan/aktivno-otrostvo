@@ -219,5 +219,41 @@
   },
   "Pagination": {
     "metaTitlePaged": "Vse objave – Stran {page}"
+  },
+  
+  "CtaEmail": {
+    "errors": {
+      "missingForm": "Manjka izbran obrazec.",
+      "missingEmail": "Manjka e-naslov.",
+      "generic": "Prišlo je do napake. Poskusite znova."
+    },
+    "toasts": {
+      "alreadySubscribed": "Ta e-naslov je že prijavljen.",
+      "pendingConfirmation": "Hvala! Preverite e-pošto in potrdite prijavo.",
+      "subscribed": "Hvala! Uspešno ste se prijavili."
+    },
+    "button": {
+      "default": "Prijava",
+      "loading": "..."
+    }
+  },
+  "FormBlock": {
+    "button": {
+      "default": "Pošlji",
+      "loading": "..."
+    },
+    "toasts": {
+      "success": "Hvala! Sporočilo je bilo uspešno poslano."
+    },
+    "errors": {
+      "generic": "Nekaj je šlo narobe."
+    },
+    "left": {
+      "fallbackTitle": "Kontaktirajte nas",
+      "facebookFallback": "Facebook",
+      "instagramFallback": "Instagram"
+    }
   }
+
+
 }

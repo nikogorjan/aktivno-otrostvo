@@ -219,5 +219,38 @@
   },
   "Pagination": {
     "metaTitlePaged": "All Articles – Page {page}"
+  },
+   "CtaEmail": {
+    "errors": {
+      "missingForm": "Missing selected form.",
+      "missingEmail": "Email is missing.",
+      "generic": "Something went wrong. Please try again."
+    },
+    "toasts": {
+      "alreadySubscribed": "This email is already subscribed.",
+      "pendingConfirmation": "Thanks! Check your email and confirm your subscription.",
+      "subscribed": "Thanks! You’re successfully subscribed."
+    },
+    "button": {
+      "default": "Subscribe",
+      "loading": "..."
+    }
+  },
+  "FormBlock": {
+    "button": {
+      "default": "Send",
+      "loading": "..."
+    },
+    "toasts": {
+      "success": "Thanks! Your message was sent successfully."
+    },
+    "errors": {
+      "generic": "Something went wrong."
+    },
+    "left": {
+      "fallbackTitle": "Contact us",
+      "facebookFallback": "Facebook",
+      "instagramFallback": "Instagram"
+    }
   }
 }

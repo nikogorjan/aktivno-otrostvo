@@ -4,11 +4,20 @@ import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
 import type { CtaEmailBlock as CtaEmailBlockProps } from '@/payload-types'
 import { cn } from '@/utilities/cn'
+import { useLocale, useTranslations } from 'next-intl'
 import Image from 'next/image'
 import * as React from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
+
+// reuse the same field renderer map you already use for FormBlock
+import { buildInitialFormState } from '../Form/buildInitialFormState'
+import { fields } from '../Form/fields'
+
+type FormValues = Record<string, any>
 
 export const CtaEmailBlock: React.FC<CtaEmailBlockProps & { className?: string }> = (props) => {
   const {
+    form: formFromProps,
     image,
     heading,
     description,
@@ -23,32 +32,62 @@ export const CtaEmailBlock: React.FC<CtaEmailBlockProps & { className?: string }
     mailerLite,
   } = props
 
+  const t = useTranslations('CtaEmail')
+  const locale = useLocale()
+
+  const formID =
+    typeof formFromProps === 'object' && formFromProps !== null ? (formFromProps as any).id : formFromProps
+
+  const formFields =
+    typeof formFromProps === 'object' && formFromProps !== null ? (formFromProps as any).fields : undefined
+
+  const defaultValues = React.useMemo(
+    () => (formFields ? buildInitialFormState(formFields) : {}),
+    [formFields],
+  )
+
+  const formMethods = useForm<FormValues>({
+    defaultValues,
+  })
+
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+    register,
+    reset,
+  } = formMethods
+
   const [loading, setLoading] = React.useState(false)
   const [error, setError] = React.useState<string | null>(null)
   const [toast, setToast] = React.useState<string | null>(null)
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (data: FormValues) => {
     // If action is provided, allow native POST behavior
     if (action) return
 
-    e.preventDefault()
     setError(null)
     setToast(null)
 
-    if (!mailerLite?.enabled) return
-
-    const form = e.currentTarget
-    const data = new FormData(form)
+    if (!formID) {
+      setError(t('errors.missingForm'))
+      return
+    }
 
     // Honeypot check
-    if (honeypotName && data.get(honeypotName)) return
+    if (honeypotName && data?.[honeypotName]) return
 
-    const email = data.get('email')
-    if (!email || typeof email !== 'string') return
+    // Convert submitted values to Payload submissionData format
+    const submissionData = Object.entries(data)
+      .filter(([key]) => key !== honeypotName)
+      .map(([field, value]) => ({ field, value }))
 
-    // MailerLite config sanity
-    if (!mailerLite.groupId) {
-      setError('Manjka MailerLite Group ID.')
+    // Extract email for MailerLite (expects a field named "email")
+    const emailValue = data?.email
+    const email = typeof emailValue === 'string' ? emailValue : undefined
+
+    if (mailerLite?.enabled && !email) {
+      setError(t('errors.missingEmail'))
       return
     }
 
@@ -60,14 +99,22 @@ export const CtaEmailBlock: React.FC<CtaEmailBlockProps & { className?: string }
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          email,
-          groupId: mailerLite.groupId,
-          doubleOptIn: mailerLite.doubleOptIn,
+          locale,
+          formId: formID,
+          submissionData,
+          mailerLite: mailerLite?.enabled
+            ? {
+                enabled: true,
+                groupId: mailerLite.groupId,
+                doubleOptIn: mailerLite.doubleOptIn,
+                email,
+              }
+            : { enabled: false, email },
         }),
       })
     } catch (err) {
       setLoading(false)
-      setError('Prišlo je do napake. Poskusite znova.')
+      setError(t('errors.generic'))
       return
     }
 
@@ -75,27 +122,21 @@ export const CtaEmailBlock: React.FC<CtaEmailBlockProps & { className?: string }
 
     const json: any = await res.json().catch(() => ({}))
 
-    // Handle "already subscribed" even if server returns non-2xx
     if (!res.ok) {
-      if (json?.code === 'already_subscribed') {
-        console.log('Already subscribed:', email)
-        setToast('Ta e-naslov je že prijavljen.')
-        return
-      }
-
-      console.log('Subscribe error:', json)
-      setError('Prišlo je do napake. Poskusite znova.')
+      setError(t('errors.generic'))
       return
     }
 
-    // Success cases
     if (json?.code === 'already_subscribed') {
-      console.log('Already subscribed:', email)
-      setToast('Ta e-naslov je že prijavljen.')
+      setToast(t('toasts.alreadySubscribed'))
+      // important: do not clear the form necessarily; but it’s ok either way.
+      // We'll keep the typed data (no reset) so user can adjust.
     } else if (json?.code === 'pending_confirmation') {
-      setToast('Hvala! Preverite e-pošto in potrdite prijavo.')
+      setToast(t('toasts.pendingConfirmation'))
+      reset(defaultValues)
     } else {
-      setToast('Hvala! Uspešno ste se prijavili.')
+      setToast(t('toasts.subscribed'))
+      reset(defaultValues)
     }
 
     // Redirect only if it's set and not "#"
@@ -123,67 +164,78 @@ export const CtaEmailBlock: React.FC<CtaEmailBlockProps & { className?: string }
             <div className="relative z-10">
               <div className="max-w-xl">
                 {heading && (
-                  <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                    {heading}
-                  </h2>
+                  <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">{heading}</h2>
                 )}
                 {description && <p className="text-foreground mb-6">{description}</p>}
 
-                {/* EMAIL FORM */}
-                <form
-                  className="flex flex-col sm:flex-row w-full max-w-md mb-2"
-                  action={action || undefined}
-                  method={action ? 'POST' : undefined}
-                  onSubmit={onSubmit}
-                >
-                  {honeypotName ? (
-                    <input
-                      type="text"
-                      name={honeypotName}
-                      tabIndex={-1}
-                      autoComplete="off"
-                      className="hidden"
-                    />
-                  ) : null}
-
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder={inputPlaceholder ?? ''}
-                    required
-                    disabled={loading}
-                    className={cn(
-                      'flex-1 rounded-full px-4 py-3',
-                      'placeholder:text-muted-foreground text-foreground',
-                      'bg-white/60',
-                      'focus:outline-none focus:ring-2 focus:ring-accent',
-                    )}
-                  />
-
-                  {/* Same visual component; prevents navigation in MailerLite mode */}
-                  <CMSLink
-                    type="custom"
-                    url="#"
-                    appearance="rumen"
-                    className="self-start mt-2 flex items-center gap-1 sm:mt-0 sm:ml-3"
-                    onClick={(e) => {
-                      // Only intercept when we handle submit ourselves
-                      if (!action) {
-                        e.preventDefault()
-                        e.stopPropagation()
-                        const formEl = e.currentTarget.closest('form') as HTMLFormElement | null
-                        formEl?.requestSubmit()
-                      }
-                    }}
+                {/* EMAIL / FORM BUILDER FIELDS */}
+                <FormProvider {...formMethods}>
+                  <form
+                    className="flex flex-col w-full max-w-md mb-2 space-y-4"
+                    action={action || undefined}
+                    method={action ? 'POST' : undefined}
+                    onSubmit={handleSubmit(onSubmit)}
                   >
-                    {loading ? '...' : buttonLabel ?? 'Prijava'}
-                  </CMSLink>
+                    {honeypotName ? (
+                      <input
+                        type="text"
+                        {...register(honeypotName as string)}
+                        tabIndex={-1}
+                        autoComplete="off"
+                        className="hidden"
+                      />
+                    ) : null}
 
-                  {successRedirect ? (
-                    <input type="hidden" name="successRedirect" value={successRedirect} />
-                  ) : null}
-                </form>
+                    <div className="flex-1 w-full space-y-4">
+                      {(formFields || []).map((field: any, index: number) => {
+                        const Field = fields?.[field.blockType as keyof typeof fields] as React.FC<any> | undefined
+                        if (!Field) return null
 
+                        return (
+                          <div key={index} className="w-full">
+                            <Field
+                              form={formFromProps as any}
+                              {...field}
+                              {...formMethods}
+                              control={control}
+                              errors={errors}
+                              register={register}
+                              // your field components can use this to switch to "CTA look"
+                              variant="cta"
+                              disabled={loading}
+                              // only pass CTA placeholder to the email field, as you already do
+                              inputPlaceholder={field.blockType === 'email' ? inputPlaceholder : undefined}
+                            />
+                          </div>
+                        )
+                      })}
+                    </div>
+
+                    {/* Button under all inputs */}
+                    <CMSLink
+                      type="custom"
+                      url="#"
+                      appearance="rumen"
+                      className="self-start mt-2 flex items-center gap-1 sm:mt-0"
+                      onClick={(e) => {
+                        if (!action) {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          const formEl = e.currentTarget.closest('form') as HTMLFormElement | null
+                          formEl?.requestSubmit()
+                        }
+                      }}
+                    >
+                      {loading ? t('button.loading') : buttonLabel ?? t('button.default')}
+                    </CMSLink>
+
+                    {successRedirect ? (
+                      <input type="hidden" name="successRedirect" value={successRedirect} />
+                    ) : null}
+                  </form>
+                </FormProvider>
+
+                {/* CTA-style messages under the form */}
                 {toast && <div className="mb-2 text-md text-foreground font-semibold">{toast}</div>}
                 {error && <p className="text-xs text-red-600">{error}</p>}
                 {legalNote && <p className="text-xs text-foreground">{legalNote}</p>}
