@@ -74,5 +74,34 @@ export const CtaEmail: Block = {
       type: 'text',
       label: 'Honeypot field name (optional)',
     },
+        {
+      name: 'mailerLite',
+      label: 'MailerLite',
+      type: 'group',
+      fields: [
+        {
+          name: 'enabled',
+          type: 'checkbox',
+          label: 'Enable MailerLite subscription',
+          defaultValue: true,
+        },
+        {
+          name: 'groupId',
+          type: 'text',
+          label: 'MailerLite Group ID',
+          required: true,
+          admin: {
+            condition: (_, siblingData) => siblingData?.enabled,
+            description: 'Subscribers will be added to this group',
+          },
+        },
+        {
+          name: 'doubleOptIn',
+          type: 'checkbox',
+          label: 'Require double opt-in',
+          defaultValue: true,
+        },
+      ],
+    },
   ],
 }

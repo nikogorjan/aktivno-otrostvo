@@ -1176,6 +1176,14 @@ export interface CtaEmailBlock {
   action?: string | null;
   successRedirect?: string | null;
   honeypotName?: string | null;
+  mailerLite?: {
+    enabled?: boolean | null;
+    /**
+     * Subscribers will be added to this group
+     */
+    groupId?: string | null;
+    doubleOptIn?: boolean | null;
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'ctaEmail';
@@ -2377,6 +2385,13 @@ export interface CtaEmailBlockSelect<T extends boolean = true> {
   action?: T;
   successRedirect?: T;
   honeypotName?: T;
+  mailerLite?:
+    | T
+    | {
+        enabled?: T;
+        groupId?: T;
+        doubleOptIn?: T;
+      };
   id?: T;
   blockName?: T;
 }

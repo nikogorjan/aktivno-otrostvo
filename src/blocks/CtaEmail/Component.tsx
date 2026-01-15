@@ -7,8 +7,6 @@ import { cn } from '@/utilities/cn'
 import Image from 'next/image'
 import * as React from 'react'
 
-// import decorative svg
-
 export const CtaEmailBlock: React.FC<CtaEmailBlockProps & { className?: string }> = (props) => {
   const {
     image,
@@ -22,23 +20,58 @@ export const CtaEmailBlock: React.FC<CtaEmailBlockProps & { className?: string }
     honeypotName,
     showDecoration = true,
     className,
+    mailerLite, // 👈 added (from block config)
   } = props
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const [loading, setLoading] = React.useState(false)
+  const [error, setError] = React.useState<string | null>(null)
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     if (!action) {
       e.preventDefault()
-      const data = new FormData(e.currentTarget)
-      console.log('CTA email submit:', Object.fromEntries(data))
+      setError(null)
+
+      if (!mailerLite?.enabled) return
+
+      const form = e.currentTarget
+      const data = new FormData(form)
+
+      // Honeypot check
+      if (honeypotName && data.get(honeypotName)) return
+
+      const email = data.get('email')
+      if (!email || typeof email !== 'string') return
+
+      setLoading(true)
+
+      const res = await fetch('/api/marketing/subscribe-mailerlite', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          groupId: mailerLite.groupId,
+          doubleOptIn: mailerLite.doubleOptIn,
+        }),
+      })
+
+      setLoading(false)
+
+      if (!res.ok) {
+        setError('Prišlo je do napake. Poskusite znova.')
+        return
+      }
+
+      if (successRedirect) {
+        window.location.href = successRedirect
+      }
     }
   }
 
   return (
     <section className={cn('py-12 md:py-20 lg:py-28', className)}>
       <div className="container">
-        {/* Inner wrapper with background */}
         <div className="relative overflow-hidden rounded-2xl  bg-kournikova-light p-3">
           <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-            {/* LEFT IMAGE */}
             <div className="relative w-full h-72 md:h-[420px] rounded-xl overflow-hidden  bg-card">
               {image && typeof image === 'object' ? (
                 <Media resource={image} fill imgClassName="object-cover" priority />
@@ -53,7 +86,6 @@ export const CtaEmailBlock: React.FC<CtaEmailBlockProps & { className?: string }
               )}
             </div>
 
-            {/* RIGHT CONTENT */}
             <div className="relative z-10">
               <div className="max-w-xl">
                 {heading && (
@@ -63,7 +95,6 @@ export const CtaEmailBlock: React.FC<CtaEmailBlockProps & { className?: string }
                 )}
                 {description && <p className="text-foreground mb-6">{description}</p>}
 
-                {/* EMAIL FORM */}
                 <form
                   className="flex flex-col sm:flex-row w-full max-w-md mb-2"
                   action={action || undefined}
@@ -85,6 +116,7 @@ export const CtaEmailBlock: React.FC<CtaEmailBlockProps & { className?: string }
                     name="email"
                     placeholder={inputPlaceholder ?? ''}
                     required
+                    disabled={loading}
                     className={cn(
                       'flex-1 rounded-full px-4 py-3',
                       'placeholder:text-muted-foreground text-foreground',
@@ -92,13 +124,21 @@ export const CtaEmailBlock: React.FC<CtaEmailBlockProps & { className?: string }
                       'focus:outline-none focus:ring-2 focus:ring-accent',
                     )}
                   />
+
+                  {/* 👇 same visual component, but triggers submit */}
                   <CMSLink
                     type="custom"
                     url="#"
                     appearance="rumen"
-                  className="self-start mt-2 flex items-center gap-1 sm:mt-0 sm:ml-3"
+                    className="self-start mt-2 flex items-center gap-1 sm:mt-0 sm:ml-3"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      const form = e.currentTarget.closest('form') as HTMLFormElement | null
+                      form?.requestSubmit()
+                    }}
                   >
-                    {buttonLabel ?? 'Prijava'}
+                    {loading ? '...' : buttonLabel ?? 'Prijava'}
                   </CMSLink>
 
                   {successRedirect ? (
@@ -106,12 +146,12 @@ export const CtaEmailBlock: React.FC<CtaEmailBlockProps & { className?: string }
                   ) : null}
                 </form>
 
+                {error && <p className="text-xs text-red-600">{error}</p>}
                 {legalNote && <p className="text-xs text-foreground">{legalNote}</p>}
               </div>
             </div>
           </div>
 
-          {/* Decorative SVG behind all content */}
           {showDecoration && (
             <Image
               src="https://bloom42-media.s3.eu-central-1.amazonaws.com/yellowball.svg"
