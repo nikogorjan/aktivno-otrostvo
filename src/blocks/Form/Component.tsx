@@ -4,7 +4,7 @@ import type { Form as FormType } from '@payloadcms/plugin-form-builder/types'
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 import { DefaultDocumentIDType } from 'payload'
 
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import React, { useCallback, useMemo, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -18,11 +18,9 @@ import { CMSLink } from '@/components/Link'
 import { Facebook, Instagram, Mail, Phone } from 'lucide-react'
 
 export type Value = unknown
-
 export interface Property {
   [key: string]: Value
 }
-
 export interface Data {
   [key: string]: Property | Property[]
 }
@@ -51,6 +49,7 @@ export const FormBlock: React.FC<
   }
 > = (props) => {
   const t = useTranslations('FormBlock')
+  const locale = useLocale() // ✅ add
 
   const {
     form: formFromProps,
@@ -60,11 +59,12 @@ export const FormBlock: React.FC<
     contactInfo,
   } = props
 
-  const defaultValues = useMemo(() => buildInitialFormState(formFromProps.fields), [formFromProps.fields])
+  const defaultValues = useMemo(
+    () => buildInitialFormState(formFromProps.fields),
+    [formFromProps.fields],
+  )
 
-  const formMethods = useForm({
-    defaultValues,
-  })
+  const formMethods = useForm({ defaultValues })
 
   const {
     control,
@@ -93,7 +93,6 @@ export const FormBlock: React.FC<
           value,
         }))
 
-        // delay loading indicator by 1s (keep your behavior)
         loadingTimerID = setTimeout(() => {
           setIsLoading(true)
         }, 1000)
@@ -103,8 +102,12 @@ export const FormBlock: React.FC<
             body: JSON.stringify({
               form: formID,
               submissionData: dataToSend,
+              locale, // ✅ add
             }),
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept-Language': locale, // ✅ add
+            },
             method: 'POST',
           })
 
@@ -118,10 +121,7 @@ export const FormBlock: React.FC<
             return
           }
 
-          // ✅ success toast under the form (CTA style)
           setToast(t('toasts.success'))
-
-          // ✅ reset fields so they can submit again immediately
           reset(defaultValues)
 
           if (confirmationType === 'redirect' && redirect) {
@@ -137,13 +137,13 @@ export const FormBlock: React.FC<
 
       void submitForm()
     },
-    [formID, confirmationType, redirect, router, reset, defaultValues, t],
+    [formID, confirmationType, redirect, router, reset, defaultValues, t, locale],
   )
 
   return (
     <div className="container py-12 md:py-20 lg:py-28">
       <div className="relative rounded-xl bg-kournikova-light px-8 py-8 lg:px-16 lg:py-16 grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] items-start">
-        {/* LEFT SIDE – text + contact info */}
+        {/* LEFT SIDE */}
         <div className="space-y-6">
           <h2 className="text-5xl lg:text-6xl font-semibold tracking-tight">
             {title || t('left.fallbackTitle')}
@@ -158,10 +158,7 @@ export const FormBlock: React.FC<
                   <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/70">
                     <Mail />
                   </span>
-                  <a
-                    href={`mailto:${contactInfo.email}`}
-                    className="underline-offset-2 hover:underline text-xl"
-                  >
+                  <a href={`mailto:${contactInfo.email}`} className="underline-offset-2 hover:underline text-xl">
                     {contactInfo.email}
                   </a>
                 </div>
@@ -258,7 +255,6 @@ export const FormBlock: React.FC<
               </CMSLink>
             </form>
 
-            {/* ✅ CTA-style messages under the form (same “place” + vibe as CTA email) */}
             {toast && <div className="my-2 text-md text-foreground font-semibold">{toast}</div>}
             {errorText && <p className="my-2 text-xs text-red-600">{errorText}</p>}
           </FormProvider>
