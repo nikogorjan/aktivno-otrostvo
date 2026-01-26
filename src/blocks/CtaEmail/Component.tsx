@@ -146,7 +146,7 @@ export const CtaEmailBlock: React.FC<CtaEmailBlockProps & { className?: string }
   }
 
   return (
-    <section className={cn('py-12 md:py-20 lg:py-28', className)}>
+    <section className={cn('py-12 md:py-20 lg:py-28 ', className)}>
       <div className="container">
         {/* Inner wrapper with background */}
         <div className="relative overflow-hidden rounded-2xl  bg-kournikova-light p-3">
@@ -162,7 +162,7 @@ export const CtaEmailBlock: React.FC<CtaEmailBlockProps & { className?: string }
 
             {/* RIGHT CONTENT */}
             <div className="relative z-10">
-              <div className="max-w-xl">
+              <div className="w-full md:max-w-[90%]">
                 {heading && (
                   <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">{heading}</h2>
                 )}

@@ -10,7 +10,6 @@ import React, { useCallback, useMemo, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import { RichText } from '@/components/RichText'
-import { getClientSideURL } from '@/utilities/getURL'
 import { buildInitialFormState } from './buildInitialFormState'
 import { fields } from './fields'
 
@@ -49,7 +48,8 @@ export const FormBlock: React.FC<
   }
 > = (props) => {
   const t = useTranslations('FormBlock')
-  const locale = useLocale() // ✅ add
+  const locale = useLocale()
+  const router = useRouter()
 
   const {
     form: formFromProps,
@@ -75,8 +75,6 @@ export const FormBlock: React.FC<
   } = formMethods
 
   const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
-
   const [toast, setToast] = useState<string | null>(null)
   const [errorText, setErrorText] = useState<string | null>(null)
 
@@ -88,7 +86,7 @@ export const FormBlock: React.FC<
         setErrorText(null)
         setToast(null)
 
-        const dataToSend = Object.entries(data).map(([name, value]) => ({
+        const submissionData = Object.entries(data).map(([name, value]) => ({
           field: name,
           value,
         }))
@@ -98,17 +96,19 @@ export const FormBlock: React.FC<
         }, 1000)
 
         try {
-          const req = await fetch(`${getClientSideURL()}/api/form-submissions`, {
-            body: JSON.stringify({
-              form: formID,
-              submissionData: dataToSend,
-              locale, // ✅ add
-            }),
+          // ✅ IMPORTANT: use relative URL so it hits your Next route.ts handler
+          const req = await fetch('/api/marketing/message', {
+            method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Accept-Language': locale, // ✅ add
+              // optional; your route uses body.locale anyway
+              'Accept-Language': locale,
             },
-            method: 'POST',
+            body: JSON.stringify({
+              form: formID,
+              submissionData,
+              locale, // ✅ route.ts reads this and passes it to payload.create({ locale })
+            }),
           })
 
           const res = await req.json().catch(() => ({}))
@@ -117,7 +117,7 @@ export const FormBlock: React.FC<
           setIsLoading(false)
 
           if (req.status >= 400) {
-            setErrorText(res.errors?.[0]?.message || t('errors.generic'))
+            setErrorText(res?.errors?.[0]?.message || t('errors.generic'))
             return
           }
 
@@ -158,7 +158,10 @@ export const FormBlock: React.FC<
                   <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/70">
                     <Mail />
                   </span>
-                  <a href={`mailto:${contactInfo.email}`} className="underline-offset-2 hover:underline text-xl">
+                  <a
+                    href={`mailto:${contactInfo.email}`}
+                    className="underline-offset-2 hover:underline text-xl"
+                  >
                     {contactInfo.email}
                   </a>
                 </div>
@@ -169,7 +172,10 @@ export const FormBlock: React.FC<
                   <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/70">
                     <Phone />
                   </span>
-                  <a href={`tel:${contactInfo.phone}`} className="underline-offset-2 hover:underline text-xl">
+                  <a
+                    href={`tel:${contactInfo.phone}`}
+                    className="underline-offset-2 hover:underline text-xl"
+                  >
                     {contactInfo.phone}
                   </a>
                 </div>
@@ -214,13 +220,14 @@ export const FormBlock: React.FC<
         <div className="rounded-[10px] md:py-6">
           <FormProvider {...formMethods}>
             <form
-              id={formID}
+              id={String(formID)}
               onSubmit={handleSubmit(onSubmit)}
               className="space-y-6 [&_input]:h-12 [&_input]:text-base [&_textarea]:min-h-[140px] [&_textarea]:text-base"
             >
               <div className="space-y-6">
                 {formFromProps?.fields?.map((field, index) => {
-                  const Field: React.FC<any> | undefined = fields?.[field.blockType as keyof typeof fields]
+                  const Field: React.FC<any> | undefined =
+                    fields?.[field.blockType as keyof typeof fields]
                   if (!Field) return null
 
                   return (

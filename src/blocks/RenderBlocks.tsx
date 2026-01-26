@@ -21,6 +21,7 @@ import { TabsSectionBlock } from './Tabs/Component'
 import { TestimonialsBlock } from './Testimonials/Components'
 import { ValuesSectionBlock } from './ValuesBlock/Components'
 import { VideoSectionBlock } from './VideoSection/Component'
+import { ZoomMeetingCardBlock } from './ZoomMeetingCard/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -42,6 +43,7 @@ const blockComponents = {
   ctaBackgroundSection: CtaBackgroundSectionBlock,
   imageTextSection: ImageTextSectionBlock,
   programGridSection: ProgramGridSection,
+  zoomMeetingCard: ZoomMeetingCardBlock
 }
 
 export const RenderBlocks: React.FC<{

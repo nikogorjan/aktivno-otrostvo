@@ -50,7 +50,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
   const newTabProps = newTab ? { rel: 'noopener noreferrer', target: '_blank' } : {}
 
   const showArrow =
-    appearance === 'default' || appearance === 'rumen' || appearance === 'siv'
+    appearance === 'default' || appearance === 'rumen' || appearance === 'moder' || appearance === 'siv'
 
   // 🔹 For pure text links (e.g. in content, footer)
   if (appearance === 'inline') {

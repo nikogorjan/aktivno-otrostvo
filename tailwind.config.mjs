@@ -99,6 +99,8 @@ export default {
         'info-modra-border': 'hsl(var(--info-modra-border))',
         'info-rumena-border': 'hsl(var(--info-rumena-border))',
         'neutral-dark': 'hsl(var(--neutral-dark))',
+        anakiwa: 'hsl(var(--anakiwa))',
+        'anakiwa-dark': 'hsl(var(--anakiwa-dark))',
       },
       typography: ({ theme }) => ({
         DEFAULT: {

@@ -21,6 +21,7 @@ import { Testimonials } from '@/blocks/Testimonials/config'
 import { ThreeItemGrid } from '@/blocks/ThreeItemGrid/config'
 import { ValuesSection } from '@/blocks/ValuesBlock/config'
 import { VideoSection } from '@/blocks/VideoSection/config'
+import { ZoomMeetingCard } from '@/blocks/ZoomMeetingCard/config'
 import { hero } from '@/fields/hero'
 import { generatePreviewPath } from '@/utilities/generatePreviewPath'
 import {
@@ -119,6 +120,7 @@ export const Pages: CollectionConfig = {
                 CtaBackgroundSection,
                 ImageTextSection,
                 ProgramGridSection,
+                ZoomMeetingCard
               ],
               required: true,
             },

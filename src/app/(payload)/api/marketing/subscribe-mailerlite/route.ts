@@ -95,78 +95,78 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, code: 'bad_request' }, { status: 400 })
   }
 
+  const payload = await getPayload({ config: configPromise })
+
   // -----------------------------
   // ✅ NEW MODE: Forms + MailerLite
   // -----------------------------
   const isNewMode = typeof body?.formId === 'string' && Array.isArray(body?.submissionData)
 
   if (isNewMode) {
-  const { formId, submissionData, mailerLite, locale } = body as NewBody
+    const { formId, submissionData, mailerLite, locale } = body as NewBody
 
-  const resolvedLocale: 'en' | 'sl' | undefined =
-    locale === 'en' || locale === 'sl' ? locale : undefined
+    const resolvedLocale: 'en' | 'sl' | undefined =
+      locale === 'en' || locale === 'sl' ? locale : undefined
 
-  if (!formId || !submissionData) {
-    return NextResponse.json({ ok: false, code: 'bad_request' }, { status: 400 })
-  }
-
-  const payload = await getPayload({ config: configPromise })
-
-  // If MailerLite enabled, check FIRST
-  if (mailerLite?.enabled) {
-    const email = mailerLite.email
-    const groupId = mailerLite.groupId
-    const doubleOptIn = Boolean(mailerLite.doubleOptIn)
-
-    // If enabled but missing config -> treat as ML disabled (still create submission)
-    if (email && groupId) {
-      const ml = await mailerLiteCheckAndUpsert({ email, groupId, doubleOptIn })
-
-      // ✅ already subscribed -> do NOT create submission -> no payload email
-      if (ml.ok && ml.code === 'already_subscribed') {
-        return NextResponse.json({ ok: true, code: 'already_subscribed' })
-      }
-
-      // Create submission (so Payload can send its email) for new/pending
-      try {
-        await payload.create({
-          collection: 'form-submissions',
-          data: {
-            form: formId,
-            submissionData,
-          },
-          locale: resolvedLocale,
-        })
-      } catch (e) {
-        console.log('Form submission create failed:', e)
-        return NextResponse.json({ ok: false, code: 'submission_failed' }, { status: 400 })
-      }
-
-      // return ML-specific code if it succeeded; otherwise generic
-      if (ml.ok) return NextResponse.json({ ok: true, code: ml.code })
-      return NextResponse.json({ ok: true, code: 'subscribed' })
+    if (!formId || !Array.isArray(submissionData)) {
+      return NextResponse.json({ ok: false, code: 'bad_request' }, { status: 400 })
     }
 
-    console.log('MailerLite enabled but missing email/groupId -> creating submission only')
-  }
+    // If MailerLite enabled, check FIRST
+    if (mailerLite?.enabled) {
+      const email = mailerLite.email
+      const groupId = mailerLite.groupId
+      const doubleOptIn = Boolean(mailerLite.doubleOptIn)
 
-  // MailerLite disabled (or misconfigured) -> just create submission
-  try {
-    await payload.create({
-      collection: 'form-submissions',
-      data: {
-        form: formId,
-        submissionData,
-      },
-      locale: resolvedLocale,
-    })
-  } catch (e) {
-    console.log('Form submission create failed:', e)
-    return NextResponse.json({ ok: false, code: 'submission_failed' }, { status: 400 })
-  }
+      // If enabled but missing config -> treat as ML disabled (still create submission)
+      if (email && groupId) {
+        const ml = await mailerLiteCheckAndUpsert({ email, groupId, doubleOptIn })
 
-  return NextResponse.json({ ok: true, code: 'subscribed' })
-}
+        // ✅ already subscribed -> do NOT create submission -> no Payload email
+        if (ml.ok && ml.code === 'already_subscribed') {
+          return NextResponse.json({ ok: true, code: 'already_subscribed' })
+        }
+
+        // Create submission (Payload will send emails based on the form config)
+        try {
+          await payload.create({
+            collection: 'form-submissions',
+            data: {
+              form: formId,
+              submissionData,
+            },
+            locale: resolvedLocale,
+          })
+        } catch (e) {
+          console.log('Form submission create failed:', e)
+          return NextResponse.json({ ok: false, code: 'submission_failed' }, { status: 400 })
+        }
+
+        // return ML-specific code if it succeeded; otherwise generic
+        if (ml.ok) return NextResponse.json({ ok: true, code: ml.code })
+        return NextResponse.json({ ok: true, code: 'subscribed' })
+      }
+
+      console.log('MailerLite enabled but missing email/groupId -> creating submission only')
+    }
+
+    // MailerLite disabled (or misconfigured) -> just create submission
+    try {
+      await payload.create({
+        collection: 'form-submissions',
+        data: {
+          form: formId,
+          submissionData,
+        },
+        locale: resolvedLocale,
+      })
+    } catch (e) {
+      console.log('Form submission create failed:', e)
+      return NextResponse.json({ ok: false, code: 'submission_failed' }, { status: 400 })
+    }
+
+    return NextResponse.json({ ok: true, code: 'subscribed' })
+  }
 
   // -----------------------------
   // ✅ LEGACY MODE: MailerLite only

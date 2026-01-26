@@ -73,6 +73,9 @@
   --kournikova-light: hsl(42, 100%, 81%);
   --kournikova-lightest: hsl(54, 100%, 75%);
 
+  --anakiwa: hsl(221, 97%, 87%);
+  --anakiwa-dark: hsl(221, 97%, 70%);
+
   --info-roza: hsl(337, 100%, 95%);
   --info-oranzna: hsl(25, 85%, 93%);
   --info-rumena: hsl(57, 100%, 91%);
@@ -170,6 +173,9 @@
   --color-kournikova: var(--kournikova);
   --color-kournikova-light: var(--kournikova-light);
   --color-kournikova-lightest: var(--kournikova-lightest);
+
+  --color-anakiwa: var(--anakiwa);
+  --color-anakiwa-dark: var(--anakiwa-dark);
 
   --color-roza: var(--info-roza);
   --color-oranzna: var(--info-oranzna);

@@ -605,6 +605,7 @@ export interface Page {
     | CtaBackgroundSectionBlock
     | ImageTextSectionBlock
     | ProgramGridSectionBlock
+    | ZoomMeetingCardBlock
   )[];
   meta?: {
     title?: string | null;
@@ -1470,6 +1471,31 @@ export interface ProgramGridSectionBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ZoomMeetingCardBlock".
+ */
+export interface ZoomMeetingCardBlock {
+  form: string | Form;
+  image: string | Media;
+  heading: string;
+  description?: string | null;
+  /**
+   * This link will be injected into the submission as field "zoomLink" and can be used in the Forms plugin email template.
+   */
+  zoomLink: string;
+  buttonLabel?: string | null;
+  honeypotName?: string | null;
+  terms?: {
+    enabled?: boolean | null;
+    required?: boolean | null;
+    label?: string | null;
+  };
+  showDecoration?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'zoomMeetingCard';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "variants".
  */
 export interface Variant {
@@ -2145,6 +2171,7 @@ export interface PagesSelect<T extends boolean = true> {
         ctaBackgroundSection?: T | CtaBackgroundSectionBlockSelect<T>;
         imageTextSection?: T | ImageTextSectionBlockSelect<T>;
         programGridSection?: T | ProgramGridSectionBlockSelect<T>;
+        zoomMeetingCard?: T | ZoomMeetingCardBlockSelect<T>;
       };
   meta?:
     | T
@@ -2532,6 +2559,29 @@ export interface ProgramGridSectionBlockSelect<T extends boolean = true> {
         backgroundColor?: T;
         id?: T;
       };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ZoomMeetingCardBlock_select".
+ */
+export interface ZoomMeetingCardBlockSelect<T extends boolean = true> {
+  form?: T;
+  image?: T;
+  heading?: T;
+  description?: T;
+  zoomLink?: T;
+  buttonLabel?: T;
+  honeypotName?: T;
+  terms?:
+    | T
+    | {
+        enabled?: T;
+        required?: T;
+        label?: T;
+      };
+  showDecoration?: T;
   id?: T;
   blockName?: T;
 }
