@@ -25,6 +25,7 @@ import { ProgramCategories } from '@/collections/ProgramCategories'
 import { Users } from '@/collections/Users'
 import { Footer } from '@/globals/Footer'
 import { Header } from '@/globals/Header'
+import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import { s3Storage } from '@payloadcms/storage-s3'
 import { Lessons } from './collections/Lessons'
 import { plugins } from './plugins'
@@ -100,6 +101,19 @@ export default buildConfig({
 
 
   //email: nodemailerAdapter(),
+  email: nodemailerAdapter({
+  defaultFromAddress: process.env.EMAIL_FROM_ADDRESS!,
+  defaultFromName: process.env.EMAIL_FROM_NAME!,
+  transportOptions: {
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    auth: {
+      user: process.env.GMAIL_USER,
+      pass: process.env.GMAIL_APP_PASSWORD,
+    },
+  },
+}),
   endpoints: [],
   globals: [Header, Footer],
   plugins: [
