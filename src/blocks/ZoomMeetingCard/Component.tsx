@@ -125,19 +125,13 @@ export const ZoomMeetingCardBlock: React.FC<ZoomMeetingCardBlockProps & { classN
     <section className={cn('py-12 md:py-20 lg:py-28 bg-[#FBFBFB]', className)}>
       <div className="container">
         <div className="relative overflow-hidden rounded-[32px] bg-modra-hover p-3">
-          <div className="relative z-10 grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-8 items-center">
-            {/* LEFT IMAGE */}
-            <div className="relative w-full h-180 md:h-full rounded-[28px] overflow-hidden bg-card">
-              {image && typeof image === 'object' ? (
-                <Media resource={image} fill imgClassName="object-cover" priority />
-              ) : (
-                <Image src="/images/placeholder.jpg" alt="" fill className="object-cover" priority />
-              )}
-            </div>
+          <div className="relative z-10 grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-8 items-center">
+
 
             {/* RIGHT */}
-            <div className="relative z-10">
-              <div className="w-full md:w-[90%] md:py-2">
+            <div className="relative z-10 order-2 md:order-1">
+
+              <div className="w-full md:py-12 md:pl-8">
                 {heading ? (
                   <h2 className="text-3xl md:text-5xl font-semibold tracking-tight text-foreground mb-4">
                     {heading}
@@ -206,7 +200,7 @@ export const ZoomMeetingCardBlock: React.FC<ZoomMeetingCardBlockProps & { classN
                         }}
                       >
                         {loading ? t('button.loading') : buttonLabel || t('button.default')}
-                    
+
                       </CMSLink>
                     </div>
                   </form>
@@ -216,6 +210,18 @@ export const ZoomMeetingCardBlock: React.FC<ZoomMeetingCardBlockProps & { classN
                 {error ? <p className="mt-2 text-xs text-red-600">{error}</p> : null}
               </div>
             </div>
+
+            {/* LEFT IMAGE */}
+            <div className="relative w-full aspect-[9/16] md:aspect-[9/16] md:max-h-none rounded-[28px] overflow-hidden bg-card order-1 md:order-2">
+              {image && typeof image === 'object' ? (
+                <Media resource={image} fill imgClassName="object-cover" priority videoControls
+                  videoAutoPlay={true}
+                  videoLoop={true}
+                  videoMuted={true} />
+              ) : (
+                <Image src="/images/placeholder.jpg" alt="" fill className="object-cover" priority />
+              )}
+            </div>
           </div>
 
           {showDecoration ? (
@@ -224,7 +230,7 @@ export const ZoomMeetingCardBlock: React.FC<ZoomMeetingCardBlockProps & { classN
               width={180}
               height={180}
               alt=""
-              className="pointer-events-none select-none absolute -bottom-10 -right-10 sm:right-10 w-44 h-44 opacity-90 z-0"
+              className="ao-breathe pointer-events-none select-none absolute -bottom-10 left-48 sm:left-48 w-44 h-44 opacity-90 z-0 animate-pulse"
             />
           ) : null}
         </div>

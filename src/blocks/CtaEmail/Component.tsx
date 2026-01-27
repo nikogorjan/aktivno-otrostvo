@@ -250,7 +250,7 @@ export const CtaEmailBlock: React.FC<CtaEmailBlockProps & { className?: string }
               width={160}
               height={160}
               alt=""
-              className="pointer-events-none select-none absolute -bottom-10 -right-12 sm:right-12 w-40 h-40 opacity-90 z-0"
+              className="ao-breathe pointer-events-none select-none absolute -bottom-10 -right-12 sm:right-12 w-40 h-40 opacity-90 z-0"
             />
           )}
         </div>
