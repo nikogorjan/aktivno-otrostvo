@@ -35,6 +35,26 @@ const BALLS = [
   { src: 'https://bloom42-media.s3.eu-central-1.amazonaws.com/pinkball.svg', size: 100 },
 ] as const
 
+function useArcPosition(
+  progress: MotionValue<number>,
+  pathRef: React.RefObject<SVGPathElement | null>,
+  pathLen: number,
+) {
+  const x = useTransform<number, number>(progress, (t) => {
+    const p = pathRef.current
+    if (!p || !pathLen) return 0
+    return p.getPointAtLength(t * pathLen).x
+  })
+
+  const y = useTransform<number, number>(progress, (t) => {
+    const p = pathRef.current
+    if (!p || !pathLen) return 0
+    return p.getPointAtLength(t * pathLen).y
+  })
+
+  return { x, y }
+}
+
 function FloatingBallsOnArc() {
   const reduceMotion = useReducedMotion()
   const wrapRef = useRef<HTMLDivElement>(null)
@@ -60,17 +80,6 @@ function FloatingBallsOnArc() {
     return () => ro.disconnect()
   }, [])
 
-  // Update path length when size changes
-  useEffect(() => {
-    const p = pathRef.current
-    if (!p) return
-    try {
-      setPathLen(p.getTotalLength())
-    } catch {
-      setPathLen(0)
-    }
-  }, [box.w, box.h])
-
   // Arc path (top-ish curve)
   const d = useMemo(() => {
     const w = box.w
@@ -82,7 +91,18 @@ function FloatingBallsOnArc() {
     return `M ${-0.15 * w} ${y} Q ${cx} ${cy} ${1.15 * w} ${y}`
   }, [box.w, box.h])
 
-  // ✅ One continuous progress driver (never resets, so no glitch)
+  // Update path length when size changes (after d/viewBox update)
+  useEffect(() => {
+    const p = pathRef.current
+    if (!p) return
+    try {
+      setPathLen(p.getTotalLength())
+    } catch {
+      setPathLen(0)
+    }
+  }, [d, box.w, box.h])
+
+  // ✅ One continuous progress driver (never resets => no loop glitch)
   const base = useMotionValue<number>(0)
 
   // Speed: one full loop per DURATION seconds
@@ -91,7 +111,6 @@ function FloatingBallsOnArc() {
 
   useAnimationFrame((_t, deltaMs) => {
     if (reduceMotion) return
-    // advance base continuously (deltaMs is ms since last frame)
     const delta = deltaMs / (DURATION_S * 1000)
     base.set(base.get() + delta)
   })
@@ -99,32 +118,14 @@ function FloatingBallsOnArc() {
   // Wrap a number to [0, 1)
   const wrap01 = (v: number) => ((v % 1) + 1) % 1
 
-  const mkXY = (progress: MotionValue<number>) => {
-    const x = useTransform<number, number>(progress, (t) => {
-      const p = pathRef.current
-      if (!p || !pathLen) return 0
-      const pt = p.getPointAtLength(t * pathLen)
-      return pt.x
-    })
-
-    const y = useTransform<number, number>(progress, (t) => {
-      const p = pathRef.current
-      if (!p || !pathLen) return 0
-      const pt = p.getPointAtLength(t * pathLen)
-      return pt.y
-    })
-
-    return { x, y }
-  }
-
   // ✅ Three balls: same speed, evenly phase-shifted, all derived from ONE base driver
   const p0 = useTransform<number, number>(base, (v) => wrap01(v + startOffset + 0 / 3))
   const p1 = useTransform<number, number>(base, (v) => wrap01(v + startOffset + 1 / 3))
   const p2 = useTransform<number, number>(base, (v) => wrap01(v + startOffset + 2 / 3))
 
-  const a0 = mkXY(p0)
-  const a1 = mkXY(p1)
-  const a2 = mkXY(p2)
+  const a0 = useArcPosition(p0, pathRef, pathLen)
+  const a1 = useArcPosition(p1, pathRef, pathLen)
+  const a2 = useArcPosition(p2, pathRef, pathLen)
 
   if (reduceMotion) return null
 
