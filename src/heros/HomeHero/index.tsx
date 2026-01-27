@@ -4,7 +4,7 @@ import { Media } from '@/components/Media'
 import type { Page } from '@/payload-types'
 import { useHeaderTheme } from '@/providers/HeaderTheme'
 import type { MotionValue } from 'framer-motion'
-import { animate, motion, useMotionValue, useReducedMotion, useTransform } from 'framer-motion'
+import { motion, useAnimationFrame, useMotionValue, useReducedMotion, useTransform } from 'framer-motion'
 import Link from 'next/link'
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
@@ -54,7 +54,6 @@ function FloatingBallsOnArc() {
     })
 
     ro.observe(el)
-    // initial
     const r = el.getBoundingClientRect()
     setBox({ w: Math.max(0, r.width), h: Math.max(0, r.height) })
 
@@ -72,38 +71,43 @@ function FloatingBallsOnArc() {
     }
   }, [box.w, box.h])
 
-  // Create 3 progress values (0..1) and keep them running with offsets
-  const p0 = useMotionValue(0)
-  const p1 = useMotionValue(0)
-  const p2 = useMotionValue(0)
+  // Arc path (top-ish curve)
+  const d = useMemo(() => {
+    const w = box.w
+    const h = box.h
+    if (!w || !h) return ''
+    const y = 0.55 * h
+    const cx = 0.5 * w
+    const cy = 0.02 * h
+    return `M ${-0.15 * w} ${y} Q ${cx} ${cy} ${1.15 * w} ${y}`
+  }, [box.w, box.h])
 
-  useEffect(() => {
+  // ✅ One continuous progress driver (never resets, so no glitch)
+  const base = useMotionValue<number>(0)
+
+  // Speed: one full loop per DURATION seconds
+  const DURATION_S = 15
+  const startOffset = 0.18 // start "already animated" so balls are visible on load
+
+  useAnimationFrame((_t, deltaMs) => {
     if (reduceMotion) return
-    if (!pathLen) return
+    // advance base continuously (deltaMs is ms since last frame)
+    const delta = deltaMs / (DURATION_S * 1000)
+    base.set(base.get() + delta)
+  })
 
-    // One shared timing; each ball is phase-shifted
-    const duration = 15
+  // Wrap a number to [0, 1)
+  const wrap01 = (v: number) => ((v % 1) + 1) % 1
 
-    const c0 = animate(p0, 1, { duration, ease: 'linear', repeat: Infinity })
-    const c1 = animate(p1, 1, { duration, ease: 'linear', repeat: Infinity, delay: duration / 3 })
-    const c2 = animate(p2, 1, { duration, ease: 'linear', repeat: Infinity, delay: (2 * duration) / 3 })
-
-    return () => {
-      c0.stop()
-      c1.stop()
-      c2.stop()
-    }
-  }, [reduceMotion, pathLen, p0, p1, p2])
-
-  const mkXY = (mv: MotionValue<number>) => {
-    const x = useTransform<number, number>(mv, (t: number) => {
+  const mkXY = (progress: MotionValue<number>) => {
+    const x = useTransform<number, number>(progress, (t) => {
       const p = pathRef.current
       if (!p || !pathLen) return 0
       const pt = p.getPointAtLength(t * pathLen)
       return pt.x
     })
 
-    const y = useTransform<number, number>(mv, (t: number) => {
+    const y = useTransform<number, number>(progress, (t) => {
       const p = pathRef.current
       if (!p || !pathLen) return 0
       const pt = p.getPointAtLength(t * pathLen)
@@ -113,28 +117,25 @@ function FloatingBallsOnArc() {
     return { x, y }
   }
 
+  // ✅ Three balls: same speed, evenly phase-shifted, all derived from ONE base driver
+  const p0 = useTransform<number, number>(base, (v) => wrap01(v + startOffset + 0 / 3))
+  const p1 = useTransform<number, number>(base, (v) => wrap01(v + startOffset + 1 / 3))
+  const p2 = useTransform<number, number>(base, (v) => wrap01(v + startOffset + 2 / 3))
+
   const a0 = mkXY(p0)
   const a1 = mkXY(p1)
   const a2 = mkXY(p2)
-
-  // Arc similar to your sketch:
-  // start slightly off-screen left, end slightly off-screen right
-  const d = useMemo(() => {
-    const w = box.w
-    const h = box.h
-    if (!w || !h) return ''
-    const y = 0.55 * h   // baseline higher (top third)
-    const cx = 0.5 * w
-    const cy = 0.02 * h
-    return `M ${-0.15 * w} ${y} Q ${cx} ${cy} ${1.15 * w} ${y}`
-  }, [box.w, box.h])
 
   if (reduceMotion) return null
 
   return (
     <div ref={wrapRef} className="absolute inset-0 pointer-events-none overflow-hidden z-0">
       {/* Invisible SVG path used as the motion track */}
-      <svg className="absolute inset-0 w-full h-full" viewBox={`0 0 ${box.w || 1} ${box.h || 1}`} preserveAspectRatio="none">
+      <svg
+        className="absolute inset-0 w-full h-full"
+        viewBox={`0 0 ${box.w || 1} ${box.h || 1}`}
+        preserveAspectRatio="none"
+      >
         <path ref={pathRef} d={d} fill="none" stroke="transparent" strokeWidth="2" />
       </svg>
 
@@ -186,9 +187,7 @@ export const HomeHero: React.FC<HomeHeroProps> = (props) => {
   const heroPhoto = left?.photo && typeof left.photo === 'object' ? left.photo : undefined
 
   const renderInfoCard = (card: Card | undefined, key: React.Key, extraClass = '') => {
-    if (!card || card.blockType !== 'infoCard') {
-      return <div key={key} />
-    }
+    if (!card || card.blockType !== 'infoCard') return <div key={key} />
 
     const href = 'href' in card && card.href ? card.href : undefined
     const isLinked = !!href
@@ -243,12 +242,7 @@ export const HomeHero: React.FC<HomeHeroProps> = (props) => {
             {/* Hero photo above */}
             {heroPhoto && (
               <div className="absolute inset-0 z-10">
-                <Media
-                  resource={heroPhoto}
-                  fill
-                  priority
-                  imgClassName="object-contain object-bottom"
-                />
+                <Media resource={heroPhoto} fill priority imgClassName="object-contain object-bottom" />
               </div>
             )}
           </div>
