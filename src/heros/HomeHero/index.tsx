@@ -235,8 +235,8 @@ export const HomeHero: React.FC<HomeHeroProps> = (props) => {
         "
       >
         {/* LEFT: image */}
-        <div className="flex justify-center lg:h-full">
-          <div className="relative w-full max-w-[520px] overflow-hidden rounded-xl bg-muted aspect-square lg:aspect-auto lg:h-full">
+        <div className="w-full lg:h-full">
+          <div className="relative w-full overflow-hidden rounded-xl bg-muted aspect-square lg:aspect-auto lg:h-full lg:max-w-[520px] lg:mx-auto">
             {/* Balls behind */}
             <FloatingBallsOnArc />
 
