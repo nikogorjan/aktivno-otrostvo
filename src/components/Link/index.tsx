@@ -68,22 +68,40 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
 
   // 🔹 For button-like + nav variants -> use Button + Slot
   return (
-    <Button asChild className={className} size={size} variant={appearance}>
-      <Link
-        // ✅ Only add extra padding for CTA buttons that show arrow
-        className={cn(showArrow && 'pl-4 pr-1.5')}
-        href={href}
-        {...newTabProps}
-        {...rest}
-      >
-        {label ?? children}
+  <Button asChild className={cn('group', className)} size={size} variant={appearance}>
+    <Link
+      className={cn(showArrow && 'pl-4 pr-1.5')}
+      href={href}
+      {...newTabProps}
+      {...rest}
+    >
+      {label ?? children}
 
-        {showArrow && (
-          <span className="ml-2 inline-flex items-center justify-center rounded-full bg-white text-neutral-dark size-9">
-            <ArrowUpRight className="size-6" />
-          </span>
-        )}
-      </Link>
-    </Button>
-  )
+      {showArrow && (
+  <span className="ml-2 inline-flex items-center justify-center rounded-full bg-white text-neutral-dark size-9 overflow-hidden">
+    <span className="relative block size-6">
+      {/* Arrow that leaves (starts visible) */}
+      <ArrowUpRight
+        className="
+          absolute inset-0 size-6
+          transition-transform duration-300 ease-out
+          group-hover:translate-x-[120%] group-hover:-translate-y-[120%]
+        "
+      />
+
+      {/* Arrow that enters (starts fully hidden bottom-left) */}
+      <ArrowUpRight
+        className="
+          absolute inset-0 size-6
+          translate-x-[-120%] translate-y-[120%]
+          transition-transform duration-300 ease-out
+          group-hover:translate-x-0 group-hover:translate-y-0
+        "
+      />
+    </span>
+  </span>
+)}
+    </Link>
+  </Button>
+)
 }

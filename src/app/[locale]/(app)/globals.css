@@ -249,3 +249,11 @@ button {
 .hover-from-right::after {
   transform-origin: right;
 }
+
+@keyframes ao-breathe {
+  0%, 100% { transform: translateZ(0) scale(1); opacity: .85; }
+  50% { transform: translateZ(0) scale(1.16); opacity: 1; }
+}
+.ao-breathe {
+  animation: ao-breathe 4.2s ease-in-out infinite;
+}
