@@ -45,7 +45,7 @@ export default buildConfig({
     },
     user: Users.slug,
   },
-  collections: [Users, Pages, Categories, Media, ProgramCategories, Lessons, PostCategories, Posts],
+  collections: [Pages, Posts, Users, Categories, Media, ProgramCategories, Lessons, PostCategories],
   localization: {
     locales: [
       {

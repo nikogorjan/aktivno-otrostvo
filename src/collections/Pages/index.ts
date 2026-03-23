@@ -36,6 +36,14 @@ import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
+  labels: {
+    singular: {
+      sl: 'Stran',
+    },
+    plural: {
+      sl: 'Strani',
+    },
+  },
   access: {
     create: adminOnly,
     delete: adminOnly,
@@ -43,7 +51,7 @@ export const Pages: CollectionConfig = {
     update: adminOnly,
   },
   admin: {
-    group: 'Content',
+    group: 'Vsebina',
     defaultColumns: ['title', 'slug', 'updatedAt'],
     livePreview: {
       url: ({ data, req }) =>
