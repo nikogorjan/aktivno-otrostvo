@@ -1,27 +1,45 @@
+import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
+import { CallToActionBlock } from '@/blocks/CallToAction/Component'
+import { CarouselBlock } from '@/blocks/Carousel/Component'
+import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
+import { MediaBlock } from '@/blocks/MediaBlock/Component'
+import { ThreeItemGridBlock } from '@/blocks/ThreeItemGrid/Component'
 import { toKebabCase } from '@/utilities/toKebabCase'
 import React, { Fragment } from 'react'
 
 import type { Page } from '../payload-types'
+import { AboutUsSectionBlock } from './AboutUs/Component'
 import { CtaBackgroundSectionBlock } from './CtaBackgroundBlock/Component'
 import { CtaEmailBlock } from './CtaEmail/Component'
 import { FaqSectionBlock } from './Faq/Component'
+import { ImageTextSectionBlock } from './ImageTextBlock/Component'
 import { ProgramGridSection } from './ProgramGridSection/Components'
 import { RoadmapSectionBlock } from './RoadmapBlock/Component'
 import { TabsSectionBlock } from './Tabs/Component'
 import { TestimonialsBlock } from './Testimonials/Components'
 import { ValuesSectionBlock } from './ValuesBlock/Components'
+import { VideoSectionBlock } from './VideoSection/Component'
 import { ZoomMeetingCardBlock } from './ZoomMeetingCard/Component'
 
 const blockComponents = {
+  archive: ArchiveBlock,
+  carousel: CarouselBlock,
+  content: ContentBlock,
+  cta: CallToActionBlock,
   formBlock: FormBlock,
+  mediaBlock: MediaBlock,
+  threeItemGrid: ThreeItemGridBlock,
+  aboutUsSection: AboutUsSectionBlock,
   tabsSection: TabsSectionBlock,
   faqSection: FaqSectionBlock,
   testimonials: TestimonialsBlock,
   ctaEmail: CtaEmailBlock,
+  videoSection: VideoSectionBlock,
   valuesSection: ValuesSectionBlock,
   roadmapSection: RoadmapSectionBlock,
   ctaBackgroundSection: CtaBackgroundSectionBlock,
+  imageTextSection: ImageTextSectionBlock,
   programGridSection: ProgramGridSection,
   zoomMeetingCard: ZoomMeetingCardBlock
 }
