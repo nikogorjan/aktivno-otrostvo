@@ -4,6 +4,14 @@ import { link } from '@/fields/link'
 
 export const Header: GlobalConfig = {
   slug: 'header',
+  label: {
+    sl: 'Glava',
+  },
+  admin: {
+    group: {
+      sl: 'Vsebina',
+    },
+  },
   access: {
     read: () => true,
   },

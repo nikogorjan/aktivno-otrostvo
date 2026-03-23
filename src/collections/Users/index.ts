@@ -2,14 +2,18 @@ import type { CollectionConfig } from 'payload'
 
 import { adminOnly } from '@/access/adminOnly'
 import { adminOnlyFieldAccess } from '@/access/adminOnlyFieldAccess'
-import { publicAccess } from '@/access/publicAccess'
 import { adminOrSelf } from '@/access/adminOrSelf'
+import { publicAccess } from '@/access/publicAccess'
 import { checkRole } from '@/access/utilities'
 
 import { ensureFirstUserIsAdmin } from './hooks/ensureFirstUserIsAdmin'
 
 export const Users: CollectionConfig = {
   slug: 'users',
+  labels: {
+    singular: 'Uporabnik',
+    plural: 'Uporabniki',
+  },
   access: {
     admin: ({ req: { user } }) => checkRole(['admin'], user),
     create: publicAccess,
@@ -18,7 +22,7 @@ export const Users: CollectionConfig = {
     update: adminOrSelf,
   },
   admin: {
-    group: 'Users',
+    group: 'Uporabniki',
     defaultColumns: ['name', 'email', 'roles'],
     useAsTitle: 'name',
   },

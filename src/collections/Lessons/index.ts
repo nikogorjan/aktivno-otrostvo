@@ -26,7 +26,7 @@ export const Lessons: CollectionConfig = {
     access: { read: () => true },
     admin: {
         useAsTitle: 'title',
-        group: 'Content',
+        group: 'Vsebina',
         defaultColumns: ['title', 'program', 'comingSoon'],
     },
     fields: [

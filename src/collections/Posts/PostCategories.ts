@@ -4,8 +4,16 @@ import { slugField } from 'payload'
 
 export const PostCategories: CollectionConfig = {
   slug: 'postCategories',
+  labels: {
+    singular: 'Kategorija Objave',
+    plural: 'Kategorije Objav',
+  },
   access: { read: () => true },
-  admin: { useAsTitle: 'title' },
+  admin: {
+    useAsTitle: 'title', group: {
+      sl: 'Za navdih',
+    },
+  },
 
   defaultPopulate: {
     title: true,

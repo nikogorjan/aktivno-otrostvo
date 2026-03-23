@@ -1,5 +1,5 @@
-import { slugField } from 'payload'
 import type { CollectionConfig } from 'payload'
+import { slugField } from 'payload'
 
 export const Categories: CollectionConfig = {
   slug: 'categories',
@@ -8,7 +8,7 @@ export const Categories: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'title',
-    group: 'Content',
+    group: 'Ecommerce',
   },
   fields: [
     {

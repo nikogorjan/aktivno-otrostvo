@@ -26,7 +26,7 @@ export const ProgramCategories: CollectionConfig = {
     access: { read: () => true },
     admin: {
         useAsTitle: 'title',
-        group: 'Content',
+        group: 'Vsebina',
         defaultColumns: ['title', 'slug', 'order'],
     },
     fields: [
