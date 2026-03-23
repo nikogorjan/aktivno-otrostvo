@@ -2,25 +2,15 @@ import type { CollectionConfig } from 'payload'
 
 import { adminOnly } from '@/access/adminOnly'
 import { adminOrPublishedStatus } from '@/access/adminOrPublishedStatus'
-import { AboutUsSection } from '@/blocks/AboutUs/config'
-import { Archive } from '@/blocks/ArchiveBlock/config'
-import { Banner } from '@/blocks/Banner/config'
-import { CallToAction } from '@/blocks/CallToAction/config'
-import { Carousel } from '@/blocks/Carousel/config'
-import { Content } from '@/blocks/Content/config'
 import { CtaBackgroundSection } from '@/blocks/CtaBackgroundBlock/config'
 import { CtaEmail } from '@/blocks/CtaEmail/config'
 import { FaqSection } from '@/blocks/Faq/config'
 import { FormBlock } from '@/blocks/Form/config'
-import { ImageTextSection } from '@/blocks/ImageTextBlock/config'
-import { MediaBlock } from '@/blocks/MediaBlock/config'
 import { ProgramGridSection } from '@/blocks/ProgramGridSection/config'
 import { RoadmapSection } from '@/blocks/RoadmapBlock/config'
 import { TabsSection } from '@/blocks/Tabs/config'
 import { Testimonials } from '@/blocks/Testimonials/config'
-import { ThreeItemGrid } from '@/blocks/ThreeItemGrid/config'
 import { ValuesSection } from '@/blocks/ValuesBlock/config'
-import { VideoSection } from '@/blocks/VideoSection/config'
 import { ZoomMeetingCard } from '@/blocks/ZoomMeetingCard/config'
 import { hero } from '@/fields/hero'
 import { generatePreviewPath } from '@/utilities/generatePreviewPath'
@@ -109,24 +99,14 @@ export const Pages: CollectionConfig = {
               name: 'layout',
               type: 'blocks',
               blocks: [
-                CallToAction,
-                Content,
-                MediaBlock,
-                Archive,
-                Carousel,
-                ThreeItemGrid,
-                Banner,
                 FormBlock,
-                AboutUsSection,
                 TabsSection,
                 FaqSection,
                 Testimonials,
                 CtaEmail,
-                VideoSection,
                 ValuesSection,
                 RoadmapSection,
                 CtaBackgroundSection,
-                ImageTextSection,
                 ProgramGridSection,
                 ZoomMeetingCard
               ],
