@@ -11,6 +11,7 @@ import { RoadmapSection } from '@/blocks/RoadmapBlock/config'
 import { TabsSection } from '@/blocks/Tabs/config'
 import { Testimonials } from '@/blocks/Testimonials/config'
 import { ValuesSection } from '@/blocks/ValuesBlock/config'
+import { VideoSection } from '@/blocks/VideoSection/config'
 import { ZoomMeetingCard } from '@/blocks/ZoomMeetingCard/config'
 import { hero } from '@/fields/hero'
 import { generatePreviewPath } from '@/utilities/generatePreviewPath'
@@ -108,7 +109,8 @@ export const Pages: CollectionConfig = {
                 RoadmapSection,
                 CtaBackgroundSection,
                 ProgramGridSection,
-                ZoomMeetingCard
+                ZoomMeetingCard,
+                VideoSection
               ],
               required: true,
             },
