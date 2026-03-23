@@ -1,4 +1,4 @@
-import type { Category, Media } from '@/payload-types'
+import type { Media } from '@/payload-types'
 import { RequiredDataFromCollectionSlug } from 'payload'
 
 type ProductArgs = {
@@ -13,6 +13,7 @@ export const homePageData: (args: ProductArgs) => RequiredDataFromCollectionSlug
   return {
     slug: 'home',
     _status: 'published',
+    title: 'Home',
     hero: {
       type: 'lowImpact',
       links: [
@@ -88,39 +89,7 @@ export const homePageData: (args: ProductArgs) => RequiredDataFromCollectionSlug
                   format: 0,
                   mode: 'normal',
                   style: '',
-                  text: " to begin managing this site's content. The code for this template is completely open-source and can be found ",
-                  version: 1,
-                },
-                {
-                  type: 'link',
-                  children: [
-                    {
-                      type: 'text',
-                      detail: 0,
-                      format: 0,
-                      mode: 'normal',
-                      style: '',
-                      text: 'on our Github',
-                      version: 1,
-                    },
-                  ],
-                  direction: 'ltr',
-                  fields: {
-                    linkType: 'custom',
-                    newTab: true,
-                    url: 'https://github.com/payloadcms/payload/tree/main/templates/ecommerce',
-                  },
-                  format: '',
-                  indent: 0,
-                  version: 3,
-                },
-                {
-                  type: 'text',
-                  detail: 0,
-                  format: 0,
-                  mode: 'normal',
-                  style: '',
-                  text: '. ',
+                  text: " to begin managing this site's content.",
                   version: 1,
                 },
               ],
@@ -140,414 +109,13 @@ export const homePageData: (args: ProductArgs) => RequiredDataFromCollectionSlug
     },
     layout: [
       {
-        blockName: 'Content Block',
-        blockType: 'content',
-        columns: [
-          {
-            richText: {
-              root: {
-                type: 'root',
-                children: [
-                  {
-                    type: 'heading',
-                    children: [
-                      {
-                        type: 'text',
-                        detail: 0,
-                        format: 0,
-                        mode: 'normal',
-                        style: '',
-                        text: 'Core features',
-                        version: 1,
-                      },
-                    ],
-                    direction: 'ltr',
-                    format: '',
-                    indent: 0,
-                    tag: 'h2',
-                    version: 1,
-                  },
-                ],
-                direction: 'ltr',
-                format: '',
-                indent: 0,
-                version: 1,
-              },
-            },
-            size: 'full',
-          },
-          {
-            enableLink: false,
-            richText: {
-              root: {
-                type: 'root',
-                children: [
-                  {
-                    type: 'heading',
-                    children: [
-                      {
-                        type: 'text',
-                        detail: 0,
-                        format: 0,
-                        mode: 'normal',
-                        style: '',
-                        text: 'Admin Dashboard',
-                        version: 1,
-                      },
-                    ],
-                    direction: 'ltr',
-                    format: '',
-                    indent: 0,
-                    tag: 'h3',
-                    version: 1,
-                  },
-                  {
-                    type: 'paragraph',
-                    children: [
-                      {
-                        type: 'text',
-                        detail: 0,
-                        format: 0,
-                        mode: 'normal',
-                        style: '',
-                        text: "Manage this site's pages and products from the ",
-                        version: 1,
-                      },
-                      {
-                        type: 'link',
-                        children: [
-                          {
-                            type: 'text',
-                            detail: 0,
-                            format: 0,
-                            mode: 'normal',
-                            style: '',
-                            text: 'admin dashboard',
-                            version: 1,
-                          },
-                        ],
-                        direction: 'ltr',
-                        fields: {
-                          linkType: 'custom',
-                          newTab: false,
-                          url: '/admin',
-                        },
-                        format: '',
-                        indent: 0,
-                        version: 2,
-                      },
-                      {
-                        type: 'text',
-                        detail: 0,
-                        format: 0,
-                        mode: 'normal',
-                        style: '',
-                        text: '.',
-                        version: 1,
-                      },
-                    ],
-                    direction: 'ltr',
-                    format: '',
-                    indent: 0,
-                    textFormat: 0,
-                    version: 1,
-                  },
-                ],
-                direction: 'ltr',
-                format: '',
-                indent: 0,
-                version: 1,
-              },
-            },
-            size: 'oneThird',
-          },
-          {
-            enableLink: false,
-            richText: {
-              root: {
-                type: 'root',
-                children: [
-                  {
-                    type: 'heading',
-                    children: [
-                      {
-                        type: 'text',
-                        detail: 0,
-                        format: 0,
-                        mode: 'normal',
-                        style: '',
-                        text: 'Preview',
-                        version: 1,
-                      },
-                    ],
-                    direction: 'ltr',
-                    format: '',
-                    indent: 0,
-                    tag: 'h3',
-                    version: 1,
-                  },
-                  {
-                    type: 'paragraph',
-                    children: [
-                      {
-                        type: 'text',
-                        detail: 0,
-                        format: 0,
-                        mode: 'normal',
-                        style: '',
-                        text: 'Using versions, drafts, and preview, editors can review and share their changes before publishing them.',
-                        version: 1,
-                      },
-                    ],
-                    direction: 'ltr',
-                    format: '',
-                    indent: 0,
-                    textFormat: 0,
-                    version: 1,
-                  },
-                ],
-                direction: 'ltr',
-                format: '',
-                indent: 0,
-                version: 1,
-              },
-            },
-            size: 'oneThird',
-          },
-          {
-            enableLink: false,
-            richText: {
-              root: {
-                type: 'root',
-                children: [
-                  {
-                    type: 'heading',
-                    children: [
-                      {
-                        type: 'text',
-                        detail: 0,
-                        format: 0,
-                        mode: 'normal',
-                        style: '',
-                        text: 'Page Builder',
-                        version: 1,
-                      },
-                    ],
-                    direction: 'ltr',
-                    format: '',
-                    indent: 0,
-                    tag: 'h3',
-                    version: 1,
-                  },
-                  {
-                    type: 'paragraph',
-                    children: [
-                      {
-                        type: 'text',
-                        detail: 0,
-                        format: 0,
-                        mode: 'normal',
-                        style: '',
-                        text: 'Custom page builder allows you to create unique page and product layouts for any type of content.',
-                        version: 1,
-                      },
-                    ],
-                    direction: 'ltr',
-                    format: '',
-                    indent: 0,
-                    textFormat: 0,
-                    version: 1,
-                  },
-                ],
-                direction: 'ltr',
-                format: '',
-                indent: 0,
-                version: 1,
-              },
-            },
-            size: 'oneThird',
-          },
-          {
-            enableLink: false,
-            richText: {
-              root: {
-                type: 'root',
-                children: [
-                  {
-                    type: 'heading',
-                    children: [
-                      {
-                        type: 'text',
-                        detail: 0,
-                        format: 0,
-                        mode: 'normal',
-                        style: '',
-                        text: 'SEO',
-                        version: 1,
-                      },
-                    ],
-                    direction: 'ltr',
-                    format: '',
-                    indent: 0,
-                    tag: 'h3',
-                    version: 1,
-                  },
-                  {
-                    type: 'paragraph',
-                    children: [
-                      {
-                        type: 'text',
-                        detail: 0,
-                        format: 0,
-                        mode: 'normal',
-                        style: '',
-                        text: 'Editors have complete control over SEO data and site content directly from the ',
-                        version: 1,
-                      },
-                      {
-                        type: 'link',
-                        children: [
-                          {
-                            type: 'text',
-                            detail: 0,
-                            format: 0,
-                            mode: 'normal',
-                            style: '',
-                            text: 'admin dashboard',
-                            version: 1,
-                          },
-                        ],
-                        direction: 'ltr',
-                        fields: {
-                          linkType: 'custom',
-                          newTab: false,
-                          url: '/admin',
-                        },
-                        format: '',
-                        indent: 0,
-                        version: 2,
-                      },
-                      {
-                        type: 'text',
-                        detail: 0,
-                        format: 0,
-                        mode: 'normal',
-                        style: '',
-                        text: '.',
-                        version: 1,
-                      },
-                    ],
-                    direction: 'ltr',
-                    format: '',
-                    indent: 0,
-                    textFormat: 0,
-                    version: 1,
-                  },
-                ],
-                direction: 'ltr',
-                format: '',
-                indent: 0,
-                version: 1,
-              },
-            },
-            size: 'oneThird',
-          },
-          {
-            enableLink: false,
-            richText: {
-              root: {
-                type: 'root',
-                children: [
-                  {
-                    type: 'heading',
-                    children: [
-                      {
-                        type: 'text',
-                        detail: 0,
-                        format: 0,
-                        mode: 'normal',
-                        style: '',
-                        text: 'Dark Mode',
-                        version: 1,
-                      },
-                    ],
-                    direction: 'ltr',
-                    format: '',
-                    indent: 0,
-                    tag: 'h3',
-                    version: 1,
-                  },
-                  {
-                    type: 'paragraph',
-                    children: [
-                      {
-                        type: 'text',
-                        detail: 0,
-                        format: 0,
-                        mode: 'normal',
-                        style: '',
-                        text: 'Users will experience this site in their preferred color scheme and each block can be inverted.',
-                        version: 1,
-                      },
-                    ],
-                    direction: 'ltr',
-                    format: '',
-                    indent: 0,
-                    textFormat: 0,
-                    version: 1,
-                  },
-                ],
-                direction: 'ltr',
-                format: '',
-                indent: 0,
-                version: 1,
-              },
-            },
-            size: 'oneThird',
-          },
-        ],
-      },
-      {
-        blockName: 'Media Block',
-        blockType: 'mediaBlock',
-        media: contentImage,
-      },
-      {
-        blockName: 'CTA',
-        blockType: 'cta',
-        links: [
-          {
-            link: {
-              type: 'custom',
-              appearance: 'default',
-              label: 'All products',
-              url: '/products',
-            },
-          },
-        ],
-        richText: {
+        blockName: 'Intro Video',
+        blockType: 'videoSection',
+        heading: 'Discover the store experience',
+        description: {
           root: {
             type: 'root',
             children: [
-              {
-                type: 'heading',
-                children: [
-                  {
-                    type: 'text',
-                    detail: 0,
-                    format: 0,
-                    mode: 'normal',
-                    style: '',
-                    text: 'This is a call to action',
-                    version: 1,
-                  },
-                ],
-                direction: 'ltr',
-                format: '',
-                indent: 0,
-                tag: 'h3',
-                version: 1,
-              },
               {
                 type: 'paragraph',
                 children: [
@@ -557,39 +125,7 @@ export const homePageData: (args: ProductArgs) => RequiredDataFromCollectionSlug
                     format: 0,
                     mode: 'normal',
                     style: '',
-                    text: 'This is a custom layout building block ',
-                    version: 1,
-                  },
-                  {
-                    type: 'link',
-                    children: [
-                      {
-                        type: 'text',
-                        detail: 0,
-                        format: 0,
-                        mode: 'normal',
-                        style: '',
-                        text: 'configured in the admin dashboard',
-                        version: 1,
-                      },
-                    ],
-                    direction: 'ltr',
-                    fields: {
-                      linkType: 'custom',
-                      newTab: false,
-                      url: '/admin',
-                    },
-                    format: '',
-                    indent: 0,
-                    version: 2,
-                  },
-                  {
-                    type: 'text',
-                    detail: 0,
-                    format: 0,
-                    mode: 'normal',
-                    style: '',
-                    text: '.',
+                    text: 'Showcase your products, explain your offer, and guide visitors through the most important parts of your website.',
                     version: 1,
                   },
                 ],
@@ -606,14 +142,80 @@ export const homePageData: (args: ProductArgs) => RequiredDataFromCollectionSlug
             version: 1,
           },
         },
+        links: [
+          {
+            link: {
+              type: 'custom',
+              appearance: 'default',
+              label: 'Browse products',
+              url: '/products',
+            },
+          },
+        ],
+        backgroundColor: 'modra',
+        mediaTitle: 'A simple way to present your products',
+        browserUrl: 'aktivno-otrostvo.com',
+        media: contentImage,
+      },
+      {
+        blockName: 'Call to Action Background',
+        blockType: 'ctaBackgroundSection',
+        heading: 'Ready to get started?',
+        description: {
+          root: {
+            type: 'root',
+            children: [
+              {
+                type: 'paragraph',
+                children: [
+                  {
+                    type: 'text',
+                    detail: 0,
+                    format: 0,
+                    mode: 'normal',
+                    style: '',
+                    text: 'Use the admin dashboard to create pages, manage products, and customize your website content.',
+                    version: 1,
+                  },
+                ],
+                direction: 'ltr',
+                format: '',
+                indent: 0,
+                textFormat: 0,
+                version: 1,
+              },
+            ],
+            direction: 'ltr',
+            format: '',
+            indent: 0,
+            version: 1,
+          },
+        },
+        links: [
+          {
+            link: {
+              type: 'custom',
+              appearance: 'default',
+              label: 'Open admin',
+              url: '/admin',
+            },
+          },
+          {
+            link: {
+              type: 'custom',
+              appearance: 'outline',
+              label: 'View products',
+              url: '/products',
+            },
+          },
+        ],
+        backgroundImage: contentImage,
       },
     ],
     meta: {
       description: 'An open-source ecommerce site built with Payload and Next.js.',
-      // @ts-ignore
       image: metaImage,
       title: 'Payload Ecommerce Template',
     },
-    title: 'Home',
   }
 }
