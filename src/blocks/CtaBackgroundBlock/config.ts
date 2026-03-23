@@ -39,6 +39,7 @@ function getThumbURL() {
 
 export const CtaBackgroundSection: Block = {
   slug: 'ctaBackgroundSection',
+  interfaceName: 'CtaBackgroundSectionBlock',
   imageURL: getThumbURL(),
   labels: { singular: 'Klic k akciji', plural: 'Klic k akciji' },
   fields: [
